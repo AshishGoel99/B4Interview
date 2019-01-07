@@ -44,7 +44,7 @@
                 {
                     <span class="badge badge-primary">@tag.Name</span>
                 }
-                <span class="float-right badge badge-light">@review.CreatedOn.ToString("dd MMM, yyyy")</span>
+                <span class="float-right badge badge-light">@review.CreatedOn.ToMoment()</span>
 
             </div>
             <div id="collapse@(cardCount)" class="collapse @(cardCount == 1? "show":"hide")" aria-labelledby="heading@(cardCount)" data-parent="#reviewPanel">

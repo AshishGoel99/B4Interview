@@ -1,4 +1,5 @@
 ﻿using B4Interview.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -16,12 +17,29 @@ namespace B4Interview.Pages
         }
 
         public IList<Company> Companies { get; set; }
-        public void OnGet(int index = 0, int count = 10)
+        public int RemainingPagesCount { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int Index { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public int PageSize { get; set; }
+
+        public void OnGet()
         {
-            Companies = databaseContext.Companies
+            if (PageSize == 0)
+                PageSize = 12;
+
+            var next = databaseContext.Companies
                 .OrderByDescending(c => c.Rating)
-                .Skip(index)
-                .Take(count)
+                .Skip(Index * PageSize);
+
+            var remaining = next.Count() - PageSize;
+            RemainingPagesCount = remaining / PageSize;
+            if (RemainingPagesCount * PageSize < remaining)
+                RemainingPagesCount++;
+
+            Companies = next
+                .Take(PageSize)
                 .Include(c => c.Reviews)
                 .ToList();
         }

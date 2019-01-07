@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <p>@company.Sector</p>
+                <small>@company.Sector</small>
                 <p>
                     <ul class="list-inline float-right align-bottom">
                         <li class="list-inline-item">
@@ -58,3 +58,31 @@
     }
 
 </div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @if (Model.Index > 0)
+        {
+            <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index - 1)" asp-route-pageSize="@Model.PageSize">Previous</a></li>
+        }
+
+        @for (int i = 2; i > 0 && (Model.Index - i >= 0); i--)
+        {
+            <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index - i)" asp-route-pageSize="@Model.PageSize">@(Model.Index - i)</a></li>
+        }
+        @if (Model.Index > 0)
+        {
+            <li class="page-item"><a class="page-link" href="#">@Model.Index <span class="sr-only">(current)</span></a></li>
+        }
+
+        @for (int i = 0; i < Model.RemainingPagesCount && i < 2; i++)
+        {
+            <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index + i + 1)" asp-route-pageSize="@Model.PageSize">@(Model.Index + i + 1)</a></li>
+        }
+
+        @if (Model.RemainingPagesCount > 0)
+        {
+            <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index + 1)" asp-route-pageSize="@Model.PageSize">Next</a></li>
+        }
+    </ul>
+</nav>

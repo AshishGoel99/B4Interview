@@ -1,0 +1,37 @@
+﻿@page
+@model B4Interview.Pages.ReferralJobModel
+@{
+    ViewData["Title"] = "ReferralJob";
+}
+
+@foreach (var job in Model.Jobs)
+{
+    <div class="card">
+        <div class="card-header p-1 m-0 row">
+            <div class="col-4">
+                <img class="w-100 h-100" src="@job.Company.Logo">
+            </div>
+            <div class="col-8">
+                <b>@job.Title</b>
+                <p>@job.Location</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <small>@job.Referrer.Name</small>
+            <p>
+                <ul class="list-inline align-bottom">
+                    <li class="list-inline-item">
+                        <a asp-page="ReferralJob" asp-route-handler="Apply" class="btn btn-sm btn-primary">
+                            Apply
+                        </a>
+                    </li>
+                    <li class="list-inline-item float-right">
+                        <small class="text-muted">
+                            @job.PostedOn.ToMoment()
+                        </small>
+                    </li>
+                </ul>
+            </p>
+        </div>
+    </div>
+}

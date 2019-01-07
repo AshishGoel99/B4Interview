@@ -16,6 +16,7 @@ namespace B4Interview.Models
 
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -161,5 +162,27 @@ namespace B4Interview.Models
         public string About { get; set; }
         public int CompanyId { get; set; }
         public Company Company { get; set; }
+    }
+
+    public class Job
+    {
+        public int Id { get; set; }
+        public string Description { get; set; }
+        public string Title { get; set; }
+        public string Location { get; set; }
+        public string Experience { get; set; }
+        public Company Company { get; set; }
+        public int CompanyId { get; set; }
+        public User Referrer { get; set; }
+        public int UserId { get; set; }
+        public DateTime PostedOn { get; set; }
+    }
+
+    public class User
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public Gallery Image { get; set; }
+        public int GalleryId { get; set; }
     }
 }
