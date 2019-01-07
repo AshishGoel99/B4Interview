@@ -1,0 +1,26 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+
+    var currentModel = Model.ToString();
+}
+<div class="card w-75">
+    <div class="card-header text-center">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link @(currentModel.Contains("CompanyOverviewModel")? "active":"")" asp-page="CompanyOverview" asp-route-search="@Model.Search">Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(currentModel.Contains("ReviewModel")? "active":"")" asp-page="Review" asp-route-search="@Model.Search">Reviews</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(currentModel.Contains("InterviewModel")? "active":"")" asp-page="Interview" asp-route-search="@Model.Search">Interviews</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        @RenderBody()
+    </div>
+</div>

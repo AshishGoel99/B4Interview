@@ -1,0 +1,57 @@
+﻿@page
+@model B4Interview.Pages.CompanyOverviewModel
+@{
+    ViewData["Title"] = "CompanyOverview";
+    Layout = "~/Pages/Shared/_Company.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @{ var imgCount = 0;}
+                @foreach (var image in Model.Company.Images)
+                {
+                    <div class="carousel-item @(imgCount==0?"active":"")">
+                        <img src="@image.Url" class="d-block w-100 h-50" style="max-height:300px;" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>@image.About</h5>
+                        </div>
+                    </div>
+                    imgCount++;
+                }
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <br />
+        <p class="card-text">
+            @Model.Company.About
+        </p>
+        <hr />
+        <form>
+            <div class="form-group row m-0">
+                <label class="col-sm-3 col-form-label-sm font-weight-bold">WebSite</label>
+                <a class="btn-link" href="@Model.Company.WebSite" target="_blank">@Model.Company.WebSite</a>
+            </div>
+            <div class="form-group row m-0">
+                <label class="col-sm-3 col-form-label-sm font-weight-bold">Headquarters</label>
+                <label class="col-form-label-sm">@Model.Company.Headquarter</label>
+            </div>
+            <div class="form-group row m-0">
+                <label class="col-sm-3 col-form-label-sm font-weight-bold">Size</label>
+                <label class="col-form-label-sm">@Model.Company.EmployeeStrength</label>
+            </div>
+            <div class="form-group row m-0">
+                <label class="col-sm-3 col-form-label-sm font-weight-bold">Industry</label>
+                <label class="col-form-label-sm">@Model.Company.Sector</label>
+            </div>
+        </form>
+    </div>
+</div>

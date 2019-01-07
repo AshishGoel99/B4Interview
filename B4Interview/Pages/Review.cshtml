@@ -1,0 +1,75 @@
+﻿@page "{search?}"
+@model B4.Pages.ReviewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Company";
+}
+
+<div id="reviewPanel">
+
+    @{var cardCount = 1; }
+    @foreach (var review in Model.Reviews)
+    {
+        <div class="card">
+            <div class="card-header" id="heading@(cardCount)" data-toggle="collapse" data-target="#collapse@(cardCount)" aria-expanded="true" aria-controls="collapse@(cardCount)">
+                <h5 class="card-title">
+                    @review.Title
+                </h5>
+                <h6 class="card-subtitle text-muted">
+                    @{
+                        var rating = review.Rating;
+                        for (int i = 0; i < 5; i++)
+                        {
+                            if (rating == 0)
+                            {
+                                <span class="text-success far fa-star"></span>
+                            }
+                            else if (rating >= 1)
+                            {
+                                <span class="text-success fas fa-star"></span>
+                                rating--;
+                            }
+                            else
+                            {
+                                <span class="text-success fas fa-star-half-alt"></span>
+                                rating = 0;
+                            }
+                        }
+                    }
+                    By @review.Author , @review.AutherInfo
+                </h6>
+
+                @foreach (var tag in review.Tags)
+                {
+                    <span class="badge badge-primary">@tag.Name</span>
+                }
+                <span class="float-right badge badge-light">@review.CreatedOn.ToString("dd MMM, yyyy")</span>
+
+            </div>
+            <div id="collapse@(cardCount)" class="collapse @(cardCount == 1? "show":"hide")" aria-labelledby="heading@(cardCount)" data-parent="#reviewPanel">
+                <div class="card-body">
+                    <p class="card-text">@review.Description</p>
+                    @if (!string.IsNullOrWhiteSpace(review.Pros))
+                    {
+                        <h5>Pros</h5>
+                        <p>@review.Pros</p>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(review.Cons))
+                    {
+                        <h5>Cons</h5>
+                        <p>@review.Cons</p>
+                    }
+                </div>
+                <div class="card-footer bg-transparent text-muted">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><button type="button" class="btn btn-sm btn-outline-primary">@review.UpVote | <i class="fas fa-thumbs-up"></i></button></li>
+                        <li class="list-inline-item"><button type="button" class="btn btn-sm btn-outline-secondary">@review.UpVote | <i class="fas fa-thumbs-down"></i></button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <br>
+        cardCount += 1;
+    }
+</div>
