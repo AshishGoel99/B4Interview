@@ -1,4 +1,4 @@
-﻿using B4Interview.Models;
+﻿using B4Interview.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -27,11 +27,24 @@ namespace B4Interview.Pages
         }
 
 
-        public JsonResult OnGetNamesAndPosition(string query)
+        public JsonResult OnGetNamesAndPosition(string query, string type)
         {
-            return new JsonResult(_context.Companies
+            if (type.ToUpper() == "JOBS")
+            {
+                return new JsonResult(
+                _context.Jobs
+                .Where(c => c.Title.Contains(query) || c.Skills.Any(s => s.Name == query))
+                .Select(c => c.Title)
+                );
+            }
+            else
+            {
+                return new JsonResult(
+                _context.Companies
                 .Where(c => c.Name.Contains(query) || c.Identifier.Contains(query))
-                .Select(c => c.Name));
+                .Select(c => c.Name)
+                );
+            }
         }
     }
 }

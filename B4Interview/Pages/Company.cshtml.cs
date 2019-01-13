@@ -1,4 +1,4 @@
-﻿using B4Interview.Models;
+﻿using B4Interview.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;

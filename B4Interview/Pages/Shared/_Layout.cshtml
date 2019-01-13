@@ -14,48 +14,52 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
-              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
+              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body >
+<body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-page="/Index">B4Interview</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
+                <div class="collapse navbar-collapse d-sm-inline-flex flex-sm-row-reverse" id="navbarNav">
+                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link" asp-page="/Company">Companies</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-page="/Contact">Interviews</a>
+                            <a class="nav-link" asp-page="/ReferralJob">Jobs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-page="/Job">Jobs</a>
+                            <a class="nav-link" asp-page="/Contact">Interviews</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <nav class="navbar navbar-default">
-            <div class="container">
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <form class="form-inline w-100 pt-3 pb-3">
-                    <input id="searchCtrl" type="text" class="w-100 typeahead form-control form-control-lg mr-sm-2" placeholder="Company Name or Job Title">
-                    <select class="form-control form-control-lg mr-sm-2 w-25" id="searchType">
-                        <option>Reviews</option>
-                        <option>Interviews</option>
-                        <option>Jobs</option>
-                    </select>
-                    <button onclick="formSubmit()" class="btn btn-outline-success form-control-lg my-2 my-sm-0">Search</button>
-                </form><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
+        @if (!ViewContext.RouteData.Values.Any(v => v.Value.ToString() == "Identity"))
+        {
+            <nav class="navbar navbar-default">
+                <div class="container">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <form class="form-inline w-100 pt-3 pb-3">
+                        <input id="searchCtrl" type="text" class="w-100 typeahead form-control form-control-lg mr-sm-2" placeholder="Company Name, Job Title or Skill">
+                        <select class="form-control form-control-lg mr-sm-2 w-25" id="searchType">
+                            <option>Reviews</option>
+                            <option>Interviews</option>
+                            <option>Jobs</option>
+                        </select>
+                        <button onclick="formSubmit()" class="btn btn-outline-success form-control-lg my-2 my-sm-0">Search</button>
+                    </form><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        }
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -69,6 +73,58 @@
             &copy; 2019 - B4Interview - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
+
+    <div class="modal fade" id="addReviewDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Write Review</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <div class="row">
+                            <div class="form-group col-8">
+                                <input type="text" id="title" class="form-control" name="Input.Title" placeholder="Short Summary" required>
+                                <input type="hidden" id="companySearch" name="Input.CompanySearch" />
+                            </div>
+                            <div class="col-4">
+                                <div id="stars" class="starrr"></div>
+                                <input type="hidden" name="Input.Rating" id="rating" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <select class="form-control" name="Input.AuthorInfo">
+                                    <option>Current Employee</option>
+                                    <option>Former Employee</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-6">
+                                <input type="text" placeholder="Location" class="form-control" name="Input.Location" id="location">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Detail Review" name="Input.Description" id="desc" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="Input.Pros" id="pros" rows="2" placeholder="Pros"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="Input.Cons" id="cons" rows="2" placeholder="Cons"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="Input.Tags" id="high" placeholder="Highlights">
+                        </div>
+                        <hr />
+                        <button type="submit" class="btn btn-primary float-right" asp-page="Review">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -90,7 +146,6 @@
     </environment>
 
     <script src="~/js/typeahead.js" asp-append-version="true"></script>
-    <script src="~/js/bloodhound.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)

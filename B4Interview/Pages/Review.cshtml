@@ -1,5 +1,6 @@
 ﻿@page "{search?}"
 @model B4.Pages.ReviewModel
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Index";
@@ -8,9 +9,23 @@
 
 <div id="reviewPanel">
 
+    <div class="card">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Add a review to share your story</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" data-toggle="modal" data-target="#addReviewDialog" data-company="@Model.Search"></textarea>
+            </div>
+        </div>
+    </div>
+    <br />
+
     @{var cardCount = 1; }
     @foreach (var review in Model.Reviews)
     {
+        var userId = User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+        var myUpVote = userId != null && review.Votes.Any(v => v.UpVote && v.VoterId == userId);
+        var myDownVote = userId != null && review.Votes.Any(v => !v.UpVote && v.VoterId == userId);
+
         <div class="card">
             <div class="card-header" id="heading@(cardCount)" data-toggle="collapse" data-target="#collapse@(cardCount)" aria-expanded="true" aria-controls="collapse@(cardCount)">
                 <h5 class="card-title">
@@ -37,7 +52,7 @@
                             }
                         }
                     }
-                    By @review.Author , @review.AutherInfo
+                    By @(review.Author == null ? "Anonymous" : review.Author.UserName) , @review.AutherInfo
                 </h6>
 
                 @foreach (var tag in review.Tags)
@@ -63,8 +78,16 @@
                 </div>
                 <div class="card-footer bg-transparent text-muted">
                     <ul class="list-inline">
-                        <li class="list-inline-item"><button type="button" class="btn btn-sm btn-outline-primary">@review.UpVote | <i class="fas fa-thumbs-up"></i></button></li>
-                        <li class="list-inline-item"><button type="button" class="btn btn-sm btn-outline-secondary">@review.UpVote | <i class="fas fa-thumbs-down"></i></button></li>
+                        <li class="list-inline-item">
+                            <button id="btnUpvote" onclick="upVote(@review.Id)" type="button" class="btn btn-sm btn-outline-primary" @(myUpVote ? "disabled" : "")>
+                                @review.UpVote.ToKMB() | <i class="fas @(myUpVote?"fa-check":"fa-thumbs-up")"></i>
+                            </button>
+                        </li>
+                        <li class="list-inline-item">
+                            <button id="btnDownvote" onclick="downVote(@review.Id)" type="button" class="btn btn-sm btn-outline-secondary" @(myDownVote ? "disabled" : "")>
+                                @review.DownVote.ToKMB() | <i class="fas @(myDownVote?"fa-check":"fa-thumbs-down")"></i>
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -73,3 +96,33 @@
         cardCount += 1;
     }
 </div>
+
+@section Scripts{
+    <script>
+        function upVote(id) {
+            var that = this;
+            $.ajax('/Review?handler=UpVote&id=' + id).then(function (data) {
+                window.location.reload();
+            });
+        }
+        function downVote(id) {
+            $.ajax('/Review?handler=DownVote&id=' + id).then(function (data) {
+                window.location.reload();
+            });
+        }
+
+        $('#addReviewDialog').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var company = button.data('company') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-body #companySearch').val(company);
+
+            $(".starrr").starrr();
+            $('#stars').on('starrr:change', function (e, value) {
+                $('#rating').val(value);
+            });
+        });
+    </script>
+}    

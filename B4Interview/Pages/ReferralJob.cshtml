@@ -4,34 +4,54 @@
     ViewData["Title"] = "ReferralJob";
 }
 
-@foreach (var job in Model.Jobs)
+<div class="card w-75">
+    <div class="card-header">
+        Referral Jobs
+    </div>
+    <ul class="list-group list-group-flush">
+        @foreach (var job in Model.Jobs)
+        {
+            <li class="list-group-item p-0">
+                <div class="p-1 m-0 row">
+                    <div class="col-2">
+                        <img class="w-100 h-100" src="@job.Company.Logo">
+                    </div>
+                    <div class="col-8">
+                        <h5 class="card-title">
+                            <a class="card-link text-primary" asp-page="JobDetail" asp-route-search="@job.Title" asp-route-jobid="@job.Id">
+                                @job.Title <small>(@job.Experience)</small>
+                            </a>
+                        </h5>
+                        <div class="card-text small"> @String.Join(", ", job.Skills)</div>
+                        <div class="card-text small"> @job.Location</div>
+                        <div class="card-text small">
+                            @job.Company.Rating <span class="fas fa-star"></span>
+                            <a class="card-link" asp-page="Review" asp-route-search="@job.Company.Name"> (@job.Company.ReviewsCount.ToKMB() Reviews)</a>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <span class="badge badge-light"> @job.Referrer.UserName</span>
+                        <span class="badge badge-secondary">@job.PostedOn.ToMoment()</span>
+                    </div>
+                </div>
+            </li>
+        }
+
+        @if (Model.Jobs.Count == 0)
+        {
+            <li class="list-group-item">
+                No Jobs available yet.
+            </li>
+        }
+    </ul>
+</div>
+
+@if (Request.Query.Keys.Any(v => v == "response"))
 {
-    <div class="card">
-        <div class="card-header p-1 m-0 row">
-            <div class="col-4">
-                <img class="w-100 h-100" src="@job.Company.Logo">
-            </div>
-            <div class="col-8">
-                <b>@job.Title</b>
-                <p>@job.Location</p>
-            </div>
-        </div>
-        <div class="card-body">
-            <small>@job.Referrer.Name</small>
-            <p>
-                <ul class="list-inline align-bottom">
-                    <li class="list-inline-item">
-                        <a asp-page="ReferralJob" asp-route-handler="Apply" class="btn btn-sm btn-primary">
-                            Apply
-                        </a>
-                    </li>
-                    <li class="list-inline-item float-right">
-                        <small class="text-muted">
-                            @job.PostedOn.ToMoment()
-                        </small>
-                    </li>
-                </ul>
-            </p>
-        </div>
+    <div class="alert alert-success alert-dismissible fade show" style="bottom: 20px; right: 20px; position: fixed;" role="alert">
+        @Request.Query["response"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 }

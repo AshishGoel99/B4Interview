@@ -1,0 +1,70 @@
+﻿@page
+@model B4Interview.Pages.JobDetailModel
+@{
+    ViewData["Title"] = "JobDetail";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="card w-75">
+    <div class="card-header">
+        <div class="p-1 m-0 row">
+            <div class="col-2">
+                <img class="w-100 h-100" src="@Model.Job.Company.Logo">
+            </div>
+            <div class="col-8">
+                <h5 class="card-title">
+                    @Model.Job.Title  <small> (@Model.Job.Experience)</small>
+                </h5>
+                <div class="card-text"> @String.Join(", ", Model.Job.Skills)</div>
+                <div class="card-text"> @Model.Job.Location</div>
+            </div>
+            <div class="col-2">
+                <span class="badge badge-light"> @Model.Job.Referrer.UserName</span>
+                <span class="badge badge-secondary">@Model.Job.PostedOn.ToMoment()</span>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="card-text">
+            <b>Job Description:</b><br /> <br />
+            @Model.Job.Description
+        </div>
+    </div>
+    <div class="card-footer">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <button class="btn btn-primary" data-toggle="modal" data-target="#applyDialog">Apply</button>
+        }
+        else
+        {
+            <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Apply</a>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="applyDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Job Apply</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to apply to this Job ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="btn btn-primary" asp-route-handler="JobApply" asp-route-jobId="@Model.Job.Id">Apply</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary" asp-area = "Identity" asp-page="/Account/Login">Apply</a>                    
+                }
+            </div>
+        </div>
+    </div>
+</div>

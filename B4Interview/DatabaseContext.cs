@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using B4Interview.DataLayer.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 
-namespace B4Interview.Models
+namespace B4Interview
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         private readonly ILoggerFactory loggerFactory;
 
@@ -17,6 +19,7 @@ namespace B4Interview.Models
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Interview> Interviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,7 +67,6 @@ namespace B4Interview.Models
                 Pros = "1.best medical insurance 2. Lot of opportunities and onsite",
                 Cons = "pay hike is less and increment is low",
                 Recommend = true,
-                Author = "Anonymous",
                 CreatedOn = DateTime.Parse("2019/01/04"),
                 Rating = 4.5f
             };
@@ -78,7 +80,6 @@ namespace B4Interview.Models
                 Pros = "Learning opportunity is more if you try yourself.",
                 Cons = "No proper transparency in management.",
                 Recommend = true,
-                Author = "Anonymous",
                 CreatedOn = DateTime.Parse("2018/01/04"),
                 Rating = 3.5f
             };
@@ -93,14 +94,30 @@ namespace B4Interview.Models
                 Founded = 1968,
                 WebSite = "www.tcs.com",
                 Name = "Tata Consultancy Services",
-                Rating = 0,
                 Logo = "https://upload.wikimedia.org/wikipedia/en/b/b1/Tata_Consultancy_Services_Logo.svg"
+            };
+
+            var job1 = new Job
+            {
+                CompanyId = 1,
+                Description = "Toolkit API Developer " +
+                "India," +
+                "Noida" +
+                "Job Description" +
+                "This is for an API developer for Delphix DB Lab.",
+                Experience = "4-5 years",
+                Location = "Noida",
+                PostedOn = DateTime.Now,
+                Title = "Toolkit API Developer",
+                Id = 1,
+                ReferrerId = "70efc0fb-a859-4225-9e8a-96b9bfd699ad"
             };
 
             modelBuilder.Entity<Company>().HasData(company1);
             modelBuilder.Entity<Gallery>().HasData(gallery1, gallery2);
             modelBuilder.Entity<Review>().HasData(review1, review2);
             modelBuilder.Entity<Tag>().HasData(tag1, tag2, tag3);
+            modelBuilder.Entity<Job>().HasData(job1);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -108,81 +125,5 @@ namespace B4Interview.Models
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseLoggerFactory(loggerFactory);
         }
-    }
-
-    public class Company
-    {
-        public string Name { get; set; }
-        public int Id { get; set; }
-        public string About { get; set; }
-        public string EmployeeStrength { get; set; }
-        public string WebSite { get; set; }
-        public string Headquarter { get; set; }
-        public float Rating { get; set; }
-        public int Founded { get; set; }
-        public string Sector { get; set; }
-        public string Identifier { get; set; }
-        public string Logo { get; set; }
-        public ICollection<Review> Reviews { get; set; }
-        public ICollection<Gallery> Images { get; set; }
-    }
-
-    public class Review
-    {
-        public string Author { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public string AutherInfo { get; set; }
-        public string Pros { get; set; }
-        public string Cons { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public bool Recommend { get; set; }
-        public int UpVote { get; set; }
-        public int DownVote { get; set; }
-        public int ViewsCount { get; set; }
-        public int Id { get; set; }
-        public int CompanyId { get; set; }
-        public Company Company { get; set; }
-        public ICollection<Tag> Tags { get; set; }
-        public float Rating { get; set; }
-    }
-
-    public class Tag
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int ReviewId { get; set; }
-        public Review Review { get; set; }
-    }
-
-    public class Gallery
-    {
-        public int Id { get; set; }
-        public string Url { get; set; }
-        public string About { get; set; }
-        public int CompanyId { get; set; }
-        public Company Company { get; set; }
-    }
-
-    public class Job
-    {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public string Title { get; set; }
-        public string Location { get; set; }
-        public string Experience { get; set; }
-        public Company Company { get; set; }
-        public int CompanyId { get; set; }
-        public User Referrer { get; set; }
-        public int UserId { get; set; }
-        public DateTime PostedOn { get; set; }
-    }
-
-    public class User
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public Gallery Image { get; set; }
-        public int GalleryId { get; set; }
     }
 }
