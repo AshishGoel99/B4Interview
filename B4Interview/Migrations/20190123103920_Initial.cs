@@ -40,7 +40,9 @@ namespace B4Interview.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    ResumeFileName = table.Column<string>(nullable: true),
+                    Resume = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,6 +61,7 @@ namespace B4Interview.Migrations
                     WebSite = table.Column<string>(nullable: true),
                     Headquarter = table.Column<string>(nullable: true),
                     Rating = table.Column<float>(nullable: false),
+                    ReviewsCount = table.Column<decimal>(nullable: false),
                     Founded = table.Column<int>(nullable: false),
                     Sector = table.Column<string>(nullable: true),
                     Identifier = table.Column<string>(nullable: true),
@@ -87,7 +90,7 @@ namespace B4Interview.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,7 +111,7 @@ namespace B4Interview.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -128,7 +131,7 @@ namespace B4Interview.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -146,13 +149,13 @@ namespace B4Interview.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,7 +175,7 @@ namespace B4Interview.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,7 +196,34 @@ namespace B4Interview.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Interviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(nullable: true),
+                    Difficulty = table.Column<short>(nullable: false),
+                    Source = table.Column<short>(nullable: false),
+                    Location = table.Column<string>(nullable: true),
+                    Experience = table.Column<string>(nullable: true),
+                    PostedOn = table.Column<DateTime>(nullable: false),
+                    UpVote = table.Column<decimal>(nullable: false),
+                    DownVote = table.Column<decimal>(nullable: false),
+                    CompanyId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Interviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Interviews_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,7 +238,8 @@ namespace B4Interview.Migrations
                     Experience = table.Column<string>(nullable: true),
                     CompanyId = table.Column<int>(nullable: false),
                     PostedOn = table.Column<DateTime>(nullable: false),
-                    ReferrerId = table.Column<string>(nullable: true)
+                    ReferrerId = table.Column<string>(nullable: true),
+                    InActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,7 +249,7 @@ namespace B4Interview.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Jobs_AspNetUsers_ReferrerId",
                         column: x => x.ReferrerId,
@@ -233,7 +264,6 @@ namespace B4Interview.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Author = table.Column<string>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     AutherInfo = table.Column<string>(nullable: true),
                     Pros = table.Column<string>(nullable: true),
@@ -241,21 +271,49 @@ namespace B4Interview.Migrations
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Recommend = table.Column<bool>(nullable: false),
-                    UpVote = table.Column<int>(nullable: false),
-                    DownVote = table.Column<int>(nullable: false),
-                    ViewsCount = table.Column<int>(nullable: false),
+                    UpVote = table.Column<decimal>(nullable: false),
+                    DownVote = table.Column<decimal>(nullable: false),
+                    ViewsCount = table.Column<decimal>(nullable: false),
+                    Rating = table.Column<float>(nullable: false),
                     CompanyId = table.Column<int>(nullable: false),
-                    Rating = table.Column<float>(nullable: false)
+                    AuthorId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Reviews_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Reviews_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InterviewRound",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    RoundType = table.Column<int>(nullable: false),
+                    Detail = table.Column<string>(nullable: true),
+                    InterviewId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InterviewRound", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InterviewRound_Interviews_InterviewId",
+                        column: x => x.InterviewId,
+                        principalTable: "Interviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -281,7 +339,35 @@ namespace B4Interview.Migrations
                         column: x => x.JobId,
                         principalTable: "Jobs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Skill",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    JobId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    QuestionId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skill", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Skill_Jobs_JobId",
+                        column: x => x.JobId,
+                        principalTable: "Jobs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Skill_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -301,13 +387,74 @@ namespace B4Interview.Migrations
                         column: x => x.ReviewId,
                         principalTable: "Reviews",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Vote",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UpVote = table.Column<bool>(nullable: false),
+                    ReviewId = table.Column<int>(nullable: false),
+                    VoterId = table.Column<string>(nullable: true),
+                    InterviewId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vote", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Vote_Interviews_InterviewId",
+                        column: x => x.InterviewId,
+                        principalTable: "Interviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Vote_Reviews_ReviewId",
+                        column: x => x.ReviewId,
+                        principalTable: "Reviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Vote_AspNetUsers_VoterId",
+                        column: x => x.VoterId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Question",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Detail = table.Column<string>(nullable: true),
+                    InterviewRoundId = table.Column<int>(nullable: false),
+                    SkillId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Question", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Question_InterviewRound_InterviewRoundId",
+                        column: x => x.InterviewRoundId,
+                        principalTable: "InterviewRound",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Question_Skill_SkillId",
+                        column: x => x.SkillId,
+                        principalTable: "Skill",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "Companies",
-                columns: new[] { "Id", "About", "EmployeeStrength", "Founded", "Headquarter", "Identifier", "Logo", "Name", "Rating", "Sector", "WebSite" },
-                values: new object[] { 1, "Tata Consultancy Services (TCS) helps its clients say farewell to business inefficiencies. The company is a leading global provider of IT, consulting, and outsourcing services, with operations in more than 40 countries. Its offerings include business process outsourcing, data center management, IT and strategic consulting, new product development and engineering, and systems integration. One of its specialties is developing and maintaining customized software for businesses. Most of its clients, in industries ranging from energy to financial services to retail to telecom, are located in North America, Latin America, and Europe. TCS is controlled by textiles and manufacturing conglomerate Tata Group.", "400,875", 1968, "Mumbai", "Tcs", "https://upload.wikimedia.org/wikipedia/en/b/b1/Tata_Consultancy_Services_Logo.svg", "Tata Consultancy Services", 0f, "IT services, IT consulting", "www.tcs.com" });
+                columns: new[] { "Id", "About", "EmployeeStrength", "Founded", "Headquarter", "Identifier", "Logo", "Name", "Rating", "ReviewsCount", "Sector", "WebSite" },
+                values: new object[] { 1, "Tata Consultancy Services (TCS) helps its clients say farewell to business inefficiencies. The company is a leading global provider of IT, consulting, and outsourcing services, with operations in more than 40 countries. Its offerings include business process outsourcing, data center management, IT and strategic consulting, new product development and engineering, and systems integration. One of its specialties is developing and maintaining customized software for businesses. Most of its clients, in industries ranging from energy to financial services to retail to telecom, are located in North America, Latin America, and Europe. TCS is controlled by textiles and manufacturing conglomerate Tata Group.", "400,875", 1968, "Mumbai", "Tcs", "https://upload.wikimedia.org/wikipedia/en/b/b1/Tata_Consultancy_Services_Logo.svg", "Tata Consultancy Services", 0f, 0m, "IT services, IT consulting", "www.tcs.com" });
 
             migrationBuilder.InsertData(
                 table: "Gallery",
@@ -320,11 +467,11 @@ namespace B4Interview.Migrations
 
             migrationBuilder.InsertData(
                 table: "Reviews",
-                columns: new[] { "Id", "AutherInfo", "Author", "CompanyId", "Cons", "CreatedOn", "Description", "DownVote", "Pros", "Rating", "Recommend", "Title", "UpVote", "ViewsCount" },
+                columns: new[] { "Id", "AutherInfo", "AuthorId", "CompanyId", "Cons", "CreatedOn", "Description", "DownVote", "Pros", "Rating", "Recommend", "Title", "UpVote", "ViewsCount" },
                 values: new object[,]
                 {
-                    { 1, "Current Employee - IT Analyst in Kolkata", "Anonymous", 1, "pay hike is less and increment is low", new DateTime(2019, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "I have been working at Tata Consultancy Services full-time (More than 5 years)", 0, "1.best medical insurance 2. Lot of opportunities and onsite", 4.5f, true, "good company to work", 0, 0 },
-                    { 2, "Current Employee - Assistant Systems Engineer in Chennai", "Anonymous", 1, "No proper transparency in management.", new DateTime(2018, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "I have been working at Tata Consultancy Services full-time (More than a year)", 0, "Learning opportunity is more if you try yourself.", 3.5f, true, "Good place to start with.", 0, 0 }
+                    { 1, "Current Employee - IT Analyst in Kolkata", null, 1, "pay hike is less and increment is low", new DateTime(2019, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "I have been working at Tata Consultancy Services full-time (More than 5 years)", 0m, "1.best medical insurance 2. Lot of opportunities and onsite", 4.5f, true, "good company to work", 0m, 0m },
+                    { 2, "Current Employee - Assistant Systems Engineer in Chennai", null, 1, "No proper transparency in management.", new DateTime(2018, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "I have been working at Tata Consultancy Services full-time (More than a year)", 0m, "Learning opportunity is more if you try yourself.", 3.5f, true, "Good place to start with.", 0m, 0m }
                 });
 
             migrationBuilder.InsertData(
@@ -387,6 +534,16 @@ namespace B4Interview.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InterviewRound_InterviewId",
+                table: "InterviewRound",
+                column: "InterviewId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Interviews_CompanyId",
+                table: "Interviews",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JobApplication_ApplicantId",
                 table: "JobApplication",
                 column: "ApplicantId");
@@ -407,14 +564,54 @@ namespace B4Interview.Migrations
                 column: "ReferrerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Question_InterviewRoundId",
+                table: "Question",
+                column: "InterviewRoundId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Question_SkillId",
+                table: "Question",
+                column: "SkillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_AuthorId",
+                table: "Reviews",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_CompanyId",
                 table: "Reviews",
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Skill_JobId",
+                table: "Skill",
+                column: "JobId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Skill_UserId",
+                table: "Skill",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tag_ReviewId",
                 table: "Tag",
                 column: "ReviewId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vote_InterviewId",
+                table: "Vote",
+                column: "InterviewId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vote_ReviewId",
+                table: "Vote",
+                column: "ReviewId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vote_VoterId",
+                table: "Vote",
+                column: "VoterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -441,22 +638,37 @@ namespace B4Interview.Migrations
                 name: "JobApplication");
 
             migrationBuilder.DropTable(
+                name: "Question");
+
+            migrationBuilder.DropTable(
                 name: "Tag");
+
+            migrationBuilder.DropTable(
+                name: "Vote");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Jobs");
+                name: "InterviewRound");
+
+            migrationBuilder.DropTable(
+                name: "Skill");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Interviews");
+
+            migrationBuilder.DropTable(
+                name: "Jobs");
 
             migrationBuilder.DropTable(
                 name: "Companies");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

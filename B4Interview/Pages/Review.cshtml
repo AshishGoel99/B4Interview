@@ -52,7 +52,7 @@
                             }
                         }
                     }
-                    By @(review.Author == null ? "Anonymous" : review.Author.UserName) , @review.AutherInfo
+                    By @(review.Author == null || review.Anonymous ? "Anonymous" : review.Author.UserName) , @review.AutherInfo
                 </h6>
 
                 @foreach (var tag in review.Tags)

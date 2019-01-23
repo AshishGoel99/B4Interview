@@ -10,5 +10,8 @@
 
         public ApplicationUser Voter { get; set; }
         public string VoterId { get; set; }
+
+        public Interview Interview { get; set; }
+        public int InterviewId { get; set; }
     }
 }

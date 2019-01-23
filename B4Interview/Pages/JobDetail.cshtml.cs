@@ -17,6 +17,7 @@ namespace B4Interview.Pages
         }
 
         public Job Job { get; set; }
+        public bool ReviewGiven { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int JobId { get; set; }
@@ -28,6 +29,12 @@ namespace B4Interview.Pages
                 .Include(j => j.Referrer)
                 .Include(j => j.Company)
                 .First(j => j.Id == JobId);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                ReviewGiven = context.Reviews.Any(r => r.Author.Id == userId);
+            }
         }
 
         public IActionResult OnGetJobApply()
@@ -43,6 +50,9 @@ namespace B4Interview.Pages
                     ApplicantId = userId
                 });
             context.SaveChanges();
+
+            //Send Mail to the referrer
+
 
             return new RedirectToPageResult("ReferralJob", new { response = "Job Applied successfully" });
         }

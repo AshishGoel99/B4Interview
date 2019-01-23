@@ -30,7 +30,14 @@ namespace B4Interview.Pages
             else if (!string.IsNullOrWhiteSpace(skill))
             {
                 Interviews = interviews
-                    .Where(i => i.Skills.Any(s => s.Name.ToUpper() == skill.ToUpper()))
+                    .Where(i => i.Rounds
+                        .Any(
+                            r => r.Questions
+                            .Any(
+                                q => q.Skill.Name.ToUpper() == skill.ToUpper()
+                                )
+                            )
+                        )
                     .ToList();
             }
             else

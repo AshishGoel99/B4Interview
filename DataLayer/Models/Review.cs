@@ -8,6 +8,7 @@ namespace B4Interview.DataLayer.Models
         public int Id { get; set; }
         public DateTime CreatedOn { get; set; }
         public string AutherInfo { get; set; }
+        public bool Anonymous { get; set; }
         public string Pros { get; set; }
         public string Cons { get; set; }
         public string Title { get; set; }

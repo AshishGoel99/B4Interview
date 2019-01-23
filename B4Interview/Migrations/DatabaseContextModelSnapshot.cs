@@ -159,6 +159,56 @@ namespace B4Interview.Migrations
                         });
                 });
 
+            modelBuilder.Entity("B4Interview.DataLayer.Models.Interview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CompanyId");
+
+                    b.Property<short>("Difficulty");
+
+                    b.Property<decimal>("DownVote");
+
+                    b.Property<string>("Experience");
+
+                    b.Property<string>("Location");
+
+                    b.Property<DateTime>("PostedOn");
+
+                    b.Property<short>("Source");
+
+                    b.Property<string>("Title");
+
+                    b.Property<decimal>("UpVote");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Interviews");
+                });
+
+            modelBuilder.Entity("B4Interview.DataLayer.Models.InterviewRound", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Detail");
+
+                    b.Property<int>("InterviewId");
+
+                    b.Property<int>("RoundType");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InterviewId");
+
+                    b.ToTable("InterviewRound");
+                });
+
             modelBuilder.Entity("B4Interview.DataLayer.Models.Job", b =>
                 {
                     b.Property<int>("Id")
@@ -198,8 +248,8 @@ namespace B4Interview.Migrations
                             Experience = "4-5 years",
                             InActive = false,
                             Location = "Noida",
-                            PostedOn = new DateTime(2019, 1, 12, 13, 43, 8, 636, DateTimeKind.Local).AddTicks(4714),
-                            ReferrerId = "70efc0fb-a859-4225-9e8a-96b9bfd699ad",
+                            PostedOn = new DateTime(2019, 1, 23, 16, 14, 37, 770, DateTimeKind.Local).AddTicks(6795),
+                            ReferrerId = "9b3d8daf-4c34-43cc-9383-8f56194c43d3",
                             Title = "Toolkit API Developer"
                         });
                 });
@@ -221,6 +271,27 @@ namespace B4Interview.Migrations
                     b.HasIndex("JobId");
 
                     b.ToTable("JobApplication");
+                });
+
+            modelBuilder.Entity("B4Interview.DataLayer.Models.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Detail");
+
+                    b.Property<int>("InterviewRoundId");
+
+                    b.Property<int>("SkillId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InterviewRoundId");
+
+                    b.HasIndex("SkillId");
+
+                    b.ToTable("Question");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Review", b =>
@@ -308,6 +379,8 @@ namespace B4Interview.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int>("QuestionId");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -362,6 +435,8 @@ namespace B4Interview.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("InterviewId");
+
                     b.Property<int>("ReviewId");
 
                     b.Property<bool>("UpVote");
@@ -369,6 +444,8 @@ namespace B4Interview.Migrations
                     b.Property<string>("VoterId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InterviewId");
 
                     b.HasIndex("ReviewId");
 
@@ -496,7 +573,23 @@ namespace B4Interview.Migrations
                     b.HasOne("B4Interview.DataLayer.Models.Company", "Company")
                         .WithMany("Images")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("B4Interview.DataLayer.Models.Interview", b =>
+                {
+                    b.HasOne("B4Interview.DataLayer.Models.Company", "Company")
+                        .WithMany("Interviews")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("B4Interview.DataLayer.Models.InterviewRound", b =>
+                {
+                    b.HasOne("B4Interview.DataLayer.Models.Interview", "Interview")
+                        .WithMany("Rounds")
+                        .HasForeignKey("InterviewId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Job", b =>
@@ -504,7 +597,7 @@ namespace B4Interview.Migrations
                     b.HasOne("B4Interview.DataLayer.Models.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("B4Interview.DataLayer.Models.ApplicationUser", "Referrer")
                         .WithMany("PostedJobs")
@@ -520,7 +613,20 @@ namespace B4Interview.Migrations
                     b.HasOne("B4Interview.DataLayer.Models.Job", "Job")
                         .WithMany("Applications")
                         .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("B4Interview.DataLayer.Models.Question", b =>
+                {
+                    b.HasOne("B4Interview.DataLayer.Models.InterviewRound", "InterviewRound")
+                        .WithMany("Questions")
+                        .HasForeignKey("InterviewRoundId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("B4Interview.DataLayer.Models.Skill", "Skill")
+                        .WithMany("Question")
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Review", b =>
@@ -532,7 +638,7 @@ namespace B4Interview.Migrations
                     b.HasOne("B4Interview.DataLayer.Models.Company", "Company")
                         .WithMany("Reviews")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Skill", b =>
@@ -540,7 +646,7 @@ namespace B4Interview.Migrations
                     b.HasOne("B4Interview.DataLayer.Models.Job", "Job")
                         .WithMany("Skills")
                         .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("B4Interview.DataLayer.Models.ApplicationUser", "User")
                         .WithMany("Skills")
@@ -552,15 +658,20 @@ namespace B4Interview.Migrations
                     b.HasOne("B4Interview.DataLayer.Models.Review", "Review")
                         .WithMany("Tags")
                         .HasForeignKey("ReviewId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Vote", b =>
                 {
+                    b.HasOne("B4Interview.DataLayer.Models.Interview", "Interview")
+                        .WithMany("Votes")
+                        .HasForeignKey("InterviewId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("B4Interview.DataLayer.Models.Review", "Review")
                         .WithMany("Votes")
                         .HasForeignKey("ReviewId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("B4Interview.DataLayer.Models.ApplicationUser", "Voter")
                         .WithMany("Votes")
@@ -572,7 +683,7 @@ namespace B4Interview.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -580,7 +691,7 @@ namespace B4Interview.Migrations
                     b.HasOne("B4Interview.DataLayer.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -588,7 +699,7 @@ namespace B4Interview.Migrations
                     b.HasOne("B4Interview.DataLayer.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -596,12 +707,12 @@ namespace B4Interview.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("B4Interview.DataLayer.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -609,7 +720,7 @@ namespace B4Interview.Migrations
                     b.HasOne("B4Interview.DataLayer.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

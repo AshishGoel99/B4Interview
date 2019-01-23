@@ -53,6 +53,7 @@ namespace B4.Pages
             public string Cons { get; set; }
             public string Tags { get; set; }
             public float Rating { get; set; }
+            public bool Anonymous { get; set; }
         }
 
         #region Create
@@ -83,7 +84,8 @@ namespace B4.Pages
                 Pros = Input.Pros,
                 Cons = Input.Cons,
                 Rating = Input.Rating,
-                Tags = tags
+                Tags = tags,
+                Anonymous =Input.Anonymous
             });
 
             _context.SaveChanges();

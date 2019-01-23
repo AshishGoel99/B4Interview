@@ -33,7 +33,14 @@
     <div class="card-footer">
         @if (User.Identity.IsAuthenticated)
         {
-            <button class="btn btn-primary" data-toggle="modal" data-target="#applyDialog">Apply</button>
+            if (!Model.ReviewGiven)
+            {
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addReviewDialog" data-title="Give a Review of your Current company to apply">Apply</button>
+            }
+            else
+            {
+                <button class="btn btn-primary" data-toggle="modal" data-target="#applyDialog">Apply</button>
+            }
         }
         else
         {
@@ -62,9 +69,27 @@
                 }
                 else
                 {
-                    <a class="btn btn-primary" asp-area = "Identity" asp-page="/Account/Login">Apply</a>                    
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Apply</a>
                 }
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts{ 
+    <script>
+        $('#addReviewDialog').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var title = button.data('title') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-header #exampleModalLabel').html(title);
+
+            $(".starrr").starrr();
+            $('#stars').on('starrr:change', function (e, value) {
+                $('#rating').val(value);
+            });
+        });
+    </script>
+}

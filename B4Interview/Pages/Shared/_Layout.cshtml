@@ -32,8 +32,14 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-page="/Company">Companies</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-page="/ReferralJob">Jobs</a>
+                        <li class="nav-item dropdown hoverOpen">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Jobs</a>
+                            <div class="dropdown-menu">
+                                <a class="nav-link" asp-page="/ReferralJobs">Search Jobs</a>                                
+                                <a class="nav-link" asp-page="/PostedJobs">My Posted Jobs</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="nav-link" asp-page="/ViewApplications">View Applications</a>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-page="/Contact">Interviews</a>
@@ -75,7 +81,7 @@
     </footer>
 
     <div class="modal fade" id="addReviewDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Write Review</h5>
@@ -96,24 +102,30 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-4">
                                 <select class="form-control" name="Input.AuthorInfo">
                                     <option>Current Employee</option>
                                     <option>Former Employee</option>
                                 </select>
                             </div>
-                            <div class="form-group col-6">
+                            <div class="form-group col-4">
                                 <input type="text" placeholder="Location" class="form-control" name="Input.Location" id="location">
+                            </div>
+                            <div class="form-group col-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="Input.Anonymous">
+                                    <label class="custom-control-label small" for="customCheck1">Go Anonymous?</label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" placeholder="Detail Review" name="Input.Description" id="desc" rows="3" required></textarea>
+                            <textarea class="form-control" placeholder="Describe here..." name="Input.Description" id="desc" rows="3" required></textarea>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" name="Input.Pros" id="pros" rows="2" placeholder="Pros"></textarea>
+                            <textarea class="form-control" name="Input.Pros" id="pros" rows="2" placeholder="What do you like"></textarea>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" name="Input.Cons" id="cons" rows="2" placeholder="Cons"></textarea>
+                            <textarea class="form-control" name="Input.Cons" id="cons" rows="2" placeholder="What do you dislike"></textarea>
                         </div>
                         <div class="form-group">
                             <input type="text" class="form-control" name="Input.Tags" id="high" placeholder="Highlights">

@@ -114,3 +114,13 @@ body {
     .tt-suggestion p {
         margin: 0;
     }
+
+
+.hoverOpen:hover > .dropdown-menu {
+    display: block;
+}
+
+.hoverOpen > .dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
