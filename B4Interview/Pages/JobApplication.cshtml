@@ -1,0 +1,40 @@
+﻿@page
+@model B4Interview.Pages.JobApplicationModel
+@{
+    ViewData["Title"] = "JobApplication";
+}
+
+<div class="card w-75">
+    <div class="card-header">
+        @Model.Applications.First()?.Job.Title
+    </div>
+    <ul class="list-group list-group-flush">
+        @foreach (var application in Model.Applications)
+        {
+            <li class="list-group-item p-0">
+                <div class="p-1 m-0 row">
+                    <div class="col">
+                        <h5 class="card-title">
+                            @application.Applicant.UserName
+                        </h5>
+                    </div>
+                </div>
+                <div class="row p-1">
+                    <div class="card-text small">
+                        @foreach (var skill in application.Applicant.Skills)
+                        {
+                            <span class="badge badge-primary">@skill.Name</span>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <a class="btn btn-sm btn-info float-right" asp-page="/CandidateProfile" asp-route-Id="@application.Applicant.Id">
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>

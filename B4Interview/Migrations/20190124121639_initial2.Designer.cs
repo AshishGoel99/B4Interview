@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B4Interview.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190123104438_Initial1")]
-    partial class Initial1
+    [Migration("20190124121639_initial2")]
+    partial class initial2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
+                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -250,8 +250,8 @@ namespace B4Interview.Migrations
                             Experience = "4-5 years",
                             InActive = false,
                             Location = "Noida",
-                            PostedOn = new DateTime(2019, 1, 23, 16, 14, 37, 770, DateTimeKind.Local).AddTicks(6795),
-                            ReferrerId = "9b3d8daf-4c34-43cc-9383-8f56194c43d3",
+                            PostedOn = new DateTime(2019, 1, 24, 17, 46, 39, 72, DateTimeKind.Local).AddTicks(2162),
+                            ReferrerId = "102c7bdb-063a-41c8-9d0a-a5168b16699d",
                             Title = "Toolkit API Developer"
                         });
                 });
@@ -272,7 +272,7 @@ namespace B4Interview.Migrations
 
                     b.HasIndex("JobId");
 
-                    b.ToTable("JobApplication");
+                    b.ToTable("JobApplications");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Question", b =>
@@ -301,6 +301,8 @@ namespace B4Interview.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Anonymous");
 
                     b.Property<string>("AutherInfo");
 
@@ -340,6 +342,7 @@ namespace B4Interview.Migrations
                         new
                         {
                             Id = 1,
+                            Anonymous = false,
                             AutherInfo = "Current Employee - IT Analyst in Kolkata",
                             CompanyId = 1,
                             Cons = "pay hike is less and increment is low",
@@ -356,6 +359,7 @@ namespace B4Interview.Migrations
                         new
                         {
                             Id = 2,
+                            Anonymous = false,
                             AutherInfo = "Current Employee - Assistant Systems Engineer in Chennai",
                             CompanyId = 1,
                             Cons = "No proper transparency in management.",

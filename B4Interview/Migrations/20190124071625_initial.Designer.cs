@@ -4,14 +4,16 @@ using B4Interview;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace B4Interview.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190124071625_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,20 +240,6 @@ namespace B4Interview.Migrations
                     b.HasIndex("ReferrerId");
 
                     b.ToTable("Jobs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CompanyId = 1,
-                            Description = "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.",
-                            Experience = "4-5 years",
-                            InActive = false,
-                            Location = "Noida",
-                            PostedOn = new DateTime(2019, 1, 24, 17, 46, 39, 72, DateTimeKind.Local).AddTicks(2162),
-                            ReferrerId = "102c7bdb-063a-41c8-9d0a-a5168b16699d",
-                            Title = "Toolkit API Developer"
-                        });
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.JobApplication", b =>
@@ -270,7 +258,7 @@ namespace B4Interview.Migrations
 
                     b.HasIndex("JobId");
 
-                    b.ToTable("JobApplications");
+                    b.ToTable("JobApplication");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Question", b =>

@@ -1,0 +1,55 @@
+﻿@page
+@model B4Interview.Pages.PostedJobsModel
+@{
+    ViewData["Title"] = "PostedJobs";
+}
+
+
+<div class="card w-75">
+    <div class="card-header">
+        Referral Jobs
+    </div>
+    <ul class="list-group list-group-flush">
+        @foreach (var job in Model.Jobs)
+        {
+            <li class="list-group-item p-0">
+                <div class="p-1 m-0 row">
+                    <div class="col-2">
+                        <img class="w-100 h-100" src="@job.Company.Logo">
+                    </div>
+                    <div class="col-8">
+                        <h5 class="card-title">
+                            <a class="card-link text-primary" asp-page="JobDetail" asp-route-search="@job.Title" asp-route-jobid="@job.Id">
+                                @job.Title <small>(@job.Experience)</small>
+                            </a>
+                        </h5>
+                        <div class="card-text small"> @String.Join(", ", job.Skills)</div>
+                        <div class="card-text small"> @job.Location</div>
+                        <div class="card-text small">
+                            @job.Company.Rating <span class="fas fa-star"></span>
+                            <a class="card-link" asp-page="Review" asp-route-search="@job.Company.Name"> (@job.Company.ReviewsCount.ToKMB() Reviews)</a>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <span class="badge badge-secondary">@job.PostedOn.ToMoment()</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <a class="btn btn-sm btn-info float-right" asp-page="/JobApplication" asp-route-jobId="@job.Id">
+                            View Applications
+                            <span class="badge badge-dark">@job.Applications.Count()</span>
+                        </a>
+                    </div>
+                </div>
+            </li>
+        }
+
+        @if (Model.Jobs.Count == 0)
+        {
+            <li class="list-group-item">
+                No Jobs available yet.
+            </li>
+        }
+    </ul>
+</div>

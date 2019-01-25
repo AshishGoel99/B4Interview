@@ -34,7 +34,7 @@ namespace B4Interview.Pages
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                jobs = jobs.Where(j => !j.Applications.Any(a => a.ApplicantId == userId));
+                jobs = jobs.Where(j => !j.Applications.Any(a => a.ApplicantId == userId) && j.Referrer.Id != userId);
             }
 
             Jobs = jobs.ToList();

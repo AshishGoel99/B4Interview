@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace B4Interview.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -266,6 +266,7 @@ namespace B4Interview.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     AutherInfo = table.Column<string>(nullable: true),
+                    Anonymous = table.Column<bool>(nullable: false),
                     Pros = table.Column<string>(nullable: true),
                     Cons = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
@@ -467,11 +468,11 @@ namespace B4Interview.Migrations
 
             migrationBuilder.InsertData(
                 table: "Reviews",
-                columns: new[] { "Id", "AutherInfo", "AuthorId", "CompanyId", "Cons", "CreatedOn", "Description", "DownVote", "Pros", "Rating", "Recommend", "Title", "UpVote", "ViewsCount" },
+                columns: new[] { "Id", "Anonymous", "AutherInfo", "AuthorId", "CompanyId", "Cons", "CreatedOn", "Description", "DownVote", "Pros", "Rating", "Recommend", "Title", "UpVote", "ViewsCount" },
                 values: new object[,]
                 {
-                    { 1, "Current Employee - IT Analyst in Kolkata", null, 1, "pay hike is less and increment is low", new DateTime(2019, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "I have been working at Tata Consultancy Services full-time (More than 5 years)", 0m, "1.best medical insurance 2. Lot of opportunities and onsite", 4.5f, true, "good company to work", 0m, 0m },
-                    { 2, "Current Employee - Assistant Systems Engineer in Chennai", null, 1, "No proper transparency in management.", new DateTime(2018, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "I have been working at Tata Consultancy Services full-time (More than a year)", 0m, "Learning opportunity is more if you try yourself.", 3.5f, true, "Good place to start with.", 0m, 0m }
+                    { 1, false, "Current Employee - IT Analyst in Kolkata", null, 1, "pay hike is less and increment is low", new DateTime(2019, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "I have been working at Tata Consultancy Services full-time (More than 5 years)", 0m, "1.best medical insurance 2. Lot of opportunities and onsite", 4.5f, true, "good company to work", 0m, 0m },
+                    { 2, false, "Current Employee - Assistant Systems Engineer in Chennai", null, 1, "No proper transparency in management.", new DateTime(2018, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "I have been working at Tata Consultancy Services full-time (More than a year)", 0m, "Learning opportunity is more if you try yourself.", 3.5f, true, "Good place to start with.", 0m, 0m }
                 });
 
             migrationBuilder.InsertData(

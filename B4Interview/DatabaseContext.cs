@@ -20,6 +20,7 @@ namespace B4Interview
         public DbSet<Company> Companies { get; set; }
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Interview> Interviews { get; set; }
+        public DbSet<JobApplication> JobApplications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -110,7 +111,7 @@ namespace B4Interview
                 PostedOn = DateTime.Now,
                 Title = "Toolkit API Developer",
                 Id = 1,
-                ReferrerId = "9b3d8daf-4c34-43cc-9383-8f56194c43d3"
+                ReferrerId = "102c7bdb-063a-41c8-9d0a-a5168b16699d"
             };
 
             modelBuilder.Entity<Company>().HasData(company1);
