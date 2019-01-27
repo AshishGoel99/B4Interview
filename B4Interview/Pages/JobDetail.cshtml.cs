@@ -17,7 +17,7 @@ namespace B4Interview.Pages
         }
 
         public Job Job { get; set; }
-        public bool ReviewGiven { get; set; }
+        public bool ShouldGiveReview { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int JobId { get; set; }
@@ -33,7 +33,11 @@ namespace B4Interview.Pages
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                ReviewGiven = context.Reviews.Any(r => r.Author.Id == userId);
+                var ReviewGiven = context.Reviews.Any(r => r.Author.Id == userId);
+                if (!ReviewGiven)
+                {
+                    ShouldGiveReview = !context.Users.Any(u => u.Id == userId && u.Fresher);
+                }
             }
         }
 

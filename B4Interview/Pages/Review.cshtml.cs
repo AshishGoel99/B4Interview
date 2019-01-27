@@ -65,7 +65,23 @@ namespace B4.Pages
             }
 
             var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
-            var company = _context.Companies.Single(c => c.Name == Input.CompanySearch || c.Identifier == Input.CompanySearch);
+            var result = _context.Companies.
+                Where(c => c.Name == Input.CompanySearch || c.Identifier == Input.CompanySearch);
+
+            Company company = null;
+            if (!result.Any())
+            {
+                var newId = _context.Companies.Max(c => c.Id) + 1;
+                company = new Company
+                {
+                    Id = newId,
+                    Name = Input.CompanySearch
+                };
+
+                _context.Companies.Add(company);
+            }
+            else
+                company = result.Single();
 
             var tags = new List<Tag>();
             tags.AddRange(Input.Tags
@@ -85,7 +101,7 @@ namespace B4.Pages
                 Cons = Input.Cons,
                 Rating = Input.Rating,
                 Tags = tags,
-                Anonymous =Input.Anonymous
+                Anonymous = Input.Anonymous
             });
 
             _context.SaveChanges();
@@ -95,7 +111,7 @@ namespace B4.Pages
 
             _context.SaveChanges();
 
-            return new RedirectToPageResult("Review", new { search = Search});
+            return new RedirectToPageResult("Review", new { search = Search });
         }
         #endregion
 

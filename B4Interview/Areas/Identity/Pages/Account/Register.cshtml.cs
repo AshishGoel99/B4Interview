@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using B4Interview.DataLayer.Models;
+﻿using B4Interview.DataLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace B4Interview.Areas.Identity.Pages.Account
 {
@@ -18,17 +19,20 @@ namespace B4Interview.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly DatabaseContext databaseContext;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            DatabaseContext databaseContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            this.databaseContext = databaseContext;
         }
 
         [BindProperty]
@@ -57,6 +61,10 @@ namespace B4Interview.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            public string CompanySearch { get; set; }
+            public bool Fresher { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -69,7 +77,32 @@ namespace B4Interview.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email };
+                ApplicationUser user = null;
+
+                if (!Input.Fresher)
+                {
+                    var companyResult = databaseContext.Companies.Where(c => c.Name == Input.CompanySearch || c.Identifier == Input.CompanySearch);
+                    Company company = null;
+                    if (companyResult.Any())
+                    {
+                        company = companyResult.First();
+                    }
+                    else
+                    {
+                        var companyId = databaseContext.Companies.Max(c => c.Id) + 1;
+                        company = new Company
+                        {
+                            Id = companyId,
+                            Name = Input.CompanySearch
+                        };
+
+                        databaseContext.Companies.Add(company);
+                        databaseContext.SaveChanges();
+                    }
+                    user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, EmployerId = company.Id };
+                }
+
+                user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, Fresher = Input.Fresher };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

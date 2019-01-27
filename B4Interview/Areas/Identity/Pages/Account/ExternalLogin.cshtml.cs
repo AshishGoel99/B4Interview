@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -16,16 +17,18 @@ namespace B4Interview.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly DatabaseContext databaseContext;
 
         public ExternalLoginModel(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            ILogger<ExternalLoginModel> logger)
+            ILogger<ExternalLoginModel> logger,
+            DatabaseContext databaseContext)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
-
+            this.databaseContext = databaseContext;
             _userManager.Options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
         }
 
@@ -47,6 +50,11 @@ namespace B4Interview.Areas.Identity.Pages.Account
 
             [Required]
             public string UserName { get; set; }
+
+            [Required]
+            public string CompanySearch { get; set; }
+
+            public bool Fresher { get; set; }
         }
 
         public IActionResult OnGetAsync()
@@ -118,7 +126,32 @@ namespace B4Interview.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email };
+                ApplicationUser user = null;
+
+                if (!Input.Fresher)
+                {
+                    var companyResult = databaseContext.Companies.Where(c => c.Name == Input.CompanySearch || c.Identifier == Input.CompanySearch);
+                    Company company = null;
+                    if (companyResult.Any())
+                    {
+                        company = companyResult.First();
+                    }
+                    else
+                    {
+                        var companyId = databaseContext.Companies.Max(c => c.Id) + 1;
+                        company = new Company
+                        {
+                            Id = companyId,
+                            Name = Input.CompanySearch
+                        };
+
+                        databaseContext.Companies.Add(company);
+                        databaseContext.SaveChanges();
+                    }
+                    user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, EmployerId = company.Id };
+                }
+
+                user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, Fresher = Input.Fresher };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

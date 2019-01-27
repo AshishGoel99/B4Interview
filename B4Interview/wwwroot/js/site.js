@@ -41,7 +41,7 @@ $(document).ready(function () {
             }
         });
 
-    $('#addReviewDialog .typeahead').typeahead({
+    $('#companySearch .typeahead').typeahead({
         hint: true,
         highlight: true,
         minLength: 3
