@@ -20,5 +20,6 @@ namespace B4Interview.DataLayer.Models
         public ICollection<Review> Reviews { get; set; }
         public ICollection<Gallery> Images { get; set; }
         public ICollection<Interview> Interviews { get; set; }
+        public ICollection<ApplicationUser> Employees { get; set; }
     }
 }

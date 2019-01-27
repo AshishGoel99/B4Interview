@@ -44,8 +44,8 @@ namespace B4Interview.Migrations
                 table: "Interviews");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_JobApplication_Jobs_JobId",
-                table: "JobApplication");
+                name: "FK_JobApplications_Jobs_JobId",
+                table: "JobApplications");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Jobs_Companies_CompanyId",
@@ -82,7 +82,7 @@ namespace B4Interview.Migrations
             migrationBuilder.InsertData(
                 table: "Jobs",
                 columns: new[] { "Id", "CompanyId", "Description", "Experience", "InActive", "Location", "PostedOn", "ReferrerId", "Title" },
-                values: new object[] { 1, 1, "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.", "4-5 years", false, "Noida", new DateTime(2019, 1, 24, 14, 49, 36, 367, DateTimeKind.Local).AddTicks(5191), "102c7bdb-063a-41c8-9d0a-a5168b16699d", "Toolkit API Developer" });
+                values: new object[] { 1, 1, "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.", "4-5 years", false, "Noida", new DateTime(2019, 1, 27, 9, 6, 41, 909, DateTimeKind.Local).AddTicks(7077), "0f5d3de3-3daa-487b-a675-4468a7ab058f", "Toolkit API Developer" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
@@ -157,8 +157,8 @@ namespace B4Interview.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_JobApplication_Jobs_JobId",
-                table: "JobApplication",
+                name: "FK_JobApplications_Jobs_JobId",
+                table: "JobApplications",
                 column: "JobId",
                 principalTable: "Jobs",
                 principalColumn: "Id",
@@ -268,8 +268,8 @@ namespace B4Interview.Migrations
                 table: "Interviews");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_JobApplication_Jobs_JobId",
-                table: "JobApplication");
+                name: "FK_JobApplications_Jobs_JobId",
+                table: "JobApplications");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Jobs_Companies_CompanyId",
@@ -381,8 +381,8 @@ namespace B4Interview.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_JobApplication_Jobs_JobId",
-                table: "JobApplication",
+                name: "FK_JobApplications_Jobs_JobId",
+                table: "JobApplications",
                 column: "JobId",
                 principalTable: "Jobs",
                 principalColumn: "Id",

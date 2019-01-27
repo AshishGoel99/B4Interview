@@ -5,6 +5,21 @@
 
 $(document).ready(function () {
 
+
+    $('.navbar .dropdown').hover(function () {
+        $(this).find('.dropdown-menu').first().stop(true, true).slideDown(150);
+    }, function () {
+        $(this).find('.dropdown-menu').first().stop(true, true).slideUp(105)
+    });
+
+    $("#isFresher").click(function () {
+        var tElem = $("#companySearch");
+        if (tElem.hasClass("disabled"))
+            tElem.removeClass('disabled').removeAttr('disabled');
+        else
+            tElem.addClass('disabled').attr('disabled', true);
+    });
+
     $('.alert').alert();
 
     //restoring values back to fields after navigation
@@ -13,18 +28,31 @@ $(document).ready(function () {
         $("#searchType").val(getSearchType(location.pathname.split('/')[1]));
     }
 
-    $('.typeahead').typeahead({
+    $('.navbar .typeahead').typeahead({
         hint: true,
         highlight: true,
         minLength: 3
     }, {
-        source: function (query, syncCb, asyncCb) {
-            $.getJSON('/CompanyOverview?handler=NamesAndPosition&type=' + $("#searchType").val() + '&query=' + query, function (data) {
-                console.log(data);
-                asyncCb(data);
-            })
-        }
-    });
+            source: function (query, syncCb, asyncCb) {
+                $.getJSON('/CompanyOverview?handler=NamesAndPosition&type=' + $("#searchType").val() + '&query=' + query, function (data) {
+                    console.log(data);
+                    asyncCb(data);
+                })
+            }
+        });
+
+    $('#addReviewDialog .typeahead').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 3
+    }, {
+            source: function (query, syncCb, asyncCb) {
+                $.getJSON('/CompanyOverview?handler=Names&type=' + $("#searchType").val() + '&query=' + query, function (data) {
+                    console.log(data);
+                    asyncCb(data);
+                })
+            }
+        });
 });
 
 function formSubmit() {

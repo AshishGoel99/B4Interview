@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B4Interview.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190124091936_initial1")]
+    [Migration("20190127033643_initial1")]
     partial class initial1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -51,6 +51,8 @@ namespace B4Interview.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("Picture");
 
                     b.Property<byte[]>("Resume");
 
@@ -250,8 +252,8 @@ namespace B4Interview.Migrations
                             Experience = "4-5 years",
                             InActive = false,
                             Location = "Noida",
-                            PostedOn = new DateTime(2019, 1, 24, 14, 49, 36, 367, DateTimeKind.Local).AddTicks(5191),
-                            ReferrerId = "102c7bdb-063a-41c8-9d0a-a5168b16699d",
+                            PostedOn = new DateTime(2019, 1, 27, 9, 6, 41, 909, DateTimeKind.Local).AddTicks(7077),
+                            ReferrerId = "0f5d3de3-3daa-487b-a675-4468a7ab058f",
                             Title = "Toolkit API Developer"
                         });
                 });
@@ -272,7 +274,7 @@ namespace B4Interview.Migrations
 
                     b.HasIndex("JobId");
 
-                    b.ToTable("JobApplication");
+                    b.ToTable("JobApplications");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Question", b =>

@@ -6,9 +6,9 @@
 
 
 <div class="card w-75">
-    <div class="card-header">
-        Referral Jobs
-    </div>
+    <h6 class="card-header">
+        Recently Posted Referral Jobs
+    </h6>
     <ul class="list-group list-group-flush">
         @foreach (var job in Model.Jobs)
         {
@@ -36,8 +36,8 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <a class="btn btn-sm btn-info float-right" asp-page="/JobApplication" asp-route-jobId="@job.Id">
-                            View Applications
+                        <a class="btn btn-sm btn-info float-right" onclick="viewApplications(@job.Applications.Count())" asp-page="/JobApplication" asp-route-jobId="@job.Id">
+                            Applications
                             <span class="badge badge-dark">@job.Applications.Count()</span>
                         </a>
                     </div>
@@ -53,3 +53,14 @@
         }
     </ul>
 </div>
+
+@section Scripts{ 
+    <script>
+        function viewApplications(count) {
+            if (count == 0) {
+                event.preventDefault();
+                alert("Oops! No Application found.");
+            }
+        }
+    </script>
+}

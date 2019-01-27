@@ -26,7 +26,7 @@ namespace B4Interview.Pages
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var applications = context.JobApplications
+                Applications = context.JobApplications
                     .Where(j => j.ApplicantId != userId && j.JobId == JobId).ToList();
             }
         }

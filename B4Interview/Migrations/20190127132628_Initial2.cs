@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace B4Interview.Migrations
 {
-    public partial class initial2 : Migration
+    public partial class Initial2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,12 +44,8 @@ namespace B4Interview.Migrations
                 table: "Interviews");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_JobApplication_AspNetUsers_ApplicantId",
-                table: "JobApplication");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_JobApplication_Jobs_JobId",
-                table: "JobApplication");
+                name: "FK_JobApplications_Jobs_JobId",
+                table: "JobApplications");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Jobs_Companies_CompanyId",
@@ -83,35 +79,22 @@ namespace B4Interview.Migrations
                 name: "FK_Vote_Reviews_ReviewId",
                 table: "Vote");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_JobApplication",
-                table: "JobApplication");
-
-            migrationBuilder.RenameTable(
-                name: "JobApplication",
-                newName: "JobApplications");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_JobApplication_JobId",
-                table: "JobApplications",
-                newName: "IX_JobApplications_JobId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_JobApplication_ApplicantId",
-                table: "JobApplications",
-                newName: "IX_JobApplications_ApplicantId");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_JobApplications",
-                table: "JobApplications",
-                column: "Id");
+            migrationBuilder.AddColumn<int>(
+                name: "EmployerId",
+                table: "AspNetUsers",
+                nullable: true);
 
             migrationBuilder.UpdateData(
                 table: "Jobs",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "PostedOn",
-                value: new DateTime(2019, 1, 24, 17, 46, 39, 72, DateTimeKind.Local).AddTicks(2162));
+                value: new DateTime(2019, 1, 27, 18, 56, 27, 699, DateTimeKind.Local).AddTicks(4451));
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_EmployerId",
+                table: "AspNetUsers",
+                column: "EmployerId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
@@ -154,6 +137,14 @@ namespace B4Interview.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUsers_Companies_EmployerId",
+                table: "AspNetUsers",
+                column: "EmployerId",
+                principalTable: "Companies",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                 table: "AspNetUserTokens",
                 column: "UserId",
@@ -182,14 +173,6 @@ namespace B4Interview.Migrations
                 table: "Interviews",
                 column: "CompanyId",
                 principalTable: "Companies",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_JobApplications_AspNetUsers_ApplicantId",
-                table: "JobApplications",
-                column: "ApplicantId",
-                principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
@@ -289,6 +272,10 @@ namespace B4Interview.Migrations
                 table: "AspNetUserRoles");
 
             migrationBuilder.DropForeignKey(
+                name: "FK_AspNetUsers_Companies_EmployerId",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                 table: "AspNetUserTokens");
 
@@ -303,10 +290,6 @@ namespace B4Interview.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Interviews_Companies_CompanyId",
                 table: "Interviews");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_JobApplications_AspNetUsers_ApplicantId",
-                table: "JobApplications");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_JobApplications_Jobs_JobId",
@@ -344,35 +327,20 @@ namespace B4Interview.Migrations
                 name: "FK_Vote_Reviews_ReviewId",
                 table: "Vote");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_JobApplications",
-                table: "JobApplications");
+            migrationBuilder.DropIndex(
+                name: "IX_AspNetUsers_EmployerId",
+                table: "AspNetUsers");
 
-            migrationBuilder.RenameTable(
-                name: "JobApplications",
-                newName: "JobApplication");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_JobApplications_JobId",
-                table: "JobApplication",
-                newName: "IX_JobApplication_JobId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_JobApplications_ApplicantId",
-                table: "JobApplication",
-                newName: "IX_JobApplication_ApplicantId");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_JobApplication",
-                table: "JobApplication",
-                column: "Id");
+            migrationBuilder.DropColumn(
+                name: "EmployerId",
+                table: "AspNetUsers");
 
             migrationBuilder.UpdateData(
                 table: "Jobs",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "PostedOn",
-                value: new DateTime(2019, 1, 24, 14, 49, 36, 367, DateTimeKind.Local).AddTicks(5191));
+                value: new DateTime(2019, 1, 27, 9, 6, 41, 909, DateTimeKind.Local).AddTicks(7077));
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
@@ -447,16 +415,8 @@ namespace B4Interview.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_JobApplication_AspNetUsers_ApplicantId",
-                table: "JobApplication",
-                column: "ApplicantId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_JobApplication_Jobs_JobId",
-                table: "JobApplication",
+                name: "FK_JobApplications_Jobs_JobId",
+                table: "JobApplications",
                 column: "JobId",
                 principalTable: "Jobs",
                 principalColumn: "Id",

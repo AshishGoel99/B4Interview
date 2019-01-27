@@ -39,12 +39,22 @@ namespace B4Interview.Pages
             }
             else
             {
-                return new JsonResult(
-                _context.Companies
-                .Where(c => c.Name.Contains(query) || c.Identifier.Contains(query))
-                .Select(c => c.Name)
-                );
+                return OnGetNames(query);
+                //return new JsonResult(
+                //_context.Companies
+                //.Where(c => c.Name.Contains(query) || c.Identifier.Contains(query))
+                //.Select(c => c.Name)
+                //);
             }
+        }
+
+        public JsonResult OnGetNames(string query)
+        {
+            return new JsonResult(
+            _context.Companies
+            .Where(c => c.Name.Contains(query) || c.Identifier.Contains(query))
+            .Select(c => c.Name)
+            );
         }
     }
 }

@@ -41,6 +41,7 @@ namespace B4Interview.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
+                    Picture = table.Column<string>(nullable: true),
                     ResumeFileName = table.Column<string>(nullable: true),
                     Resume = table.Column<byte[]>(nullable: true)
                 },
@@ -318,7 +319,7 @@ namespace B4Interview.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobApplication",
+                name: "JobApplications",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -328,15 +329,15 @@ namespace B4Interview.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobApplication", x => x.Id);
+                    table.PrimaryKey("PK_JobApplications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_JobApplication_AspNetUsers_ApplicantId",
+                        name: "FK_JobApplications_AspNetUsers_ApplicantId",
                         column: x => x.ApplicantId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_JobApplication_Jobs_JobId",
+                        name: "FK_JobApplications_Jobs_JobId",
                         column: x => x.JobId,
                         principalTable: "Jobs",
                         principalColumn: "Id",
@@ -545,13 +546,13 @@ namespace B4Interview.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobApplication_ApplicantId",
-                table: "JobApplication",
+                name: "IX_JobApplications_ApplicantId",
+                table: "JobApplications",
                 column: "ApplicantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobApplication_JobId",
-                table: "JobApplication",
+                name: "IX_JobApplications_JobId",
+                table: "JobApplications",
                 column: "JobId");
 
             migrationBuilder.CreateIndex(
@@ -636,7 +637,7 @@ namespace B4Interview.Migrations
                 name: "Gallery");
 
             migrationBuilder.DropTable(
-                name: "JobApplication");
+                name: "JobApplications");
 
             migrationBuilder.DropTable(
                 name: "Question");
