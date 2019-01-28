@@ -1,20 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using B4Interview.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace B4Interview.Pages
 {
-    public class JobApplicationModel : PageModel
+    public class JobApplicationModel : BaseModel
     {
-        private readonly DatabaseContext context;
-
-        public JobApplicationModel(DatabaseContext context)
-        {
-            this.context = context;
-        }
+        public JobApplicationModel(DatabaseContext context) : base(context) { }
 
         [BindProperty(SupportsGet = true)]
         public int JobId { get; set; }
@@ -25,8 +18,8 @@ namespace B4Interview.Pages
         {
             if (User.Identity.IsAuthenticated)
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                Applications = context.JobApplications
+                var userId = UserId;
+                Applications = databaseContext.JobApplications
                     .Where(j => j.ApplicantId != userId && j.JobId == JobId).ToList();
             }
         }

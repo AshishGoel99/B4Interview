@@ -1,24 +1,18 @@
 ﻿using B4Interview.DataLayer.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace B4Interview.Pages
 {
-    public class InterviewModel : PageModel
+    public class InterviewModel : BaseModel
     {
-        private readonly DatabaseContext context;
-
-        public InterviewModel(DatabaseContext context)
-        {
-            this.context = context;
-        }
+        public InterviewModel(DatabaseContext context) : base(context) { }
 
         public IList<Interview> Interviews { get; set; }
 
         public void OnGet(string company, string skill)
         {
-            var interviews = context.Interviews
+            var interviews = databaseContext.Interviews
                 .OrderByDescending(i => i.PostedOn);
 
             if (!string.IsNullOrWhiteSpace(company))

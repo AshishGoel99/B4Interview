@@ -1,20 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using B4Interview.DataLayer.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace B4Interview.Pages
 {
-    public class PostedJobsModel : PageModel
+    public class PostedJobsModel : BaseModel
     {
-        private readonly DatabaseContext context;
-
-        public PostedJobsModel(DatabaseContext context)
-        {
-            this.context = context;
-        }
+        public PostedJobsModel(DatabaseContext context) : base(context) { }
 
         public IList<Job> Jobs { get; set; }
 
@@ -22,9 +15,9 @@ namespace B4Interview.Pages
         {
             if (User.Identity.IsAuthenticated)
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = UserId;
 
-                Jobs = context.Jobs
+                Jobs = databaseContext.Jobs
                     .OrderByDescending(j => j.PostedOn)
                     .Include(j => j.Company)
                     .Include(j => j.Applications)

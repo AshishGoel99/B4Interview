@@ -1,31 +1,26 @@
 ﻿using B4Interview;
 using B4Interview.DataLayer.Models;
+using B4Interview.Pages;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace B4.Pages
 {
-    public class ReviewModel : PageModel
+    public class ReviewModel : BaseModel
     {
-        private readonly DatabaseContext _context;
         private string userId;
 
-        public ReviewModel(DatabaseContext context)
-        {
-            _context = context;
-        }
+        public ReviewModel(DatabaseContext context) : base(context) { }
 
         public IList<Review> Reviews { get; set; }
         public async Task OnGetAsync()
         {
-            Reviews = await _context.Reviews
+            Reviews = await databaseContext.Reviews
                 .Where(r => r.Company.Identifier == Search || r.Company.Name == Search)
                 .Include(r => r.Tags)
                 .Include(r => r.Author)
@@ -64,21 +59,14 @@ namespace B4.Pages
                 return Page();
             }
 
-            var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = _context.Companies.
+            var userId = UserId;
+            var result = databaseContext.Companies.
                 Where(c => c.Name == Input.CompanySearch || c.Identifier == Input.CompanySearch);
 
             Company company = null;
             if (!result.Any())
             {
-                var newId = _context.Companies.Max(c => c.Id) + 1;
-                company = new Company
-                {
-                    Id = newId,
-                    Name = Input.CompanySearch
-                };
-
-                _context.Companies.Add(company);
+                company = CreateCompany(Input.CompanySearch);
             }
             else
                 company = result.Single();
@@ -91,7 +79,7 @@ namespace B4.Pages
                     Name = tag.Trim()
                 }));
 
-            _context.Reviews.Add(new Review
+            databaseContext.Reviews.Add(new Review
             {
                 AutherInfo = Input.AuthorInfo + ", " + Input.Location,
                 AuthorId = userId,
@@ -104,12 +92,12 @@ namespace B4.Pages
                 Anonymous = Input.Anonymous
             });
 
-            _context.SaveChanges();
+            databaseContext.SaveChanges();
 
-            company.Rating = _context.Reviews.Select(r => r.Rating).Average();
-            company.ReviewsCount = _context.Reviews.Count();
+            company.Rating = databaseContext.Reviews.Select(r => r.Rating).Average();
+            company.ReviewsCount = databaseContext.Reviews.Count();
 
-            _context.SaveChanges();
+            databaseContext.SaveChanges();
 
             return new RedirectToPageResult("Review", new { search = Search });
         }
@@ -118,8 +106,8 @@ namespace B4.Pages
         #region UpVote
         public IActionResult OnGetUpVote(int id)
         {
-            userId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var review = _context.Reviews
+            userId = UserId;
+            var review = databaseContext.Reviews
                 .Include(r => r.Votes)
                 .First(r => r.Id == id);
 
@@ -131,7 +119,7 @@ namespace B4.Pages
                 VoterId = userId
             });
 
-            _context.SaveChanges();
+            databaseContext.SaveChanges();
 
             return new OkResult();
         }
@@ -140,8 +128,8 @@ namespace B4.Pages
         #region DownVote
         public IActionResult OnGetDownVote(int id)
         {
-            userId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var review = _context.Reviews
+            userId = UserId;
+            var review = databaseContext.Reviews
                 .Include(r => r.Votes)
                 .First(r => r.Id == id);
 
@@ -153,7 +141,7 @@ namespace B4.Pages
                 VoterId = userId
             });
 
-            _context.SaveChanges();
+            databaseContext.SaveChanges();
 
             return new OkResult();
         }
@@ -190,7 +178,7 @@ namespace B4.Pages
 
         private bool ReviewExists(int id)
         {
-            return _context.Reviews.Any(e => e.Id == id);
+            return databaseContext.Reviews.Any(e => e.Id == id);
         }
         #endregion
 

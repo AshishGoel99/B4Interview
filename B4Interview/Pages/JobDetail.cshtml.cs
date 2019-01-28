@@ -1,20 +1,13 @@
 ﻿using B4Interview.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Security.Claims;
 
 namespace B4Interview.Pages
 {
-    public class JobDetailModel : PageModel
+    public class JobDetailModel : BaseModel
     {
-        private readonly DatabaseContext context;
-
-        public JobDetailModel(DatabaseContext context)
-        {
-            this.context = context;
-        }
+        public JobDetailModel(DatabaseContext context) : base(context) { }
 
         public Job Job { get; set; }
         public bool ShouldGiveReview { get; set; }
@@ -24,7 +17,7 @@ namespace B4Interview.Pages
 
         public void OnGet()
         {
-            Job = context.Jobs
+            Job = databaseContext.Jobs
                 .Include(j => j.Skills)
                 .Include(j => j.Referrer)
                 .Include(j => j.Company)
@@ -32,20 +25,20 @@ namespace B4Interview.Pages
 
             if (User.Identity.IsAuthenticated)
             {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var ReviewGiven = context.Reviews.Any(r => r.Author.Id == userId);
+                var userId = UserId;
+                var ReviewGiven = databaseContext.Reviews.Any(r => r.Author.Id == userId);
                 if (!ReviewGiven)
                 {
-                    ShouldGiveReview = !context.Users.Any(u => u.Id == userId && u.Fresher);
+                    ShouldGiveReview = !databaseContext.Users.Any(u => u.Id == userId && u.Fresher);
                 }
             }
         }
 
         public IActionResult OnGetJobApply()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = UserId;
 
-            context.Jobs
+            databaseContext.Jobs
                 .Include(j => j.Applications)
                 .First(j => j.Id == JobId)
                 .Applications.Add(new JobApplication
@@ -53,7 +46,7 @@ namespace B4Interview.Pages
                     JobId = JobId,
                     ApplicantId = userId
                 });
-            context.SaveChanges();
+            databaseContext.SaveChanges();
 
             //Send Mail to the referrer
 

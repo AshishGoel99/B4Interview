@@ -1,20 +1,14 @@
 ﻿using B4Interview.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace B4Interview.Pages
 {
-    public class CompanyModel : PageModel
+    public class CompanyModel : BaseModel
     {
-        private readonly DatabaseContext databaseContext;
-
-        public CompanyModel(DatabaseContext databaseContext)
-        {
-            this.databaseContext = databaseContext;
-        }
+        public CompanyModel(DatabaseContext context) : base(context) { }
 
         public IList<Company> Companies { get; set; }
         public int RemainingPagesCount { get; set; }
@@ -26,7 +20,7 @@ namespace B4Interview.Pages
 
         public void OnGet()
         {
-            if (PageSize == 0)
+            if (PageSize == 0)//this is default
                 PageSize = 12;
 
             var next = databaseContext.Companies

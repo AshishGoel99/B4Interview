@@ -22,7 +22,7 @@
     @{var cardCount = 1; }
     @foreach (var review in Model.Reviews)
     {
-        var userId = User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+        var userId = Model.UserId;
         var myUpVote = userId != null && review.Votes.Any(v => v.UpVote && v.VoterId == userId);
         var myDownVote = userId != null && review.Votes.Any(v => !v.UpVote && v.VoterId == userId);
 

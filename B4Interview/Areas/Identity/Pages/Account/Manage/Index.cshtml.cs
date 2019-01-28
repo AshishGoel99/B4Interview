@@ -62,9 +62,10 @@ namespace B4Interview.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _userManager.Users
                 .Include(u => u.Skills)
-                .First(u => u.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                .First(u => u.Id == userId);
 
             if (user == null)
             {

@@ -1,25 +1,18 @@
 ﻿using B4Interview.DataLayer.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 
 namespace B4Interview.Pages
 {
-    public class ReferralJobModel : PageModel
+    public class ReferralJobModel : BaseModel
     {
-        private readonly DatabaseContext context;
-
-        public ReferralJobModel(DatabaseContext context)
-        {
-            this.context = context;
-        }
+        public ReferralJobModel(DatabaseContext context) : base(context) { }
 
         public IList<Job> Jobs { get; set; }
         public void OnGet(string search)
         {
-            var jobs = context.Jobs
+            var jobs = databaseContext.Jobs
                     .OrderByDescending(j => j.PostedOn)
                     .Include(j => j.Company)
                     .Include(j => j.Skills)
@@ -33,7 +26,7 @@ namespace B4Interview.Pages
 
             if (User.Identity.IsAuthenticated)
             {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userId = UserId;
                 jobs = jobs.Where(j => !j.Applications.Any(a => a.ApplicantId == userId) && j.Referrer.Id != userId);
             }
 

@@ -1,4 +1,5 @@
 ﻿using B4Interview.DataLayer.Models;
+using B4Interview.Pages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -13,20 +14,19 @@ using System.Threading.Tasks;
 namespace B4Interview.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class RegisterModel : PageModel
+    public class RegisterModel : BaseModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly DatabaseContext databaseContext;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            DatabaseContext databaseContext)
+            DatabaseContext databaseContext) : base(databaseContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -89,15 +89,7 @@ namespace B4Interview.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        var companyId = databaseContext.Companies.Max(c => c.Id) + 1;
-                        company = new Company
-                        {
-                            Id = companyId,
-                            Name = Input.CompanySearch
-                        };
-
-                        databaseContext.Companies.Add(company);
-                        databaseContext.SaveChanges();
+                        company = CreateCompany(Input.CompanySearch);
                     }
                     user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, EmployerId = company.Id };
                 }

@@ -1,4 +1,5 @@
 ﻿using B4Interview.DataLayer.Models;
+using B4Interview.Pages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,23 +13,21 @@ using System.Threading.Tasks;
 namespace B4Interview.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class ExternalLoginModel : PageModel
+    public class ExternalLoginModel : BaseModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<ExternalLoginModel> _logger;
-        private readonly DatabaseContext databaseContext;
 
         public ExternalLoginModel(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ILogger<ExternalLoginModel> logger,
-            DatabaseContext databaseContext)
+            DatabaseContext databaseContext) : base(databaseContext)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
-            this.databaseContext = databaseContext;
             _userManager.Options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
         }
 
@@ -138,15 +137,7 @@ namespace B4Interview.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        var companyId = databaseContext.Companies.Max(c => c.Id) + 1;
-                        company = new Company
-                        {
-                            Id = companyId,
-                            Name = Input.CompanySearch
-                        };
-
-                        databaseContext.Companies.Add(company);
-                        databaseContext.SaveChanges();
+                        company = CreateCompany(Input.CompanySearch);
                     }
                     user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, EmployerId = company.Id };
                 }
