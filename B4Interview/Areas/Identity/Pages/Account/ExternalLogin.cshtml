@@ -28,13 +28,13 @@
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <div class="row">
+            <div class="form-group row">
                 <div class="col-8">
                     <input type="text" id="companySearch" name="Input.CompanySearch" class="w-100 typeahead form-control mr-sm-2" placeholder="Company Name" />
                 </div>
                 <div class="form-group col-4">
                     <div class="custom-control custom-checkbox mt-4">
-                        <input type="checkbox" class="custom-control-input" name="Input.Fresher" id="isFresher">
+                        <input type="checkbox" class="custom-control-input" onclick="setChkValue(this)" name="Input.Fresher" id="isFresher">
                         <label class="custom-control-label small" for="isFresher">Fresher?</label>
                     </div>
                 </div>

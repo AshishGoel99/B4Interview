@@ -3,7 +3,6 @@ using B4Interview.Pages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -127,6 +126,8 @@ namespace B4Interview.Areas.Identity.Pages.Account
             {
                 ApplicationUser user = null;
 
+                var profilePictureUrl = $"https://graph.facebook.com/v3.2/{info.Principal.FindFirstValue(ClaimTypes.NameIdentifier)}/picture";
+
                 if (!Input.Fresher)
                 {
                     var companyResult = databaseContext.Companies.Where(c => c.Name == Input.CompanySearch || c.Identifier == Input.CompanySearch);
@@ -139,10 +140,13 @@ namespace B4Interview.Areas.Identity.Pages.Account
                     {
                         company = CreateCompany(Input.CompanySearch);
                     }
-                    user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, EmployerId = company.Id };
+                    user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, EmployerId = company.Id, Picture = profilePictureUrl };
+                }
+                else
+                {
+                    user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, Fresher = Input.Fresher, Picture = profilePictureUrl };
                 }
 
-                user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, Fresher = Input.Fresher };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using B4Interview.DataLayer.Models;
+﻿using B4Interview.DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace B4Interview.Pages
 {
@@ -11,7 +12,9 @@ namespace B4Interview.Pages
 
         public void OnGet(string id)
         {
-            Candidate = databaseContext.Users.First(u => u.Id == id);
+            Candidate = databaseContext.Users
+                .Include(c => c.Skills)
+                .First(u => u.Id == id);
         }
     }
 }

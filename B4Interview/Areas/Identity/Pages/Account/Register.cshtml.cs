@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -32,7 +31,6 @@ namespace B4Interview.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            this.databaseContext = databaseContext;
         }
 
         [BindProperty]
@@ -62,7 +60,6 @@ namespace B4Interview.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
             public string CompanySearch { get; set; }
             public bool Fresher { get; set; }
         }
@@ -93,8 +90,11 @@ namespace B4Interview.Areas.Identity.Pages.Account
                     }
                     user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, EmployerId = company.Id };
                 }
+                else
+                {
+                    user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, Fresher = Input.Fresher };
+                }
 
-                user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, Fresher = Input.Fresher };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

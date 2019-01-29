@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B4Interview.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190127033643_initial1")]
-    partial class initial1
+    [Migration("20190129074738_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,10 @@ namespace B4Interview.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<int?>("EmployerId");
+
+                    b.Property<bool>("Fresher");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -66,6 +70,8 @@ namespace B4Interview.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployerId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -242,20 +248,6 @@ namespace B4Interview.Migrations
                     b.HasIndex("ReferrerId");
 
                     b.ToTable("Jobs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CompanyId = 1,
-                            Description = "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.",
-                            Experience = "4-5 years",
-                            InActive = false,
-                            Location = "Noida",
-                            PostedOn = new DateTime(2019, 1, 27, 9, 6, 41, 909, DateTimeKind.Local).AddTicks(7077),
-                            ReferrerId = "0f5d3de3-3daa-487b-a675-4468a7ab058f",
-                            Title = "Toolkit API Developer"
-                        });
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.JobApplication", b =>
@@ -574,6 +566,13 @@ namespace B4Interview.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("B4Interview.DataLayer.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("B4Interview.DataLayer.Models.Company", "Employer")
+                        .WithMany("Employees")
+                        .HasForeignKey("EmployerId");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Gallery", b =>

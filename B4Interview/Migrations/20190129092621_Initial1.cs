@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace B4Interview.Migrations
 {
-    public partial class initial1 : Migration
+    public partial class Initial1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -82,7 +82,7 @@ namespace B4Interview.Migrations
             migrationBuilder.InsertData(
                 table: "Jobs",
                 columns: new[] { "Id", "CompanyId", "Description", "Experience", "InActive", "Location", "PostedOn", "ReferrerId", "Title" },
-                values: new object[] { 1, 1, "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.", "4-5 years", false, "Noida", new DateTime(2019, 1, 27, 9, 6, 41, 909, DateTimeKind.Local).AddTicks(7077), "0f5d3de3-3daa-487b-a675-4468a7ab058f", "Toolkit API Developer" });
+                values: new object[] { 1, 1, "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.", "4-5 years", false, "Noida", new DateTime(2019, 1, 29, 14, 56, 19, 871, DateTimeKind.Local).AddTicks(4905), "938a5534-1609-4ff8-9175-22158a8958b0", "Toolkit API Developer" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",

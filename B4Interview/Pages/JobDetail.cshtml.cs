@@ -10,7 +10,8 @@ namespace B4Interview.Pages
         public JobDetailModel(DatabaseContext context) : base(context) { }
 
         public Job Job { get; set; }
-        public bool ShouldGiveReview { get; set; }
+        public ApplicationUser Candidate { get; set; }
+        //public bool ShouldGiveReview { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int JobId { get; set; }
@@ -26,11 +27,15 @@ namespace B4Interview.Pages
             if (User.Identity.IsAuthenticated)
             {
                 var userId = UserId;
-                var ReviewGiven = databaseContext.Reviews.Any(r => r.Author.Id == userId);
-                if (!ReviewGiven)
-                {
-                    ShouldGiveReview = !databaseContext.Users.Any(u => u.Id == userId && u.Fresher);
-                }
+                Candidate = databaseContext.Users
+                    .Include(u => u.Employer)
+                    .Include(u => u.Reviews)
+                    .Single(u => u.Id == userId);
+                //var ReviewGiven = databaseContext.Reviews.Any(r => r.Author.Id == userId);
+                //if (!ReviewGiven)
+                //{
+                //    ShouldGiveReview = !databaseContext.Users.Any(u => u.Id == userId && u.Fresher);
+                //}
             }
         }
 

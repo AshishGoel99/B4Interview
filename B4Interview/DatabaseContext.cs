@@ -111,7 +111,7 @@ namespace B4Interview
                 PostedOn = DateTime.Now,
                 Title = "Toolkit API Developer",
                 Id = 1,
-                ReferrerId = "0f5d3de3-3daa-487b-a675-4468a7ab058f"
+                ReferrerId = "938a5534-1609-4ff8-9175-22158a8958b0"
             };
 
             modelBuilder.Entity<Company>().HasData(company1);

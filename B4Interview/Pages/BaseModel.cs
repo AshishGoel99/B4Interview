@@ -10,7 +10,7 @@ namespace B4Interview.Pages
     {
         protected readonly DatabaseContext databaseContext;
 
-        protected string UserId
+        public string UserId
         {
             get
             {
@@ -27,10 +27,8 @@ namespace B4Interview.Pages
 
         protected Company CreateCompany(string name)
         {
-            var newId = databaseContext.Companies.Max(c => c.Id) + 1;
             var company = new Company
             {
-                Id = newId,
                 Name = name
             };
 

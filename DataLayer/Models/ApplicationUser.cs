@@ -15,7 +15,7 @@ namespace B4Interview.DataLayer.Models
         public string ResumeFileName { get; set; }
         public byte[] Resume { get; set; }
         public virtual Company Employer { get; set; }
-        public int EmployerId { get; set; }
+        public int? EmployerId { get; set; }
         public bool Fresher { get; set; }
     }
 }

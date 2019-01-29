@@ -36,6 +36,8 @@ namespace B4Interview.Migrations
 
                     b.Property<int?>("EmployerId");
 
+                    b.Property<bool>("Fresher");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -254,8 +256,8 @@ namespace B4Interview.Migrations
                             Experience = "4-5 years",
                             InActive = false,
                             Location = "Noida",
-                            PostedOn = new DateTime(2019, 1, 27, 18, 56, 27, 699, DateTimeKind.Local).AddTicks(4451),
-                            ReferrerId = "0f5d3de3-3daa-487b-a675-4468a7ab058f",
+                            PostedOn = new DateTime(2019, 1, 29, 14, 56, 19, 871, DateTimeKind.Local).AddTicks(4905),
+                            ReferrerId = "938a5534-1609-4ff8-9175-22158a8958b0",
                             Title = "Toolkit API Developer"
                         });
                 });

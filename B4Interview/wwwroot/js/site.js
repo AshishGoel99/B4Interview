@@ -41,7 +41,7 @@ $(document).ready(function () {
             }
         });
 
-    $('#companySearch .typeahead').typeahead({
+    $('#companySearch.typeahead').typeahead({
         hint: true,
         highlight: true,
         minLength: 3
@@ -54,6 +54,11 @@ $(document).ready(function () {
             }
         });
 });
+
+function setChkValue(element) {
+    let elem = $(element);
+    elem.val(elem.is(':checked'));
+}
 
 function formSubmit() {
     event.preventDefault();
