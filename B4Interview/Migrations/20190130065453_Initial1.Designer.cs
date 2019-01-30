@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B4Interview.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190129074738_Initial")]
-    partial class Initial
+    [Migration("20190130065453_Initial1")]
+    partial class Initial1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
+                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -248,6 +248,20 @@ namespace B4Interview.Migrations
                     b.HasIndex("ReferrerId");
 
                     b.ToTable("Jobs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CompanyId = 1,
+                            Description = "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.",
+                            Experience = "4-5 years",
+                            InActive = false,
+                            Location = "Noida",
+                            PostedOn = new DateTime(2019, 1, 30, 12, 24, 53, 448, DateTimeKind.Local).AddTicks(5321),
+                            ReferrerId = "46a09563-5bc3-4573-9479-07e74a1180cc",
+                            Title = "Toolkit API Developer"
+                        });
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.JobApplication", b =>

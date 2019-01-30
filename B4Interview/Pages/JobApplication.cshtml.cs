@@ -2,6 +2,7 @@
 using System.Linq;
 using B4Interview.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace B4Interview.Pages
 {
@@ -20,6 +21,9 @@ namespace B4Interview.Pages
             {
                 var userId = UserId;
                 Applications = databaseContext.JobApplications
+                    .Include(j => j.Job)
+                    .Include(j => j.Applicant)
+                    .Include(j => j.Applicant.Skills)
                     .Where(j => j.ApplicantId != userId && j.JobId == JobId).ToList();
             }
         }

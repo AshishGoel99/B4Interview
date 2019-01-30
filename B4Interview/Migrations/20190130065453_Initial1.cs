@@ -82,7 +82,7 @@ namespace B4Interview.Migrations
             migrationBuilder.InsertData(
                 table: "Jobs",
                 columns: new[] { "Id", "CompanyId", "Description", "Experience", "InActive", "Location", "PostedOn", "ReferrerId", "Title" },
-                values: new object[] { 1, 1, "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.", "4-5 years", false, "Noida", new DateTime(2019, 1, 29, 14, 56, 19, 871, DateTimeKind.Local).AddTicks(4905), "938a5534-1609-4ff8-9175-22158a8958b0", "Toolkit API Developer" });
+                values: new object[] { 1, 1, "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.", "4-5 years", false, "Noida", new DateTime(2019, 1, 30, 12, 24, 53, 448, DateTimeKind.Local).AddTicks(5321), "46a09563-5bc3-4573-9479-07e74a1180cc", "Toolkit API Developer" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",

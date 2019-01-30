@@ -56,7 +56,7 @@ namespace B4Interview.Pages
             //Send Mail to the referrer
 
 
-            return new RedirectToPageResult("ReferralJob", new { response = "Job Applied successfully" });
+            return new RedirectToPageResult("ReferralJobs", new { response = "Job Applied successfully" });
         }
     }
 }

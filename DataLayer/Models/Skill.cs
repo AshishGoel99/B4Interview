@@ -8,12 +8,12 @@ namespace B4Interview.DataLayer.Models
         public string Name { get; set; }
 
         public virtual Job Job { get; set; }
-        public int JobId { get; set; }
+        public int? JobId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
         public string UserId { get; set; }
 
-        public ICollection<Question> Question { get; set; }
-        public int QuestionId { get; set; }
+        public virtual ICollection<Question> Question { get; set; }
+        public int? QuestionId { get; set; }
     }
 }

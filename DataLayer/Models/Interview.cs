@@ -14,11 +14,11 @@ namespace B4Interview.DataLayer.Models
         public DateTime PostedOn { get; set; }
         public decimal UpVote { get; set; }
         public decimal DownVote { get; set; }
-        
-        public Company Company { get; set; }
+
+        public virtual Company Company { get; set; }
         public int CompanyId { get; set; }
 
-        public ICollection<InterviewRound> Rounds { get; set; }
-        public ICollection<Vote> Votes { get; set; }
+        public virtual ICollection<InterviewRound> Rounds { get; set; }
+        public virtual ICollection<Vote> Votes { get; set; }
     }
 }

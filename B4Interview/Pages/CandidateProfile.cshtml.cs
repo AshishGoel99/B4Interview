@@ -1,5 +1,8 @@
 ﻿using B4Interview.DataLayer.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace B4Interview.Pages
@@ -15,6 +18,29 @@ namespace B4Interview.Pages
             Candidate = databaseContext.Users
                 .Include(c => c.Skills)
                 .First(u => u.Id == id);
+        }
+
+        public IActionResult OnGetDownloadResume(string candidateId)
+        {
+            var candidate = databaseContext.Users.Single(c => c.Id == candidateId);
+            return File(candidate.Resume, GetContentType(candidate.ResumeFileName), candidate.ResumeFileName);
+        }
+
+        private string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types[ext];
+        }
+
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                {".pdf", "application/pdf"},
+                {".doc", "application/vnd.ms-word"},
+                {".docx", "application/vnd.ms-word"},
+            };
         }
     }
 }

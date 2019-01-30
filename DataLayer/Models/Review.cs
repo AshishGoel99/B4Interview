@@ -20,12 +20,12 @@ namespace B4Interview.DataLayer.Models
         public float Rating { get; set; }
 
         public int CompanyId { get; set; }
-        public Company Company { get; set; }
+        public virtual Company Company { get; set; }
 
-        public ApplicationUser Author { get; set; }
+        public virtual ApplicationUser Author { get; set; }
         public string AuthorId { get; set; }
 
-        public ICollection<Tag> Tags { get; set; }
-        public ICollection<Vote> Votes { get; set; }
+        public virtual ICollection<Tag> Tags { get; set; }
+        public virtual ICollection<Vote> Votes { get; set; }
     }
 }

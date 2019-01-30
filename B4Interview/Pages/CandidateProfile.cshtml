@@ -78,6 +78,17 @@
                                 <p>@Model.Candidate.PhoneNumber</p>
                             </div>
                         </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.Candidate.ResumeFileName))
+                        {
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Resume</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <a title="Click to Download" asp-page-handler="DownloadResume" asp-route-candidateId="@Model.Candidate.Id">@Model.Candidate.ResumeFileName</a>
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="row">

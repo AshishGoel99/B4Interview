@@ -10,13 +10,13 @@ namespace B4Interview.DataLayer.Models
         public string Title { get; set; }
         public string Location { get; set; }
         public string Experience { get; set; }
-        public Company Company { get; set; }
+        public virtual Company Company { get; set; }
         public int CompanyId { get; set; }
         public DateTime PostedOn { get; set; }
-        public ApplicationUser Referrer { get; set; }
+        public virtual ApplicationUser Referrer { get; set; }
         public string ReferrerId { get; set; }
-        public ICollection<JobApplication> Applications { get; set; }
-        public ICollection<Skill> Skills { get; set; }
+        public virtual ICollection<JobApplication> Applications { get; set; }
+        public virtual ICollection<Skill> Skills { get; set; }
         public bool InActive { get; set; }
     }
 }

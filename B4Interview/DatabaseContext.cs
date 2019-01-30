@@ -111,7 +111,7 @@ namespace B4Interview
                 PostedOn = DateTime.Now,
                 Title = "Toolkit API Developer",
                 Id = 1,
-                ReferrerId = "938a5534-1609-4ff8-9175-22158a8958b0"
+                ReferrerId = "46a09563-5bc3-4573-9479-07e74a1180cc"
             };
 
             modelBuilder.Entity<Company>().HasData(company1);
@@ -124,7 +124,9 @@ namespace B4Interview
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseLoggerFactory(loggerFactory);
+            optionsBuilder
+                .UseLazyLoadingProxies()
+                .UseLoggerFactory(loggerFactory);
         }
     }
 }

@@ -17,9 +17,9 @@ namespace B4Interview.DataLayer.Models
         public string Identifier { get; set; }
         public string Logo { get; set; }
 
-        public ICollection<Review> Reviews { get; set; }
-        public ICollection<Gallery> Images { get; set; }
-        public ICollection<Interview> Interviews { get; set; }
-        public ICollection<ApplicationUser> Employees { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Gallery> Images { get; set; }
+        public virtual ICollection<Interview> Interviews { get; set; }
+        public virtual ICollection<ApplicationUser> Employees { get; set; }
     }
 }

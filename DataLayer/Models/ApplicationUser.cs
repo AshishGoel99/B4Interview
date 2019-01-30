@@ -5,11 +5,11 @@ namespace B4Interview.DataLayer.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public ICollection<Job> PostedJobs { get; set; }
-        public ICollection<JobApplication> Applications { get; set; }
-        public ICollection<Review> Reviews { get; set; }
-        public ICollection<Vote> Votes { get; set; }
-        public ICollection<Skill> Skills { get; set; }
+        public virtual ICollection<Job> PostedJobs { get; set; }
+        public virtual ICollection<JobApplication> Applications { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Vote> Votes { get; set; }
+        public virtual ICollection<Skill> Skills { get; set; }
 
         public string Picture { get; set; }
         public string ResumeFileName { get; set; }

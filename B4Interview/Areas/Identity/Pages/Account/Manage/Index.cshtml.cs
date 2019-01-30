@@ -1,4 +1,5 @@
 ﻿using B4Interview.DataLayer.Models;
+using B4Interview.Pages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace B4Interview.Areas.Identity.Pages.Account.Manage
 {
-    public partial class IndexModel : PageModel
+    public partial class IndexModel : BaseModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -23,7 +24,8 @@ namespace B4Interview.Areas.Identity.Pages.Account.Manage
         public IndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender, DatabaseContext databaseContext)
+            : base(databaseContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -141,9 +143,11 @@ namespace B4Interview.Areas.Identity.Pages.Account.Manage
                 user.Resume = reader.ReadBytes((int)Input.UploadResume.Length); // the Byte [] Field
             }
 
-            await _userManager.UpdateAsync(user);
+            databaseContext.SaveChanges();
 
-            await _signInManager.RefreshSignInAsync(user);
+            //await _userManager.UpdateAsync(user);
+
+            //await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }

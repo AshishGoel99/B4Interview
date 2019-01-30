@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public int ReviewId { get; set; }
-        public Review Review { get; set; }
+        public virtual Review Review { get; set; }
     }
 }
