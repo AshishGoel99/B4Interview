@@ -56,33 +56,34 @@
             </div>
         </div>
     }
-
 </div>
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        @if (Model.Index > 0)
-        {
-            <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index - 1)" asp-route-pageSize="@Model.PageSize">Previous</a></li>
-        }
+<partial name="_Paging" view-data="Model.PagingViewData" />
 
-        @for (int i = 2; i > 0 && (Model.Index - i >= 0); i--)
-        {
-            <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index - i)" asp-route-pageSize="@Model.PageSize">@(Model.Index - i)</a></li>
-        }
-        @if (Model.Index > 0)
-        {
-            <li class="page-item"><a class="page-link" href="#">@Model.Index <span class="sr-only">(current)</span></a></li>
-        }
+@*<nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @if (Model.Index > 0)
+            {
+                <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index - 1)" asp-route-pageSize="@Model.PageSize">Previous</a></li>
+            }
 
-        @for (int i = 0; i < Model.RemainingPagesCount && i < 2; i++)
-        {
-            <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index + i + 1)" asp-route-pageSize="@Model.PageSize">@(Model.Index + i + 1)</a></li>
-        }
+            @for (int i = 2; i > 0 && (Model.Index - i >= 0); i--)
+            {
+                <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index - i)" asp-route-pageSize="@Model.PageSize">@(Model.Index - i)</a></li>
+            }
+            @if (Model.Index > 0)
+            {
+                <li class="page-item"><a class="page-link" href="#">@Model.Index <span class="sr-only">(current)</span></a></li>
+            }
 
-        @if (Model.RemainingPagesCount > 0)
-        {
-            <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index + 1)" asp-route-pageSize="@Model.PageSize">Next</a></li>
-        }
-    </ul>
-</nav>
+            @for (int i = 0; i < Model.RemainingPagesCount && i < 2; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index + i + 1)" asp-route-pageSize="@Model.PageSize">@(Model.Index + i + 1)</a></li>
+            }
+
+            @if (Model.RemainingPagesCount > 0)
+            {
+                <li class="page-item"><a class="page-link" asp-page="Company" asp-route-index="@(Model.Index + 1)" asp-route-pageSize="@Model.PageSize">Next</a></li>
+            }
+        </ul>
+    </nav>*@

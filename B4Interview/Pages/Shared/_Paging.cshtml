@@ -1,0 +1,33 @@
+﻿<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @{
+            var index = (int)ViewData["Index"];
+            var pageSize = (int)ViewData["Size"];
+            var remainingPagesCount = (int)ViewData["RemainingPagesCount"];
+            var pageName = ViewData["Page"];
+        }
+        @if (index > 0)
+        {
+            <li class="page-item"><a class="page-link" asp-page="@pageName" asp-route-index="@(index - 1)" asp-route-pageSize="@pageSize">Previous</a></li>
+        }
+
+        @for (int i = 2; i > 0 && (index - i >= 0); i--)
+        {
+            <li class="page-item"><a class="page-link" asp-page="@pageName" asp-route-index="@(index - i)" asp-route-pageSize="@pageSize">@(index - i)</a></li>
+        }
+        @if (index > 0)
+        {
+            <li class="page-item"><a class="page-link" href="#">@index <span class="sr-only">(current)</span></a></li>
+        }
+
+        @for (int i = 0; i < remainingPagesCount && i < 2; i++)
+        {
+            <li class="page-item"><a class="page-link" asp-page="@pageName" asp-route-index="@(index + i + 1)" asp-route-pageSize="@pageSize">@(index + i + 1)</a></li>
+        }
+
+        @if (remainingPagesCount > 0)
+        {
+            <li class="page-item"><a class="page-link" asp-page="@pageName" asp-route-index="@(index + 1)" asp-route-pageSize="@pageSize">Next</a></li>
+        }
+    </ul>
+</nav>
