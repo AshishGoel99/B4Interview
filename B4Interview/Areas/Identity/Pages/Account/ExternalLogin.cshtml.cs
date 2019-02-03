@@ -126,7 +126,7 @@ namespace B4Interview.Areas.Identity.Pages.Account
             {
                 ApplicationUser user = null;
 
-                var profilePictureUrl = $"https://graph.facebook.com/v3.2/{info.Principal.FindFirstValue(ClaimTypes.NameIdentifier)}/picture";
+                var profilePictureUrl = $"https://graph.facebook.com/v3.2/{info.Principal.FindFirstValue(ClaimTypes.NameIdentifier)}/picture?type=large";
 
                 if (!Input.Fresher)
                 {

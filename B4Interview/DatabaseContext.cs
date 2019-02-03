@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 
 namespace B4Interview
 {
@@ -25,6 +26,13 @@ namespace B4Interview
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            foreach (var e in modelBuilder.Model.GetEntityTypes()
+            .SelectMany(t => t.GetForeignKeys())
+            .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade))
+            {
+                e.DeleteBehavior = DeleteBehavior.Restrict;
+            }
 
             var tag1 = new Tag
             {
@@ -97,7 +105,7 @@ namespace B4Interview
                 Name = "Tata Consultancy Services",
                 Logo = "https://upload.wikimedia.org/wikipedia/en/b/b1/Tata_Consultancy_Services_Logo.svg"
             };
-
+            
             var job1 = new Job
             {
                 CompanyId = 1,
@@ -111,7 +119,7 @@ namespace B4Interview
                 PostedOn = DateTime.Now,
                 Title = "Toolkit API Developer",
                 Id = 1,
-                ReferrerId = "46a09563-5bc3-4573-9479-07e74a1180cc"
+                ReferrerId = "aa19f5e5-c955-461b-94a5-73ad2ffc9d47"
             };
 
             modelBuilder.Entity<Company>().HasData(company1);

@@ -10,6 +10,7 @@ namespace B4Interview.DataLayer.Models
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<Vote> Votes { get; set; }
         public virtual ICollection<Skill> Skills { get; set; }
+        public virtual ICollection<Interview> Interviews { get; set; }
 
         public string Picture { get; set; }
         public string ResumeFileName { get; set; }

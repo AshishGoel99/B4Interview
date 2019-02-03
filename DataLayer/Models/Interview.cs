@@ -18,6 +18,9 @@ namespace B4Interview.DataLayer.Models
         public virtual Company Company { get; set; }
         public int CompanyId { get; set; }
 
+        public virtual ApplicationUser Candidate { get; set; }
+        public string CandidateId { get; set; }
+
         public virtual ICollection<InterviewRound> Rounds { get; set; }
         public virtual ICollection<Vote> Votes { get; set; }
     }

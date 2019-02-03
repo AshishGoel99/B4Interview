@@ -23,7 +23,7 @@ namespace B4Interview
             }
             else
             {
-                return num.ToString(CultureInfo.InvariantCulture);
+                return num.ToString("0.##");
             }
         }
 

@@ -21,9 +21,6 @@ namespace B4Interview.Pages
             {
                 var userId = UserId;
                 Applications = databaseContext.JobApplications
-                    .Include(j => j.Job)
-                    .Include(j => j.Applicant)
-                    .Include(j => j.Applicant.Skills)
                     .Where(j => j.ApplicantId != userId && j.JobId == JobId).ToList();
             }
         }

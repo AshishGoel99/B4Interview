@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -66,7 +64,6 @@ namespace B4Interview.Areas.Identity.Pages.Account.Manage
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _userManager.Users
-                .Include(u => u.Skills)
                 .First(u => u.Id == userId);
 
             if (user == null)
@@ -93,7 +90,7 @@ namespace B4Interview.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -128,13 +125,17 @@ namespace B4Interview.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+
             user.Skills.Clear();
-            foreach (var skill in Input.Skills.Split(","))
+            if (!string.IsNullOrWhiteSpace(Input.Skills))
             {
-                user.Skills.Add(new Skill
+                foreach (var skill in Input.Skills.Split(","))
                 {
-                    Name = skill.Trim()
-                });
+                    user.Skills.Add(new Skill
+                    {
+                        Name = skill.Trim()
+                    });
+                }
             }
 
             user.ResumeFileName = Input.UploadResume.FileName;
@@ -149,6 +150,12 @@ namespace B4Interview.Areas.Identity.Pages.Account.Manage
 
             //await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
+
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+            {
+                return LocalRedirect(returnUrl);
+            }
+
             return RedirectToPage();
         }
 

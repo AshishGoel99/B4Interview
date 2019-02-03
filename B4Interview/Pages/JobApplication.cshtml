@@ -11,15 +11,29 @@
     <ul class="list-group list-group-flush">
         @foreach (var application in Model.Applications)
         {
-            <li class="list-group-item p-0">
-                <div class="p-1 m-0 row">
+            <li class="list-group-item">
+                <div class="row">
                     <div class="col">
                         <h5 class="card-title">
                             @application.Applicant.UserName
                         </h5>
                     </div>
                 </div>
-                <div class="row p-1">
+                <div class="row">
+                    <div class="col">
+                        <div class="card-text small text-monospace">
+                            @if (application.Applicant.Fresher)
+                            {
+                                <em>Fresher</em>
+                            }
+                            else
+                            {
+                                <mark>@application.Applicant.Employer.Name</mark>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row ml-0">
                     <div class="card-text small">
                         @foreach (var skill in application.Applicant.Skills)
                         {
@@ -28,9 +42,16 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
-                        <a class="btn btn-sm btn-info float-right" asp-page="/CandidateProfile" asp-route-Id="@application.Applicant.Id">
-                            View Profile
+                    <div class="offset-8 col-1 mr-3">
+                        <a class="btn btn-sm btn-outline-primary" asp-page="/CandidateProfile" asp-route-Id="@application.ApplicantId">
+                            <i class="fas fa-user-tie"></i>
+                            Profile
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <a class="btn btn-sm btn-outline-success" asp-page="/CandidateProfile" asp-page-handler="DownloadResume" asp-route-candidateId="@application.ApplicantId">
+                            <i class="fas fa-file-download"></i>
+                            Resume
                         </a>
                     </div>
                 </div>

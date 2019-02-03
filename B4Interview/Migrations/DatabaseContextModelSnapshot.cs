@@ -256,8 +256,8 @@ namespace B4Interview.Migrations
                             Experience = "4-5 years",
                             InActive = false,
                             Location = "Noida",
-                            PostedOn = new DateTime(2019, 1, 30, 16, 2, 46, 165, DateTimeKind.Local).AddTicks(6536),
-                            ReferrerId = "46a09563-5bc3-4573-9479-07e74a1180cc",
+                            PostedOn = new DateTime(2019, 2, 2, 10, 35, 26, 63, DateTimeKind.Local).AddTicks(1804),
+                            ReferrerId = "aa19f5e5-c955-461b-94a5-73ad2ffc9d47",
                             Title = "Toolkit API Developer"
                         });
                 });

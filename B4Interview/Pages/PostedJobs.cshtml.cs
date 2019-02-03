@@ -19,10 +19,6 @@ namespace B4Interview.Pages
 
                 Jobs = databaseContext.Jobs
                     .OrderByDescending(j => j.PostedOn)
-                    .Include(j => j.Company)
-                    .Include(j => j.Applications)
-                    .Include(j => j.Skills)
-                    .Include(j => j.Referrer)
                     .Where(j =>
                     !j.InActive &&
                     j.Referrer.Id == userId

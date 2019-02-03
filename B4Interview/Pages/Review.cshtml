@@ -97,6 +97,8 @@
     }
 </div>
 
+<partial name="_newReview" />
+
 @section Scripts{
     <script>
         function upVote(id) {
@@ -117,7 +119,7 @@
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
             var modal = $(this)
-            modal.find('.modal-body #companySearch').val(company);
+            modal.find('.modal-body #companySearch').val(company).parents('div.row').hide();
 
             $(".starrr").starrr();
             $('#stars').on('starrr:change', function (e, value) {

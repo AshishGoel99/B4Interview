@@ -30,15 +30,15 @@
                             <a class="card-link" asp-page="Review" asp-route-search="@job.Company.Name"> (@job.Company.ReviewsCount.ToKMB() Reviews)</a>
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2 text-right">
                         <span class="badge badge-secondary">@job.PostedOn.ToMoment()</span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row p-2">
                     <div class="col">
-                        <a class="btn btn-sm btn-info float-right" onclick="viewApplications(@job.Applications.Count())" asp-page="/JobApplication" asp-route-jobId="@job.Id">
-                            Applications
+                        <a class="btn btn-sm btn-outline-primary float-right" onclick="viewApplications(@job.Applications.Count())" asp-page="/JobApplication" asp-route-jobId="@job.Id">
                             <span class="badge badge-dark">@job.Applications.Count()</span>
+                            Applications
                         </a>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
     </ul>
 </div>
 
-@section Scripts{ 
+@section Scripts{
     <script>
         function viewApplications(count) {
             if (count == 0) {

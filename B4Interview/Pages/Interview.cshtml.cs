@@ -13,17 +13,16 @@ namespace B4Interview.Pages
         public void OnGet(string company, string skill)
         {
             var interviews = databaseContext.Interviews
-                .OrderByDescending(i => i.PostedOn);
+                .Where(i => i.Company != null);
 
             if (!string.IsNullOrWhiteSpace(company))
             {
-                Interviews = interviews
-                    .Where(i => i.Company.Name == company || i.Company.Identifier == company)
-                    .ToList();
+                interviews = interviews
+                    .Where(i => i.Company.Name == company || i.Company.Identifier == company);
             }
             else if (!string.IsNullOrWhiteSpace(skill))
             {
-                Interviews = interviews
+                interviews = interviews
                     .Where(i => i.Rounds
                         .Any(
                             r => r.Questions
@@ -31,13 +30,11 @@ namespace B4Interview.Pages
                                 q => q.Skill.Name.ToUpper() == skill.ToUpper()
                                 )
                             )
-                        )
-                    .ToList();
+                        );
             }
-            else
-            {
-                Interviews = interviews.ToList();
-            }
+
+            Interviews = GetPagedData(interviews
+                .OrderByDescending(i => i.PostedOn)).ToList();
         }
     }
 }

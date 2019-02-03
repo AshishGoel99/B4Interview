@@ -3,8 +3,35 @@
 @{
     ViewData["Title"] = "Home page";
 }
+<div class="row">
+    <div class="text-center w-75">
+        <h1 class="display-4">Welcome</h1>
+        <p>Search for Referral Jobs, Write Reviews of your company and Prepare before the Interview.</p>
+    </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="w-25">
+        <br /><br />
+        <h6 class="text-center">Recently Posted Jobs</h6>
+        <div class="list-group">
+            @foreach (var job in Model.RecentReferralJobs)
+            {
+            <a asp-page="JobDetail" asp-route-search="@job.Title" asp-route-jobid="@job.Id" class="btn-link list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">@job.Title</h6>
+                </div>
+                <div class="row ml-0">
+                    <div class="card-text small">
+                        @foreach (var skill in job.Skills)
+                        {
+                            <span class="badge badge-primary">@skill.Name</span>
+                        }
+                    </div>
+                </div>
+                <small>@job.Company.Name, @job.Location</small>
+                <small class="float-right blockquote-footer">@job.PostedOn.ToMoment()</small>
+            </a>
+                <br />
+            }
+        </div>
+    </div>
 </div>

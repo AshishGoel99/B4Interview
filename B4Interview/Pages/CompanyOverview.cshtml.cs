@@ -16,7 +16,6 @@ namespace B4Interview.Pages
         public void OnGet()
         {
             Company = databaseContext.Companies.Where(c => c.Identifier == Search || c.Name == Search)
-                .Include(c => c.Images)
                 .First();
         }
 

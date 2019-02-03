@@ -14,9 +14,6 @@ namespace B4Interview.Pages
         {
             var jobs = databaseContext.Jobs
                     .OrderByDescending(j => j.PostedOn)
-                    .Include(j => j.Company)
-                    .Include(j => j.Skills)
-                    .Include(j => j.Referrer)
                     .Where(j => !j.InActive);
 
             if (!string.IsNullOrWhiteSpace(search))

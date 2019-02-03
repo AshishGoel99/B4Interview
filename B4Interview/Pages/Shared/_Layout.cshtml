@@ -35,7 +35,7 @@
                         <li class="nav-item dropdown ml-1 mr-1">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Jobs</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item text-dark nav-link" asp-page="/ReferralJobs">Search Jobs</a>                                
+                                <a class="dropdown-item text-dark nav-link" asp-page="/ReferralJobs">Search Jobs</a>
                                 <a class="dropdown-item text-dark nav-link" asp-page="/PostedJobs">My Posted Jobs</a>
                             </div>
                         </li>
@@ -47,7 +47,9 @@
             </div>
         </nav>
 
-        @if (!ViewContext.RouteData.Values.Any(v => v.Value.ToString() == "Identity"))
+        <partial name="..\..\Areas\Identity\Pages\Account\Manage\_StatusMessage.cshtml" for="@ViewContext.TempData["StatusMessage"]" />
+
+        @if (!ViewContext.RouteData.Values.Any(v => v.Value.ToString() == "Identity" || v.Value.ToString().Contains("CandidateProfile")))
         {
             <nav class="navbar navbar-default">
                 <div class="container">
@@ -73,12 +75,10 @@
 
     <footer class="border-top footer text-muted">
         <partial name="_CookieConsentPartial" />
-        <div class="container">
+        <div class="container small">
             &copy; 2019 - B4Interview - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
-
-    <partial name="_newReview" />
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

@@ -22,9 +22,6 @@ namespace B4.Pages
         {
             Reviews = await databaseContext.Reviews
                 .Where(r => r.Company.Identifier == Search || r.Company.Name == Search)
-                .Include(r => r.Tags)
-                .Include(r => r.Author)
-                .Include(r => r.Votes)
                 .ToListAsync();
         }
 
@@ -52,11 +49,11 @@ namespace B4.Pages
         }
 
         #region Create
-        public IActionResult OnPost()
+        public IActionResult OnPost(string returnUrl)
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return LocalRedirect(returnUrl);
             }
 
             var userId = UserId;
@@ -69,15 +66,20 @@ namespace B4.Pages
                 company = CreateCompany(Input.CompanySearch);
             }
             else
+            {
                 company = result.Single();
+            }
 
             var tags = new List<Tag>();
-            tags.AddRange(Input.Tags
-                .Split(new string[] { "," }, StringSplitOptions.None)
-                .Select(tag => new Tag
-                {
-                    Name = tag.Trim()
-                }));
+            if (!string.IsNullOrWhiteSpace(Input.Tags))
+            {
+                tags.AddRange(Input.Tags
+                    .Split(new string[] { "," }, StringSplitOptions.None)
+                    .Select(tag => new Tag
+                    {
+                        Name = tag.Trim()
+                    }));
+            }
 
             databaseContext.Reviews.Add(new Review
             {
@@ -87,6 +89,7 @@ namespace B4.Pages
                 CreatedOn = DateTime.Now,
                 Pros = Input.Pros,
                 Cons = Input.Cons,
+                Description = Input.Description,
                 Rating = Input.Rating,
                 Tags = tags,
                 Anonymous = Input.Anonymous
@@ -99,7 +102,8 @@ namespace B4.Pages
 
             databaseContext.SaveChanges();
 
-            return new RedirectToPageResult("Review", new { search = Search });
+            return LocalRedirect(returnUrl);
+            //return new RedirectToPageResult("Review", new { search = Search });
         }
         #endregion
 
@@ -108,7 +112,6 @@ namespace B4.Pages
         {
             userId = UserId;
             var review = databaseContext.Reviews
-                .Include(r => r.Votes)
                 .First(r => r.Id == id);
 
             review.UpVote++;
@@ -130,7 +133,6 @@ namespace B4.Pages
         {
             userId = UserId;
             var review = databaseContext.Reviews
-                .Include(r => r.Votes)
                 .First(r => r.Id == id);
 
             review.DownVote++;

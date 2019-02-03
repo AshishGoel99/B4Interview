@@ -359,9 +359,9 @@ namespace B4Interview.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    JobId = table.Column<int>(nullable: false),
+                    JobId = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
-                    QuestionId = table.Column<int>(nullable: false)
+                    QuestionId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

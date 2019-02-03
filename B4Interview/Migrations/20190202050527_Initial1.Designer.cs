@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B4Interview.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190130065033_Initial")]
-    partial class Initial
+    [Migration("20190202050527_Initial1")]
+    partial class Initial1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -248,6 +248,20 @@ namespace B4Interview.Migrations
                     b.HasIndex("ReferrerId");
 
                     b.ToTable("Jobs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CompanyId = 1,
+                            Description = "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.",
+                            Experience = "4-5 years",
+                            InActive = false,
+                            Location = "Noida",
+                            PostedOn = new DateTime(2019, 2, 2, 10, 35, 26, 63, DateTimeKind.Local).AddTicks(1804),
+                            ReferrerId = "aa19f5e5-c955-461b-94a5-73ad2ffc9d47",
+                            Title = "Toolkit API Developer"
+                        });
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.JobApplication", b =>
@@ -375,11 +389,11 @@ namespace B4Interview.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("JobId");
+                    b.Property<int?>("JobId");
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("QuestionId");
+                    b.Property<int?>("QuestionId");
 
                     b.Property<string>("UserId");
 
@@ -652,8 +666,7 @@ namespace B4Interview.Migrations
                 {
                     b.HasOne("B4Interview.DataLayer.Models.Job", "Job")
                         .WithMany("Skills")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("JobId");
 
                     b.HasOne("B4Interview.DataLayer.Models.ApplicationUser", "User")
                         .WithMany("Skills")

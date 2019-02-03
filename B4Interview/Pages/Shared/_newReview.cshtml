@@ -35,7 +35,7 @@
                         </div>
                         <div class="form-group col-4">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" name="Input.Anonymous" id="customCheck1">
+                                <input type="checkbox" class="custom-control-input" onclick="setChkValue(this)" name="Input.Anonymous" id="customCheck1">
                                 <label class="custom-control-label small" for="customCheck1">Go Anonymous?</label>
                             </div>
                         </div>
@@ -53,7 +53,10 @@
                         <input type="text" class="form-control" name="Input.Tags" id="high" placeholder="Highlights">
                     </div>
                     <hr />
-                    <button type="submit" class="btn btn-primary float-right" asp-page="Review">Submit</button>
+                    @{
+                        var returnUrl = Context.Request.Path.Value + Context.Request.QueryString.Value;
+                    }
+                    <button type="submit" class="btn btn-primary float-right" asp-page="Review" asp-route-returnUrl="@returnUrl">Submit</button>
                 </form>
             </div>
         </div>

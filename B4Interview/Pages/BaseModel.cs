@@ -23,10 +23,16 @@ namespace B4Interview.Pages
             get
             {
                 if (User.Identity.IsAuthenticated)
+                {
                     return User.FindFirstValue(ClaimTypes.NameIdentifier);
+                }
+
                 return null;
             }
         }
+
+        [TempData]
+        public string StatusMessage { get; set; }
 
         public BaseModel(DatabaseContext databaseContext)
         {
@@ -53,11 +59,12 @@ namespace B4Interview.Pages
             base.OnPageHandlerExecuting(context);
         }
 
-        public IQueryable<T> GetPagedData<T>(IQueryable<T> records)
+        public IQueryable<T> GetPagedData<T>(IOrderedQueryable<T> records)
         {
             if (PageSize == 0)//this is default
+            {
                 PageSize = 12;
-
+            }
 
             var remains = records.Count() - (PageSize * (Index + 1));
             var remainingPagesCount = remains > 0 ? remains / PageSize : 0;

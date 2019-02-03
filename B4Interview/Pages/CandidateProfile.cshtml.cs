@@ -16,7 +16,6 @@ namespace B4Interview.Pages
         public void OnGet(string id)
         {
             Candidate = databaseContext.Users
-                .Include(c => c.Skills)
                 .First(u => u.Id == id);
         }
 
