@@ -5,15 +5,99 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<div class="card w75">
-    <form>
-        <div class="form-group">
-            <label for="title">Job Title</label>
-            <input type="text" class="form-control" name="Input.Title">
-        </div>
-        <div class="form-group">
-            <label for="title">Job Title</label>
-            <input type="text" class="form-control" name="Input.Title">
-        </div>
-    </form>
+<div class="card w-75">
+    <div class="card-body">
+        <form>
+            <div class="form-group">
+                <label>Job Title</label>
+                <input type="text" class="form-control" name="Input.Title">
+            </div>
+            <div class="form-group">
+                <label>Experience Required</label>
+                <input type="text" class="form-control" name="Input.Experience">
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" class="form-control" name="Input.Location">
+            </div>
+            <div class="form-group">
+                <label>Detail</label>
+                <input type="text" class="form-control" name="Input.Description">
+            </div>
+
+            <div class="row">
+                <div class="offset-10 col-2 float-right">
+                    <button class="btn btn-sm btn-outline-primary" onclick="addRound()">Add Round</button>
+                </div>
+            </div><br />
+
+            <div class="row" id="rounds">
+            </div>
+
+            <div class="col-12 d-none" id="roundTmpl">
+                <div class="card small bg-light">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="offset-9 col-3">
+                                <label>Select Round</label>
+                                <select name="Input.Rounds.Type" class="form-control">
+                                    @foreach (var roundType in Enum.GetValues(typeof(B4Interview.DataLayer.Models.RoundType)))
+                                    {
+                                        <option value="@roundType.ToString()">@roundType.ToString()</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Round Overview</label>
+                                <textarea class="form-control" name="Input.Rounds.Desc" rows="1"></textarea>
+                            </div>
+                        </div>
+                        <div id="questions">
+                            <label>Questions</label>
+                            <div class="row">
+                                <div class="col-10">
+                                    <input type="text" class="form-control" name="Input.Rounds.Question" />
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-sm" onclick="addQuestion()"><i class="fas fa-plus-circle"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-none" id="qTmpl">
+                            <div class="col-10">
+                                <input type="text" class="form-control" name="Input.Rounds.Question" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <label>Source</label>
+                <input type="text" class="form-control w-25" name="Input.Source">
+            </div>
+            <br />
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary float-right">Save Interview</button>
+            </div>
+        </form>
+    </div>
 </div>
+
+@section Scripts{
+    <script>
+        function addRound() {
+            event.preventDefault();
+            var clone = $('#roundTmpl').clone().removeClass('d-none');
+            $('#rounds').append(clone);
+        }
+
+        function addQuestion() {
+            event.preventDefault();
+            var clone = $('#qTmpl').clone().removeClass('d-none');
+            $('#questions').append(clone);
+        }
+    </script>
+}
