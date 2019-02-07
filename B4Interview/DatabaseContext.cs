@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace B4Interview
@@ -22,6 +23,7 @@ namespace B4Interview
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Interview> Interviews { get; set; }
         public DbSet<JobApplication> JobApplications { get; set; }
+        public DbSet<Skill> Skills { get; internal set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -126,7 +128,7 @@ namespace B4Interview
             modelBuilder.Entity<Gallery>().HasData(gallery1, gallery2);
             modelBuilder.Entity<Review>().HasData(review1, review2);
             modelBuilder.Entity<Tag>().HasData(tag1, tag2, tag3);
-            modelBuilder.Entity<Job>().HasData(job1);
+            //modelBuilder.Entity<Job>().HasData(job1);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

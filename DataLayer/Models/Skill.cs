@@ -13,7 +13,7 @@ namespace B4Interview.DataLayer.Models
         public virtual ApplicationUser User { get; set; }
         public string UserId { get; set; }
 
-        public virtual ICollection<Question> Question { get; set; }
-        public int? QuestionId { get; set; }
+        public virtual ICollection<Question> Questions { get; set; }
+        //public int? QuestionId { get; set; }
     }
 }

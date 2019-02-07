@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B4Interview.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190202045608_Initial")]
+    [Migration("20190207094452_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -175,9 +175,9 @@ namespace B4Interview.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CompanyId");
+                    b.Property<string>("CandidateId");
 
-                    b.Property<short>("Difficulty");
+                    b.Property<int>("CompanyId");
 
                     b.Property<decimal>("DownVote");
 
@@ -195,6 +195,8 @@ namespace B4Interview.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CandidateId");
+
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Interviews");
@@ -210,7 +212,7 @@ namespace B4Interview.Migrations
 
                     b.Property<int>("InterviewId");
 
-                    b.Property<int>("RoundType");
+                    b.Property<short>("RoundType");
 
                     b.HasKey("Id");
 
@@ -279,7 +281,7 @@ namespace B4Interview.Migrations
 
                     b.Property<int>("InterviewRoundId");
 
-                    b.Property<int>("SkillId");
+                    b.Property<int?>("SkillId");
 
                     b.HasKey("Id");
 
@@ -379,8 +381,6 @@ namespace B4Interview.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("QuestionId");
-
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -389,7 +389,7 @@ namespace B4Interview.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Skill");
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Tag", b =>
@@ -585,6 +585,10 @@ namespace B4Interview.Migrations
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Interview", b =>
                 {
+                    b.HasOne("B4Interview.DataLayer.Models.ApplicationUser", "Candidate")
+                        .WithMany("Interviews")
+                        .HasForeignKey("CandidateId");
+
                     b.HasOne("B4Interview.DataLayer.Models.Company", "Company")
                         .WithMany("Interviews")
                         .HasForeignKey("CompanyId")
@@ -631,9 +635,8 @@ namespace B4Interview.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("B4Interview.DataLayer.Models.Skill", "Skill")
-                        .WithMany("Question")
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany("Questions")
+                        .HasForeignKey("SkillId");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Review", b =>

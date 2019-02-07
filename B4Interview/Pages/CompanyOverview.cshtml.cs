@@ -26,7 +26,7 @@ namespace B4Interview.Pages
             {
                 return new JsonResult(
                 databaseContext.Jobs
-                .Where(c => c.Title.Contains(query) || c.Skills.Any(s => s.Name == query))
+                .Where(c => c.Title.ToUpper().Contains(query.ToUpper()) || c.Skills.Any(s => s.Name.ToUpper().Contains(query.ToUpper())))
                 .Select(c => c.Title)
                 );
             }
@@ -45,7 +45,16 @@ namespace B4Interview.Pages
         {
             return new JsonResult(
             databaseContext.Companies
-            .Where(c => c.Name.Contains(query) || c.Identifier.Contains(query))
+            .Where(c => c.Name.ToUpper().Contains(query.ToUpper()) || c.Identifier.ToUpper().Contains(query.ToUpper()))
+            .Select(c => c.Name)
+            );
+        }
+
+        public JsonResult OnGetSkills(string query)
+        {
+            return new JsonResult(
+            databaseContext.Skills
+            .Where(c => c.Name.ToUpper().Contains(query.ToUpper()))
             .Select(c => c.Name)
             );
         }

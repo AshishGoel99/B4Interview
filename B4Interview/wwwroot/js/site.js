@@ -47,13 +47,28 @@ $(document).ready(function () {
         minLength: 3
     }, {
             source: function (query, syncCb, asyncCb) {
-                $.getJSON('/CompanyOverview?handler=Names&type=' + $("#searchType").val() + '&query=' + query, function (data) {
+                $.getJSON('/CompanyOverview?handler=Names&query=' + query, function (data) {
                     console.log(data);
                     asyncCb(data);
                 })
             }
         });
 });
+
+function skillsTypeahead() {
+    $('#skillSearch.typeahead').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 2
+    }, {
+            source: function (query, syncCb, asyncCb) {
+                $.getJSON('/CompanyOverview?handler=Skills&query=' + query, function (data) {
+                    console.log(data);
+                    asyncCb(data);
+                })
+            }
+        });
+}
 
 function setChkValue(element) {
     let elem = $(element);

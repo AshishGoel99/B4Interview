@@ -173,9 +173,9 @@ namespace B4Interview.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CompanyId");
+                    b.Property<string>("CandidateId");
 
-                    b.Property<short>("Difficulty");
+                    b.Property<int>("CompanyId");
 
                     b.Property<decimal>("DownVote");
 
@@ -193,6 +193,8 @@ namespace B4Interview.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CandidateId");
+
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Interviews");
@@ -208,7 +210,7 @@ namespace B4Interview.Migrations
 
                     b.Property<int>("InterviewId");
 
-                    b.Property<int>("RoundType");
+                    b.Property<short>("RoundType");
 
                     b.HasKey("Id");
 
@@ -246,20 +248,6 @@ namespace B4Interview.Migrations
                     b.HasIndex("ReferrerId");
 
                     b.ToTable("Jobs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CompanyId = 1,
-                            Description = "Toolkit API Developer India,NoidaJob DescriptionThis is for an API developer for Delphix DB Lab.",
-                            Experience = "4-5 years",
-                            InActive = false,
-                            Location = "Noida",
-                            PostedOn = new DateTime(2019, 2, 2, 10, 35, 26, 63, DateTimeKind.Local).AddTicks(1804),
-                            ReferrerId = "aa19f5e5-c955-461b-94a5-73ad2ffc9d47",
-                            Title = "Toolkit API Developer"
-                        });
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.JobApplication", b =>
@@ -291,7 +279,7 @@ namespace B4Interview.Migrations
 
                     b.Property<int>("InterviewRoundId");
 
-                    b.Property<int>("SkillId");
+                    b.Property<int?>("SkillId");
 
                     b.HasKey("Id");
 
@@ -391,8 +379,6 @@ namespace B4Interview.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("QuestionId");
-
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -401,7 +387,7 @@ namespace B4Interview.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Skill");
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Tag", b =>
@@ -597,6 +583,10 @@ namespace B4Interview.Migrations
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Interview", b =>
                 {
+                    b.HasOne("B4Interview.DataLayer.Models.ApplicationUser", "Candidate")
+                        .WithMany("Interviews")
+                        .HasForeignKey("CandidateId");
+
                     b.HasOne("B4Interview.DataLayer.Models.Company", "Company")
                         .WithMany("Interviews")
                         .HasForeignKey("CompanyId")
@@ -643,9 +633,8 @@ namespace B4Interview.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("B4Interview.DataLayer.Models.Skill", "Skill")
-                        .WithMany("Question")
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany("Questions")
+                        .HasForeignKey("SkillId");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Review", b =>

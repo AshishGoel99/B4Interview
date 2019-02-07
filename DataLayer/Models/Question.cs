@@ -9,6 +9,6 @@
         public int InterviewRoundId { get; set; }
 
         public virtual Skill Skill { get; set; }
-        public int SkillId { get; set; }
+        public int? SkillId { get; set; }
     }
 }
