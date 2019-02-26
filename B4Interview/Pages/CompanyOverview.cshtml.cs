@@ -1,6 +1,5 @@
 ﻿using B4Interview.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace B4Interview.Pages
@@ -30,33 +29,48 @@ namespace B4Interview.Pages
                 .Select(c => c.Title)
                 );
             }
+            else if (type.ToUpper() == "INTERVIEWS")
+            {
+                var companies = GetCompanies(query);
+                var skills = GetSkills(query);
+
+                var positions = databaseContext.Interviews
+                .Where(c => c.Title.ToUpper().Contains(query.ToUpper()))
+                .Select(c => c.Title)
+                .Distinct();
+
+                return new JsonResult(companies.Concat(positions).Concat(skills));
+            }
             else
             {
                 return OnGetNames(query);
-                //return new JsonResult(
-                //_context.Companies
-                //.Where(c => c.Name.Contains(query) || c.Identifier.Contains(query))
-                //.Select(c => c.Name)
-                //);
             }
         }
 
         public JsonResult OnGetNames(string query)
         {
-            return new JsonResult(
-            databaseContext.Companies
-            .Where(c => c.Name.ToUpper().Contains(query.ToUpper()) || c.Identifier.ToUpper().Contains(query.ToUpper()))
-            .Select(c => c.Name)
-            );
+            return new JsonResult(GetCompanies(query));
         }
 
         public JsonResult OnGetSkills(string query)
         {
-            return new JsonResult(
-            databaseContext.Skills
+            return new JsonResult(GetSkills(query));
+        }
+
+        private IQueryable<string> GetCompanies(string query)
+        {
+            return databaseContext.Companies
+                .Where(c => c.Name.ToUpper().Contains(query.ToUpper())
+                            ||
+                            c.Identifier.ToUpper().Contains(query.ToUpper()))
+                .Select(c => c.Name);
+        }
+
+        private IQueryable<string> GetSkills(string query)
+        {
+            return databaseContext.Skills
             .Where(c => c.Name.ToUpper().Contains(query.ToUpper()))
-            .Select(c => c.Name)
-            );
+            .Select(c => c.Name);
         }
     }
 }

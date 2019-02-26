@@ -4,36 +4,45 @@
     ViewData["Title"] = "NewInterview";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-
+<hr />
+<h5 class="p-3">Write your Interview Experience</h5>
 <div class="card w-75">
-    <div class="card-body">
-        <form>
+    <div class="card-body small">
+        <form method="post">
             <div class="form-group">
                 <label>Company Name</label>
-                <input type="text" class="form-control typeahead" name="Input.Company" id="companySearch">
+                @if (Model.Candidate.Employer != null)
+                {
+                    <input type="text" value="@Model.Candidate.Employer.Name" class="form-control typeahead w-50" name="Input.Company" id="companySearch" required>
+                }
+                else
+                {
+                    <input type="text" class="form-control typeahead w-50" name="Input.Company" id="companySearch" required>
+                }
             </div>
             <div class="form-group">
                 <label>Job Title</label>
-                <input type="text" class="form-control w-50" name="Input.Title">
+                <input type="text" class="form-control w-50" name="Input.Title" required>
             </div>
             <div class="form-group">
-                <label>Experience Required</label>
-                <input type="text" class="form-control w-25" name="Input.Experience">
+                <label>Experience</label>
+                <input type="text" class="form-control w-25" name="Input.Experience" required>
             </div>
             <div class="form-group">
                 <label>Location</label>
-                <input type="text" class="form-control w-50" name="Input.Location">
+                <input type="text" class="form-control w-50" name="Input.Location" required>
             </div>
             <div class="form-group">
                 <label>Detail</label>
-                <textarea rows="2" type="text" class="form-control" name="Input.Description"></textarea>
+                <textarea rows="2" type="text" class="form-control w-75" name="Input.Description"></textarea>
             </div>
 
             <div class="row">
-                <div class="offset-10 col-2 float-right">
-                    <button class="btn btn-sm btn-outline-primary" onclick="addRound()">Add Round</button>
+                <div class="col-2">
+                    <button class="btn btn-sm btn-outline-primary" onclick="addRound()"><i class="fas fa-plus"></i> Add Round</button>
                 </div>
-            </div><br />
+            </div>
+            <br />
 
             <div class="row" id="rounds">
             </div>
@@ -55,16 +64,16 @@
                         <div class="row">
                             <div class="col-12">
                                 <label>Round Overview</label>
-                                <textarea class="form-control" name="Input.Rounds.Desc" rows="1"></textarea>
+                                <textarea class="form-control w-75" name="Input.Rounds.Desc" rows="2"></textarea>
                             </div>
                         </div>
-                        <div id="questions" class="small">
+                        <div id="questions">
                             <br />
                             <div class="card">
                                 <div class="card-header">
                                     <ul class="nav nav-pills float-right card-header-pills">
                                         <li class="nav-item">
-                                            <a class="nav-link active" onclick="addQuestion()">Add</a>
+                                            <a class="nav-link active" style="cursor:pointer" onclick="addQuestion(this)">Add</a>
                                         </li>
                                     </ul>
                                     <h6 class="card-title"> Questions</h6>
@@ -72,24 +81,25 @@
                                 <div class="card-body">
                                     <div class="row mb-3">
                                         <div class="col-9">
-                                            <textarea rows="2" class="form-control" name="Input.Rounds.Questions.Question"></textarea>
+                                            <textarea rows="2" class="form-control" name="Input.Rounds.Questions[0].Question"></textarea>
                                         </div>
                                         <div class="col-3">
-                                            <input type="text" class="form-control typeahead" placeholder="Skill" id="skillSearch" name="Input.Rounds.Questions.Skill" />
+                                            <input type="text" class="form-control typeahead" placeholder="Skill" id="skillSearch" name="Input.Rounds.Questions[0].Skill" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3 d-none" id="qTmpl">
-                            <div class="col-9">
-                                <textarea rows="3" class="form-control" name="Input.Rounds.Questions.Question"></textarea>
-                            </div>
-                            <div class="col-3">
-                                <input type="text" class="form-control typeahead" placeholder="Skill" id="skillSearch" name="Input.Rounds.Questions.Skill" />
-                            </div>
-                        </div>
+
                     </div>
+                </div>
+            </div>
+            <div class="row mb-3 d-none" id="qTmpl">
+                <div class="col-9">
+                    <textarea rows="2" class="form-control" name="Input.Rounds.Questions[0].Question"></textarea>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Skill" id="skillSearch" name="Input.Rounds.Questions[0].Skill" />
                 </div>
             </div>
             <br />
@@ -112,18 +122,35 @@
 
 @section Scripts{
     <script>
+        var roundsCount = 0;
         function addRound() {
             event.preventDefault();
-            var clone = $('#roundTmpl').clone().removeClass('d-none');
-            clone.find('#skillSearch').addClass('typeahead');
+
+            var clone = $('#roundTmpl').clone().removeClass('d-none').removeAttr("id");
+            //clone.find('#skillSearch').addClass('typeahead');
+            clone.find('[name^="Input.Rounds"]').each(function () {
+                let elem = $(this);
+                elem.attr("name", elem.attr('name').replace('Input.Rounds', 'Input.Rounds[' + roundsCount + ']'));
+            });
+
+            clone.find('.nav-link').attr('onclick', 'addQuestion(this,' + roundsCount + ')')
+
             $('#rounds').append(clone);
+            roundsCount++;
+
             skillsTypeahead();
         }
 
-        function addQuestion() {
+        function addQuestion(element, roundIndex) {
             event.preventDefault();
-            var clone = $('#qTmpl').clone().removeClass('d-none');
-            $('#questions .card-body').append(clone);
+            var clone = $('#qTmpl').clone().removeClass('d-none').removeAttr("id");
+            clone.find('#skillSearch').addClass('typeahead');
+            var target = $(element).parents('.card:eq(0)').find('.card-body');
+            let quesCount = target.find('textarea').length;
+            clone.find('[name*="Questions[0]"]').each(function () {
+                $(this).attr('name', $(this).attr('name').replace('Input.Rounds.Questions[0]', 'Input.Rounds[' + roundIndex + '].Questions[' + quesCount + ']'));
+            });
+            target.append(clone);
         }
     </script>
 }

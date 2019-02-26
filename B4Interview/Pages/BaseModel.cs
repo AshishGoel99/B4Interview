@@ -69,6 +69,10 @@ namespace B4Interview.Pages
             var remains = records.Count() - (PageSize * (Index + 1));
             var remainingPagesCount = remains > 0 ? remains / PageSize : 0;
 
+            if (remains > 0 && remains % PageSize != 0)
+            {
+                remainingPagesCount++;
+            }
 
             PagingViewData = new ViewDataDictionary(ViewData)
              {

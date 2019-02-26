@@ -31,7 +31,7 @@ $(document).ready(function () {
     $('.navbar .typeahead').typeahead({
         hint: true,
         highlight: true,
-        minLength: 3
+        minLength: 2
     }, {
             source: function (query, syncCb, asyncCb) {
                 $.getJSON('/CompanyOverview?handler=NamesAndPosition&type=' + $("#searchType").val() + '&query=' + query, function (data) {
@@ -81,7 +81,12 @@ function formSubmit() {
     var query = $("#searchCtrl").val();
     var searchType = $("#searchType").val();
 
-    window.location.href = "/" + getModelName(searchType) + "?search=" + query;
+
+    let newUrl = "/" + getModelName(searchType) + "?search=" + query;
+    if (window.location.origin + newUrl == window.location.href)
+        window.location.reload();
+    else
+        window.location.href = newUrl;
 }
 
 function getModelName(searchType) {

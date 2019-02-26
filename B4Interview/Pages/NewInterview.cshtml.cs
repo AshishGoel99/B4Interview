@@ -9,13 +9,20 @@ namespace B4Interview.Pages
 {
     public class NewInterviewModel : BaseModel
     {
-
         public NewInterviewModel(DatabaseContext context) : base(context)
         { }
 
         public void OnGet()
         {
+            var userId = UserId;
+
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                Candidate = databaseContext.Users.Single(u => u.Id == userId);
+            }
         }
+
+        public ApplicationUser Candidate { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -83,7 +90,8 @@ namespace B4Interview.Pages
                     var iRound = new InterviewRound
                     {
                         Detail = round.Desc,
-                        RoundType = round.Type
+                        RoundType = round.Type,
+                        Questions = new List<Question>()
                     };
 
                     if (round.Questions != null && round.Questions.Any())
@@ -122,7 +130,7 @@ namespace B4Interview.Pages
             databaseContext.Interviews.Add(interview);
             databaseContext.SaveChanges();
 
-            return new RedirectToPageResult("Interviews");
+            return new RedirectToPageResult("Interview");
         }
     }
 

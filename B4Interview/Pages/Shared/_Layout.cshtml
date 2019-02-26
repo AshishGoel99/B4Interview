@@ -40,7 +40,7 @@
                             </div>
                         </li>
                         <li class="nav-item ml-1 mr-1">
-                            <a class="nav-link" asp-page="/Contact">Interviews</a>
+                            <a class="nav-link" asp-page="/Interview">Interviews</a>
                         </li>
                     </ul>
                 </div>
@@ -55,12 +55,13 @@
                 <div class="container">
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <form class="form-inline w-100 pt-3 pb-3">
-                        <input id="searchCtrl" type="text" class="w-100 typeahead form-control form-control-lg mr-sm-2" placeholder="Company Name, Job Title or Skill">
                         <select class="form-control form-control-lg mr-sm-2 w-25" id="searchType">
                             <option>Reviews</option>
                             <option>Interviews</option>
                             <option>Jobs</option>
                         </select>
+                        <input id="searchCtrl" type="text" class="w-100 typeahead form-control form-control-lg mr-sm-2" placeholder="Company Name, Job Title or Skill">
+
                         <button onclick="formSubmit()" class="btn btn-outline-success form-control-lg my-2 my-sm-0">Search</button>
                     </form><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->

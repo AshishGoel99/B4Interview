@@ -6,12 +6,12 @@
         public bool UpVote { get; set; }
 
         public virtual Review Review { get; set; }
-        public int ReviewId { get; set; }
+        public int? ReviewId { get; set; }
 
         public virtual ApplicationUser Voter { get; set; }
         public string VoterId { get; set; }
 
         public virtual Interview Interview { get; set; }
-        public int InterviewId { get; set; }
+        public int? InterviewId { get; set; }
     }
 }

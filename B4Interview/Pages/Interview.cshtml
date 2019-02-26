@@ -11,27 +11,34 @@
     var myUpVote = userId != null && interview.Votes.Any(v => v.UpVote && v.VoterId == userId);
     var myDownVote = userId != null && interview.Votes.Any(v => !v.UpVote && v.VoterId == userId);
 
-    <div class="card">
+    <div class="card w-75">
         <div class="card-header">
-            @interview.Title, (@interview.Experience)
-            <div class="blockquote-footer"><small>@interview.Company.Name, @interview.Location</small></div>
-            <small>@interview.Candidate.UserName</small>
+            <b>@interview.Title</b>, (@interview.Experience)
+            <div class="blockquote-footer">@interview.Company.Name, @interview.Location</div>
+            <span class="badge badge-primary float-right">@interview.Candidate.UserName</span>
         </div>
         <div class="card-body">
-            <h5 class="card-title">Rounds:</h5>
             @foreach (var round in interview.Rounds)
             {
-                <h6>@round.RoundType.ToString()</h6>
-                <p>@round.Detail</p>
-                @foreach (var question in round.Questions)
+                <h6>@((RoundType)round.RoundType) Round</h6>
+                <p class="card-text text-muted">@round.Detail</p>
+
+                @for (int i = 0; i < round.Questions.Count; i++)
                 {
-                    <div class="text-monospace">
-                        @question.Detail
+                    var question = round.Questions.ElementAt(i);
+                    <div class="card-body pb-0">
+                        <div class="text-monospace">
+                            <b>Q@(i + 1):</b> @question.Detail
+                        </div>
+                        @if (question.Skill != null && !string.IsNullOrWhiteSpace(question.Skill.Name))
+                        {
+                            <span class="badge badge-dark"> @question.Skill.Name</span>
+                        }
                     </div>
-                    <span class="badge badge-dark"> @question.Skill</span>
                 }
+                <hr />
             }
-            <div class="float-right blockquote-footer">via @interview.Source</div>
+            <div class="float-right blockquote-footer">via @((InterviewSource)interview.Source)</div>
         </div>
         <div class="card-footer bg-transparent text-muted">
             <ul class="list-inline">
@@ -48,4 +55,23 @@
             </ul>
         </div>
     </div>
+    <br />
+}
+
+@section Scripts{ 
+
+    <script>
+        function upVote(id) {
+            var that = this;
+            $.ajax('/Interview?handler=UpVote&id=' + id).then(function (data) {
+                window.location.reload();
+            });
+        }
+        function downVote(id) {
+            $.ajax('/Interview?handler=DownVote&id=' + id).then(function (data) {
+                window.location.reload();
+            });
+        }
+    </script>
+
 }

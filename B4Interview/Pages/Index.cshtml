@@ -7,6 +7,16 @@
     <div class="text-center w-75">
         <h1 class="display-4">Welcome</h1>
         <p>Search for Referral Jobs, Write Reviews of your company and Prepare before the Interview.</p>
+        <br /><br />
+        <div class="text-monospace float-left">
+            <label>Had an Interview recently? Share How it was &nbsp; </label>
+            <a class="btn btn-sm btn-success" asp-page="NewInterview"><i class="fas fa-plus"></i> Interview Review</a>
+            </div>
+        <br />
+        <div class="text-monospace float-right">
+            <label>Liked or disliked a Company? Share about it&nbsp;</label>
+            <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#addReviewDialog"><i class="fas fa-plus"></i> Company Review</button>
+        </div>
     </div>
 
     <div class="w-25">
@@ -35,3 +45,5 @@
         </div>
     </div>
 </div>
+
+<partial name="_newReview" />
