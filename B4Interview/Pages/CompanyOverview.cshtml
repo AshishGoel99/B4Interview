@@ -10,7 +10,7 @@
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 @{ var imgCount = 0;}
-                @foreach (var image in Model.Company.Images)
+                @foreach (var image in Model.CompanyResult.Images)
                 {
                     <div class="carousel-item @(imgCount==0?"active":"")">
                         <img src="@image.Url" class="d-block w-100 h-50" style="max-height:300px;" alt="...">
@@ -32,25 +32,25 @@
         </div>
         <br />
         <p class="card-text">
-            @Model.Company.About
+            @Model.CompanyResult.About
         </p>
         <hr />
         <form>
             <div class="form-group row m-0">
                 <label class="col-sm-3 col-form-label-sm font-weight-bold">WebSite</label>
-                <a class="btn-link" href="@Model.Company.WebSite" target="_blank">@Model.Company.WebSite</a>
+                <a class="btn-link" href="@Model.CompanyResult.WebSite" target="_blank">@Model.CompanyResult.WebSite</a>
             </div>
             <div class="form-group row m-0">
                 <label class="col-sm-3 col-form-label-sm font-weight-bold">Headquarters</label>
-                <label class="col-form-label-sm">@Model.Company.Headquarter</label>
+                <label class="col-form-label-sm">@Model.CompanyResult.Headquarter</label>
             </div>
             <div class="form-group row m-0">
                 <label class="col-sm-3 col-form-label-sm font-weight-bold">Size</label>
-                <label class="col-form-label-sm">@Model.Company.EmployeeStrength</label>
+                <label class="col-form-label-sm">@Model.CompanyResult.EmployeeStrength</label>
             </div>
             <div class="form-group row m-0">
                 <label class="col-sm-3 col-form-label-sm font-weight-bold">Industry</label>
-                <label class="col-form-label-sm">@Model.Company.Sector</label>
+                <label class="col-form-label-sm">@Model.CompanyResult.Sector</label>
             </div>
         </form>
     </div>

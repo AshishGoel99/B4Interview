@@ -13,5 +13,8 @@
 
         public virtual Interview Interview { get; set; }
         public int? InterviewId { get; set; }
+
+        public virtual Question Question { get; set; }
+        public int? QuestionId { get; set; }
     }
 }

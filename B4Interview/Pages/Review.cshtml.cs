@@ -21,12 +21,12 @@ namespace B4.Pages
         public async Task OnGetAsync()
         {
             Reviews = await databaseContext.Reviews
-                .Where(r => r.Company.Identifier == Search || r.Company.Name == Search)
+                .Where(r => r.Company.Identifier == Company)
                 .ToListAsync();
         }
 
         [BindProperty(SupportsGet = true)]
-        public string Search { get; set; }
+        public string Company { get; set; }
 
         [BindProperty]
         public ReviewData Input { get; set; }

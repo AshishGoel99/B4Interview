@@ -11,36 +11,30 @@ namespace B4Interview.Pages
 
         public IList<Interview> Interviews { get; set; }
 
-        public void OnGet(string search, string skill)
+        public void OnGet(string Company, string Position, string Skill)
         {
             var interviews = databaseContext.Interviews
                 .Where(i => i.Company != null);
 
-            if (!string.IsNullOrWhiteSpace(search))
+            if (!string.IsNullOrWhiteSpace(Company))
             {
                 interviews = interviews
                     .Where(
-                    i => i.Company.Name == search || i.Company.Identifier == search
-                    ||
-                    i.Title == search
-                    ||
-                    i.Rounds
-                        .Any(
-                            r => r.Questions
-                            .Any(
-                                q => q.Skill.Name.StartsWith(search)
-                                )
-                            )
-                    );
+                    i => i.Company.Identifier == Company);
             }
-            else if (!string.IsNullOrWhiteSpace(skill))
+            else if (!string.IsNullOrWhiteSpace(Position))
+            {
+                interviews = interviews.Where(i =>
+                    i.Identifier == Position);
+            }
+            else if (!string.IsNullOrWhiteSpace(Skill))
             {
                 interviews = interviews
                     .Where(i => i.Rounds
                         .Any(
                             r => r.Questions
                             .Any(
-                                q => q.Skill.Name.ToUpper() == skill.ToUpper()
+                                q => q.Skill.Identifier.StartsWith(Skill)
                                 )
                             )
                         );

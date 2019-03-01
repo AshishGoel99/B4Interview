@@ -21,7 +21,10 @@
             <li class="page-item"><a class="page-link" asp-page="@pageName" asp-route-index="@(index - i)" asp-route-pageSize="@pageSize">@((index + 1) - i )</a></li>
         }
 
-        <li class="page-item"><a class="page-link bg-dark text-white" href="#">@(index + 1) <span class="sr-only">(current)</span></a></li>
+        @if (index > 0 && remainingPagesCount > 0)
+        {
+            <li class="page-item"><a class="page-link bg-dark text-white" href="#">@(index + 1) <span class="sr-only">(current)</span></a></li>
+        }
 
         @for (int i = 0; i < remainingPagesCount && i < 2; i++)
         {

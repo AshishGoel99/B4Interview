@@ -1,4 +1,6 @@
-﻿namespace B4Interview.DataLayer.Models
+﻿using System.Collections.Generic;
+
+namespace B4Interview.DataLayer.Models
 {
     public class Question
     {
@@ -10,5 +12,8 @@
 
         public virtual Skill Skill { get; set; }
         public int? SkillId { get; set; }
+        public decimal UpVote { get; set; }
+        public decimal DownVote { get; set; }
+        public virtual ICollection<Vote> Votes { get; set; }
     }
 }

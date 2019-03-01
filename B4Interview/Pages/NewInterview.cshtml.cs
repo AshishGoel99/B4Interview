@@ -80,7 +80,8 @@ namespace B4Interview.Pages
                 PostedOn = DateTime.Now,
                 Source = Input.Source,
                 Title = Input.Title,
-                Rounds = new List<InterviewRound>()
+                Rounds = new List<InterviewRound>(),
+                Identifier = GetIdentifier(Input.Title)
             };
 
             if (Input.Rounds != null && Input.Rounds.Any())

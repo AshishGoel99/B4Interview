@@ -26,7 +26,7 @@
                         <div class="card-text small"> @job.Location</div>
                         <div class="card-text small">
                             @job.Company.Rating <span class="fas fa-star"></span>
-                            <a class="card-link" asp-page="Review" asp-route-search="@job.Company.Name"> (@job.Company.ReviewsCount.ToKMB() Reviews)</a>
+                            <a class="card-link" asp-page="Review" asp-route-Company="@job.Company.Identifier"> (@job.Company.ReviewsCount.ToKMB() Reviews)</a>
                         </div>
                     </div>
                     <div class="col-2">

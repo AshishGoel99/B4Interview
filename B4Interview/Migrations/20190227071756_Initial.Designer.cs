@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B4Interview.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190223101359_another1")]
-    partial class another1
+    [Migration("20190227071756_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -279,9 +279,13 @@ namespace B4Interview.Migrations
 
                     b.Property<string>("Detail");
 
+                    b.Property<decimal>("DownVote");
+
                     b.Property<int>("InterviewRoundId");
 
                     b.Property<int?>("SkillId");
+
+                    b.Property<decimal>("UpVote");
 
                     b.HasKey("Id");
 
@@ -289,7 +293,7 @@ namespace B4Interview.Migrations
 
                     b.HasIndex("SkillId");
 
-                    b.ToTable("Question");
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Review", b =>
@@ -437,6 +441,8 @@ namespace B4Interview.Migrations
 
                     b.Property<int?>("InterviewId");
 
+                    b.Property<int?>("QuestionId");
+
                     b.Property<int?>("ReviewId");
 
                     b.Property<bool>("UpVote");
@@ -446,6 +452,8 @@ namespace B4Interview.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("InterviewId");
+
+                    b.HasIndex("QuestionId");
 
                     b.HasIndex("ReviewId");
 
@@ -675,6 +683,10 @@ namespace B4Interview.Migrations
                     b.HasOne("B4Interview.DataLayer.Models.Interview", "Interview")
                         .WithMany("Votes")
                         .HasForeignKey("InterviewId");
+
+                    b.HasOne("B4Interview.DataLayer.Models.Question", "Question")
+                        .WithMany("Votes")
+                        .HasForeignKey("QuestionId");
 
                     b.HasOne("B4Interview.DataLayer.Models.Review", "Review")
                         .WithMany("Votes")

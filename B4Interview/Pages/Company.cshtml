@@ -46,12 +46,12 @@
                         <p>
                             <ul class="list-inline float-right align-bottom">
                                 <li class="list-inline-item">
-                                    <a asp-page="Review" asp-route-search="@company.Name" class="btn btn-sm btn-primary">
+                                    <a asp-page="Review" asp-route-Company="@company.Identifier" class="btn btn-sm btn-primary">
                                         Reviews <span class="badge badge-light">@company.Reviews.Count()</span>
                                     </a>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a asp-page="Interview" asp-route-search="@company.Name" class="btn btn-sm btn-success">
+                                    <a asp-page="Interview" asp-route-Company="@company.Identifier" class="btn btn-sm btn-success">
                                         Interviews <span class="badge badge-light">@company.Interviews.Count()</span>
                                     </a>
                                 </li>

@@ -14,8 +14,12 @@
     <div class="card w-75">
         <div class="card-header">
             <b>@interview.Title</b>, (@interview.Experience)
-            <div class="blockquote-footer">@interview.Company.Name, @interview.Location</div>
-            <span class="badge badge-primary float-right">@interview.Candidate.UserName</span>
+            <div class="blockquote-footer">
+                <span class="badge badge-light">
+                    @interview.Company.Name, @interview.Location
+                </span>
+            </div>
+            <span class="badge badge-light float-right">by @interview.Candidate.UserName</span>
         </div>
         <div class="card-body">
             @foreach (var round in interview.Rounds)
@@ -58,7 +62,7 @@
     <br />
 }
 
-@section Scripts{ 
+@section Scripts{
 
     <script>
         function upVote(id) {

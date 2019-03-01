@@ -1,4 +1,4 @@
-﻿@page "{search?}"
+﻿@page "{Company?}"
 @model B4.Pages.ReviewModel
 @using System.Security.Claims
 
@@ -13,7 +13,7 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Add a review to share your story</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" data-toggle="modal" data-target="#addReviewDialog" data-company="@Model.Search"></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" data-toggle="modal" data-target="#addReviewDialog" data-company="@Model.Company"></textarea>
             </div>
         </div>
     </div>

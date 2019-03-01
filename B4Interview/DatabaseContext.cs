@@ -24,6 +24,7 @@ namespace B4Interview
         public DbSet<Interview> Interviews { get; set; }
         public DbSet<JobApplication> JobApplications { get; set; }
         public DbSet<Skill> Skills { get; internal set; }
+        public DbSet<Question> Questions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -42,6 +42,9 @@
                         <li class="nav-item ml-1 mr-1">
                             <a class="nav-link" asp-page="/Interview">Interviews</a>
                         </li>
+                        <li class="nav-item ml-1 mr-1">
+                            <a class="nav-link" asp-page="/Questions">Questions</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -49,7 +52,7 @@
 
         <partial name="..\..\Areas\Identity\Pages\Account\Manage\_StatusMessage.cshtml" for="@ViewContext.TempData["StatusMessage"]" />
 
-        @if (!ViewContext.RouteData.Values.Any(v => v.Value.ToString() == "Identity" || v.Value.ToString().Contains("CandidateProfile")))
+        @if (!ViewContext.RouteData.Values.Any(v => v.Value.ToString() == "Identity" || v.Value.ToString().Contains("CandidateProfile") || v.Value.ToString().Contains("NewInterview")))
         {
             <nav class="navbar navbar-default">
                 <div class="container">
@@ -59,6 +62,7 @@
                             <option>Reviews</option>
                             <option>Interviews</option>
                             <option>Jobs</option>
+                            <option>Questions</option>
                         </select>
                         <input id="searchCtrl" type="text" class="w-100 typeahead form-control form-control-lg mr-sm-2" placeholder="Company Name, Job Title or Skill">
 

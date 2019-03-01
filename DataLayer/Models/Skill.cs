@@ -6,6 +6,7 @@ namespace B4Interview.DataLayer.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Identifier { get; set; }
 
         public virtual Job Job { get; set; }
         public int? JobId { get; set; }

@@ -5,13 +5,6 @@
 
 $(document).ready(function () {
 
-
-    //$('.navbar .dropdown').hover(function () {
-    //    $(this).find('.dropdown-menu').first().stop(true, true).slideDown(150);
-    //}, function () {
-    //    $(this).find('.dropdown-menu').first().stop(true, true).slideUp(105)
-    //});
-
     $("#isFresher").click(function () {
         var tElem = $("#companySearch");
         if (tElem.hasClass("disabled"))
@@ -33,13 +26,17 @@ $(document).ready(function () {
         highlight: true,
         minLength: 2
     }, {
+            display: 'label',
             source: function (query, syncCb, asyncCb) {
                 $.getJSON('/CompanyOverview?handler=NamesAndPosition&type=' + $("#searchType").val() + '&query=' + query, function (data) {
                     console.log(data);
                     asyncCb(data);
                 })
             }
-        });
+        }).bind('typeahead:select', function (ev, item) {
+            console.log(item);
+            window.selectedItem = item;
+        });;
 
     $('#companySearch.typeahead').typeahead({
         hint: true,
@@ -78,11 +75,12 @@ function setChkValue(element) {
 function formSubmit() {
     event.preventDefault();
 
-    var query = $("#searchCtrl").val();
+    //var query = $("#searchCtrl").val();
     var searchType = $("#searchType").val();
 
-
-    let newUrl = "/" + getModelName(searchType) + "?search=" + query;
+    //let newUrl = "/" + getModelName(searchType) + "?search=" + query;
+    let value = window.selectedItem;
+    let newUrl = "/" + getModelName(searchType) + "?" + value.category + "=" + value.identifier;
     if (window.location.origin + newUrl == window.location.href)
         window.location.reload();
     else
@@ -96,6 +94,8 @@ function getModelName(searchType) {
             return "Review";
         case "Interviews":
             return "Interview";
+        case "Questions":
+            return "Questions";
         case "Jobs":
             return "ReferralJob";
     }

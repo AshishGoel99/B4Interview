@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B4Interview.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190208154445_Initial")]
-    partial class Initial
+    [Migration("20190228084007_Initial1")]
+    partial class Initial1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -183,6 +183,8 @@ namespace B4Interview.Migrations
 
                     b.Property<string>("Experience");
 
+                    b.Property<string>("Identifier");
+
                     b.Property<string>("Location");
 
                     b.Property<DateTime>("PostedOn");
@@ -233,6 +235,8 @@ namespace B4Interview.Migrations
 
                     b.Property<string>("Experience");
 
+                    b.Property<string>("Identifier");
+
                     b.Property<bool>("InActive");
 
                     b.Property<string>("Location");
@@ -279,9 +283,13 @@ namespace B4Interview.Migrations
 
                     b.Property<string>("Detail");
 
+                    b.Property<decimal>("DownVote");
+
                     b.Property<int>("InterviewRoundId");
 
                     b.Property<int?>("SkillId");
+
+                    b.Property<decimal>("UpVote");
 
                     b.HasKey("Id");
 
@@ -289,7 +297,7 @@ namespace B4Interview.Migrations
 
                     b.HasIndex("SkillId");
 
-                    b.ToTable("Question");
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("B4Interview.DataLayer.Models.Review", b =>
@@ -377,6 +385,8 @@ namespace B4Interview.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Identifier");
+
                     b.Property<int?>("JobId");
 
                     b.Property<string>("Name");
@@ -435,9 +445,11 @@ namespace B4Interview.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("InterviewId");
+                    b.Property<int?>("InterviewId");
 
-                    b.Property<int>("ReviewId");
+                    b.Property<int?>("QuestionId");
+
+                    b.Property<int?>("ReviewId");
 
                     b.Property<bool>("UpVote");
 
@@ -446,6 +458,8 @@ namespace B4Interview.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("InterviewId");
+
+                    b.HasIndex("QuestionId");
 
                     b.HasIndex("ReviewId");
 
@@ -674,13 +688,15 @@ namespace B4Interview.Migrations
                 {
                     b.HasOne("B4Interview.DataLayer.Models.Interview", "Interview")
                         .WithMany("Votes")
-                        .HasForeignKey("InterviewId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("InterviewId");
+
+                    b.HasOne("B4Interview.DataLayer.Models.Question", "Question")
+                        .WithMany("Votes")
+                        .HasForeignKey("QuestionId");
 
                     b.HasOne("B4Interview.DataLayer.Models.Review", "Review")
                         .WithMany("Votes")
-                        .HasForeignKey("ReviewId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ReviewId");
 
                     b.HasOne("B4Interview.DataLayer.Models.ApplicationUser", "Voter")
                         .WithMany("Votes")

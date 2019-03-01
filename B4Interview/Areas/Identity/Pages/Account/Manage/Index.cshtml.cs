@@ -33,10 +33,7 @@ namespace B4Interview.Areas.Identity.Pages.Account.Manage
         public string Username { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
-
-        [TempData]
-        public string StatusMessage { get; set; }
-
+        
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -133,7 +130,8 @@ namespace B4Interview.Areas.Identity.Pages.Account.Manage
                 {
                     user.Skills.Add(new Skill
                     {
-                        Name = skill.Trim()
+                        Name = skill.Trim(),
+                        Identifier = GetIdentifier(skill.Trim())
                     });
                 }
             }

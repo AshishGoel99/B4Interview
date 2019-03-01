@@ -8,6 +8,7 @@ namespace B4Interview.DataLayer.Models
         public int Id { get; set; }
         public string Description { get; set; }
         public string Title { get; set; }
+        public string Identifier { get; set; }
         public string Location { get; set; }
         public string Experience { get; set; }
         public virtual Company Company { get; set; }

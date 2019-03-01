@@ -4,7 +4,6 @@
     ViewData["Title"] = "NewInterview";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-<hr />
 <h5 class="p-3">Write your Interview Experience</h5>
 <div class="card w-75">
     <div class="card-body small">
@@ -48,12 +47,12 @@
             </div>
 
             <div class="col-12 d-none" id="roundTmpl">
-                <div class="card small bg-light">
+                <div class="card bg-light">
                     <div class="card-body">
                         <div class="row">
                             <div class="offset-9 col-3">
                                 <label>Select Round</label>
-                                <select name="Input.Rounds.Type" class="form-control">
+                                <select name="Input.Rounds.Type" class="form-control form-control-sm">
                                     @foreach (RoundType roundType in Enum.GetValues(typeof(RoundType)))
                                     {
                                         <option value="@((short)roundType)">@roundType.ToString()</option>
@@ -105,7 +104,7 @@
             <br />
             <div class="form-group">
                 <label>Source</label>
-                <select name="Input.Source" class="form-control w-25">
+                <select name="Input.Source" class="form-control w-25 form-control-sm">
                     @foreach (InterviewSource source in Enum.GetValues(typeof(InterviewSource)))
                     {
                         <option value="@((short)source)">@source.ToString()</option>

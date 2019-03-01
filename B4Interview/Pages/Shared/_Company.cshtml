@@ -10,13 +10,13 @@
     <div class="card-header text-center">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <a class="nav-link @(currentModel.Contains("CompanyOverviewModel")? "active":"")" asp-page="CompanyOverview" asp-route-search="@Model.Search">Overview</a>
+                <a class="nav-link @(currentModel.Contains("CompanyOverviewModel")? "active":"")" asp-page="CompanyOverview" asp-route-Company="@Model.Company">Overview</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @(currentModel.Contains("ReviewModel")? "active":"")" asp-page="Review" asp-route-search="@Model.Search">Reviews</a>
+                <a class="nav-link @(currentModel.Contains("ReviewModel")? "active":"")" asp-page="Review" asp-route-Company="@Model.Company">Reviews</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @(currentModel.Contains("InterviewModel")? "active":"")" asp-page="Interview" asp-route-search="@Model.Search">Interviews</a>
+                <a class="nav-link @(currentModel.Contains("InterviewModel")? "active":"")" asp-page="Interview" asp-route-Company="@Model.Company">Interviews</a>
             </li>
         </ul>
     </div>

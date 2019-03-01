@@ -45,7 +45,8 @@ namespace B4Interview.Pages
                     Name = company.CompanyName,
                     Headquarter = company.Headquarters,
                     Sector = company.Industry,
-                    WebSite = company.WebSite
+                    WebSite = company.WebSite,
+                    Identifier = GetIdentifier(company.CompanyName)
                 });
             }
 

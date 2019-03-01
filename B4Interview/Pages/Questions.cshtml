@@ -1,0 +1,96 @@
+﻿@page
+@model B4Interview.Pages.QuestionsModel
+@{
+    ViewData["Title"] = "Questions";
+}
+
+<div class="card w-75">
+    <div class="card-header">
+        <h5 class="card-title">
+            Top Questions asked
+        </h5>
+    </div>
+    <div class="card-body">
+        @foreach (var question in Model.Questions)
+        {
+            var userId = Model.UserId;
+            var myUpVote = userId != null && question.Votes.Any(v => v.UpVote && v.VoterId == userId);
+            var myDownVote = userId != null && question.Votes.Any(v => !v.UpVote && v.VoterId == userId);
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="badge">Asked by - </span><span class="badge badge-success">@question.InterviewRound.Interview.Company.Name</span>,
+                    <span class="badge">&nbsp; Skill Used - </span><span class="badge badge-dark">@question.Skill.Name</span>
+                    <span class="badge float-right">@question.InterviewRound.Interview.PostedOn.ToMoment()</span>
+                </div>
+                <div class="card-body">
+                    <p class="text-monospace">
+                        <b>Q:</b> @question.Detail
+                    </p>
+                    <hr />
+                    <button id="btnUpvote" onclick="upVote(@question.Id)" type="button" class="btn btn-sm btn-outline-primary" @(myUpVote ? "disabled" : "")>
+                        @question.UpVote.ToKMB() | <i class="fas @(myUpVote?"fa-check":"fa-thumbs-up")"></i>
+                    </button> &nbsp;
+                    <button id="btnDownvote" onclick="downVote(@question.Id)" type="button" class="btn btn-sm btn-light" @(myDownVote ? "disabled" : "")>
+                        @question.DownVote.ToKMB() | <i class="fas @(myDownVote?"fa-check":"fa-thumbs-down")"></i>
+                    </button>
+                    <a class="btn btn-sm btn-secondary" href="@string.Format("{0}://{1}/Questions?Id={2}#disqus_thread", HttpContext.Request.Scheme, HttpContext.Request.Host,question.Id)" onclick="return onCommentsClick(this, @question.Id)">Comments</a>
+                </div>
+            </div>
+            <br />
+        }
+    </div>
+</div>
+
+<partial name="_Paging" view-data="Model.PagingViewData" />
+
+
+@section Scripts{
+    <script>
+        function upVote(id) {
+            var that = this;
+            $.ajax('/Questions?handler=UpVote&id=' + id).then(function (data) {
+                window.location.reload();
+            });
+        }
+        function downVote(id) {
+            $.ajax('/Questions?handler=DownVote&id=' + id).then(function (data) {
+                window.location.reload();
+            });
+        }
+
+        function onCommentsClick(element, id) {
+            event.preventDefault();
+            $('#disqus_thread').remove();
+            $('<div id="disqus_thread"></div>').appendTo($(element).parent()); // append the HTML to the control parent
+
+            // if Disqus exists, call it's reset method with new parameters
+            DISQUS.reset({
+                reload: true,
+                config: function () {
+                    this.page.identifier = id;
+                    this.page.url = window.location.href + '?Id=' + id + '/#!' + id;
+                }
+            });
+            return false;
+        }
+
+        /**
+        *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+        *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        /*
+        var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        */
+        (function () { // DON'T EDIT BELOW THIS LINE
+            debugger;
+            var d = document, s = d.createElement('script');
+            s.src = 'https://b4interview.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script id="dsq-count-scr" src="//b4interview.disqus.com/count.js" async></script>
+}

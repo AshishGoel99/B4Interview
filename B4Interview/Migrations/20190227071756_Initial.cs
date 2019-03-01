@@ -406,15 +406,45 @@ namespace B4Interview.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Detail = table.Column<string>(nullable: true),
+                    InterviewRoundId = table.Column<int>(nullable: false),
+                    SkillId = table.Column<int>(nullable: true),
+                    UpVote = table.Column<decimal>(nullable: false),
+                    DownVote = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Questions_InterviewRound_InterviewRoundId",
+                        column: x => x.InterviewRoundId,
+                        principalTable: "InterviewRound",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Questions_Skills_SkillId",
+                        column: x => x.SkillId,
+                        principalTable: "Skills",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Vote",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpVote = table.Column<bool>(nullable: false),
-                    ReviewId = table.Column<int>(nullable: false),
+                    ReviewId = table.Column<int>(nullable: true),
                     VoterId = table.Column<string>(nullable: true),
-                    InterviewId = table.Column<int>(nullable: false)
+                    InterviewId = table.Column<int>(nullable: true),
+                    QuestionId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -423,6 +453,12 @@ namespace B4Interview.Migrations
                         name: "FK_Vote_Interviews_InterviewId",
                         column: x => x.InterviewId,
                         principalTable: "Interviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Vote_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -435,33 +471,6 @@ namespace B4Interview.Migrations
                         name: "FK_Vote_AspNetUsers_VoterId",
                         column: x => x.VoterId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Question",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Detail = table.Column<string>(nullable: true),
-                    InterviewRoundId = table.Column<int>(nullable: false),
-                    SkillId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Question", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Question_InterviewRound_InterviewRoundId",
-                        column: x => x.InterviewRoundId,
-                        principalTable: "InterviewRound",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Question_Skills_SkillId",
-                        column: x => x.SkillId,
-                        principalTable: "Skills",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -589,13 +598,13 @@ namespace B4Interview.Migrations
                 column: "ReferrerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Question_InterviewRoundId",
-                table: "Question",
+                name: "IX_Questions_InterviewRoundId",
+                table: "Questions",
                 column: "InterviewRoundId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Question_SkillId",
-                table: "Question",
+                name: "IX_Questions_SkillId",
+                table: "Questions",
                 column: "SkillId");
 
             migrationBuilder.CreateIndex(
@@ -627,6 +636,11 @@ namespace B4Interview.Migrations
                 name: "IX_Vote_InterviewId",
                 table: "Vote",
                 column: "InterviewId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vote_QuestionId",
+                table: "Vote",
+                column: "QuestionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vote_ReviewId",
@@ -663,9 +677,6 @@ namespace B4Interview.Migrations
                 name: "JobApplications");
 
             migrationBuilder.DropTable(
-                name: "Question");
-
-            migrationBuilder.DropTable(
                 name: "Tag");
 
             migrationBuilder.DropTable(
@@ -675,13 +686,16 @@ namespace B4Interview.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Questions");
+
+            migrationBuilder.DropTable(
+                name: "Reviews");
+
+            migrationBuilder.DropTable(
                 name: "InterviewRound");
 
             migrationBuilder.DropTable(
                 name: "Skills");
-
-            migrationBuilder.DropTable(
-                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Interviews");

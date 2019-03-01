@@ -39,11 +39,17 @@ namespace B4Interview.Pages
             this.databaseContext = databaseContext;
         }
 
+        protected string GetIdentifier(string value)
+        {
+            return value.Replace(" ", "-");
+        }
+
         protected Company CreateCompany(string name)
         {
             var company = new Company
             {
-                Name = name
+                Name = name,
+                Identifier = GetIdentifier(name.Trim())
             };
 
             databaseContext.Companies.Add(company);
