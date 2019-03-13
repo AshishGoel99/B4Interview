@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "B4Interview", "B4Interview\B4Interview.csproj", "{7EC3F054-C844-4308-8C3A-73936B797189}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{92DEBFAD-E6F8-40FC-8190-F483614DE2F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{92DEBFAD-E6F8-40FC-8190-F483614DE2F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scrapper", "Scrapper\Scrapper.csproj", "{17DAE2EA-6ACC-4A5D-A728-0289A53AF827}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{92DEBFAD-E6F8-40FC-8190-F483614DE2F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92DEBFAD-E6F8-40FC-8190-F483614DE2F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92DEBFAD-E6F8-40FC-8190-F483614DE2F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17DAE2EA-6ACC-4A5D-A728-0289A53AF827}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17DAE2EA-6ACC-4A5D-A728-0289A53AF827}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17DAE2EA-6ACC-4A5D-A728-0289A53AF827}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17DAE2EA-6ACC-4A5D-A728-0289A53AF827}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
