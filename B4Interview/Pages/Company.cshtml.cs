@@ -13,7 +13,7 @@ namespace B4Interview.Pages
         public void OnGet()
         {
             var data = databaseContext.Companies
-                .OrderByDescending(c => c.Rating);
+                .OrderByDescending(c => c.Reviews.Count());
 
             Companies = GetPagedData(data).ToList();
         }

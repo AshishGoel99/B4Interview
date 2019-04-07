@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B4Interview.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190228084007_Initial1")]
-    partial class Initial1
+    [Migration("20190317171736_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -179,6 +179,8 @@ namespace B4Interview.Migrations
 
                     b.Property<int>("CompanyId");
 
+                    b.Property<string>("Description");
+
                     b.Property<decimal>("DownVote");
 
                     b.Property<string>("Experience");
@@ -213,6 +215,8 @@ namespace B4Interview.Migrations
                     b.Property<string>("Detail");
 
                     b.Property<int>("InterviewId");
+
+                    b.Property<string>("RoundName");
 
                     b.Property<short>("RoundType");
 

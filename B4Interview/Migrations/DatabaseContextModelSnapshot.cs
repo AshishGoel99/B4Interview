@@ -177,6 +177,8 @@ namespace B4Interview.Migrations
 
                     b.Property<int>("CompanyId");
 
+                    b.Property<string>("Description");
+
                     b.Property<decimal>("DownVote");
 
                     b.Property<string>("Experience");
@@ -211,6 +213,8 @@ namespace B4Interview.Migrations
                     b.Property<string>("Detail");
 
                     b.Property<int>("InterviewId");
+
+                    b.Property<string>("RoundName");
 
                     b.Property<short>("RoundType");
 

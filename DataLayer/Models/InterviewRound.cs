@@ -6,6 +6,7 @@ namespace B4Interview.DataLayer.Models
     {
         public int Id { get; set; }
         public short RoundType { get; set; }
+        public string RoundName { get; set; }
         public string Detail { get; set; }
 
         public virtual Interview Interview { get; set; }

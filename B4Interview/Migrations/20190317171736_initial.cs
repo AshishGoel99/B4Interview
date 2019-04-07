@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace B4Interview.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -215,6 +215,8 @@ namespace B4Interview.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Identifier = table.Column<string>(nullable: true),
                     Source = table.Column<short>(nullable: false),
                     Location = table.Column<string>(nullable: true),
                     Experience = table.Column<string>(nullable: true),
@@ -249,6 +251,7 @@ namespace B4Interview.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
+                    Identifier = table.Column<string>(nullable: true),
                     Location = table.Column<string>(nullable: true),
                     Experience = table.Column<string>(nullable: true),
                     CompanyId = table.Column<int>(nullable: false),
@@ -318,6 +321,7 @@ namespace B4Interview.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     RoundType = table.Column<short>(nullable: false),
+                    RoundName = table.Column<string>(nullable: true),
                     Detail = table.Column<string>(nullable: true),
                     InterviewId = table.Column<int>(nullable: false)
                 },
@@ -365,6 +369,7 @@ namespace B4Interview.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
+                    Identifier = table.Column<string>(nullable: true),
                     JobId = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },

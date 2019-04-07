@@ -5,62 +5,82 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-@foreach (var interview in Model.Interviews)
-{
-    var userId = Model.UserId;
-    var myUpVote = userId != null && interview.Votes.Any(v => v.UpVote && v.VoterId == userId);
-    var myDownVote = userId != null && interview.Votes.Any(v => !v.UpVote && v.VoterId == userId);
+<div class="card w-75">
+    <div class="card-body">
+        <h5> Recent Interviews</h5>
+        <br />
+        @foreach (var interview in Model.Interviews)
+        {
+            var userId = Model.UserId;
+            var myUpVote = userId != null && interview.Votes.Any(v => v.UpVote && v.VoterId == userId);
+            var myDownVote = userId != null && interview.Votes.Any(v => !v.UpVote && v.VoterId == userId);
 
-    <div class="card w-75">
-        <div class="card-header">
-            <b>@interview.Title</b>, (@interview.Experience)
-            <div class="blockquote-footer">
-                <span class="badge badge-light">
-                    @interview.Company.Name, @interview.Location
-                </span>
-            </div>
-            <span class="badge badge-light float-right">by @interview.Candidate.UserName</span>
-        </div>
-        <div class="card-body">
-            @foreach (var round in interview.Rounds)
-            {
-                <h6>@((RoundType)round.RoundType) Round</h6>
-                <p class="card-text text-muted">@round.Detail</p>
+            <div class="card">
+                <div class="card-header">
 
-                @for (int i = 0; i < round.Questions.Count; i++)
-                {
-                    var question = round.Questions.ElementAt(i);
-                    <div class="card-body pb-0">
-                        <div class="text-monospace">
-                            <b>Q@(i + 1):</b> @question.Detail
-                        </div>
-                        @if (question.Skill != null && !string.IsNullOrWhiteSpace(question.Skill.Name))
-                        {
-                            <span class="badge badge-dark"> @question.Skill.Name</span>
-                        }
+                    @if (string.IsNullOrWhiteSpace(interview.Experience))
+                    {
+                        <h6>@interview.Title</h6>
+                    }
+                    else
+                    {
+                        <h6>@interview.Title</h6> <span class="badge badge-dark">@interview.Experience</span>
+                    }
+
+
+                    <div>
+                        <span class="badge font-weight-normal badge-success">
+                            @interview.Company.Name, @interview.Location
+                        </span>
+                        <span class="badge badge-light float-right">by @(interview.Candidate == null ? "Anonymous" : interview.Candidate.UserName)</span>
                     </div>
-                }
-                <hr />
-            }
-            <div class="float-right blockquote-footer">via @((InterviewSource)interview.Source)</div>
-        </div>
-        <div class="card-footer bg-transparent text-muted">
-            <ul class="list-inline">
-                <li class="list-inline-item">
-                    <button id="btnUpvote" onclick="upVote(@interview.Id)" type="button" class="btn btn-sm btn-outline-primary" @(myUpVote ? "disabled" : "")>
-                        @interview.UpVote.ToKMB() | <i class="fas @(myUpVote?"fa-check":"fa-thumbs-up")"></i>
-                    </button>
-                </li>
-                <li class="list-inline-item">
-                    <button id="btnDownvote" onclick="downVote(@interview.Id)" type="button" class="btn btn-sm btn-outline-secondary" @(myDownVote ? "disabled" : "")>
-                        @interview.DownVote.ToKMB() | <i class="fas @(myDownVote?"fa-check":"fa-thumbs-down")"></i>
-                    </button>
-                </li>
-            </ul>
-        </div>
+                </div>
+                <div class="card-body">
+                    @foreach (var round in interview.Rounds)
+                    {
+                        @*<h6>@((RoundType)round.RoundType) Round</h6>*@
+                        <h6>@round.RoundName</h6>
+                        <p class="card-text text-muted">@round.Detail</p>
+
+                        @for (int i = 0; i < round.Questions.Count; i++)
+                        {
+                            var question = round.Questions.ElementAt(i);
+                            <div class="card-body pb-0">
+                                <div class="text-monospace">
+                                    <b>Q@(i + 1):</b> @question.Detail
+                                </div>
+                                @if (question.Skill != null && !string.IsNullOrWhiteSpace(question.Skill.Name))
+                                {
+                                    <span class="badge badge-dark"> @question.Skill.Name</span>
+                                }
+                            </div>
+                        }
+                        <hr />
+                    }
+                    <div class="float-right blockquote-footer">via @((InterviewSource)interview.Source)</div>
+                </div>
+                <div class="card-footer bg-transparent text-muted">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <button id="btnUpvote" onclick="upVote(@interview.Id)" type="button" class="btn btn-sm btn-outline-primary" @(myUpVote ? "disabled" : "")>
+                                @interview.UpVote.ToKMB() | <i class="fas @(myUpVote?"fa-check":"fa-thumbs-up")"></i>
+                            </button>
+                        </li>
+                        <li class="list-inline-item">
+                            <button id="btnDownvote" onclick="downVote(@interview.Id)" type="button" class="btn btn-sm btn-outline-secondary" @(myDownVote ? "disabled" : "")>
+                                @interview.DownVote.ToKMB() | <i class="fas @(myDownVote?"fa-check":"fa-thumbs-down")"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br />
+        }
+
+
+        <partial name="_Paging" view-data="Model.PagingViewData" />
     </div>
-    <br />
-}
+</div>
 
 @section Scripts{
 

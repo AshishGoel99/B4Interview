@@ -72,7 +72,9 @@ namespace B4Interview.Pages
                 PageSize = 12;
             }
 
-            var remains = records.Count() - (PageSize * (Index + 1));
+            if (Index == 0) Index = 1;
+
+            var remains = records.Count() - (PageSize * Index);
             var remainingPagesCount = remains > 0 ? remains / PageSize : 0;
 
             if (remains > 0 && remains % PageSize != 0)
@@ -85,8 +87,10 @@ namespace B4Interview.Pages
                  { "Index", Index },
                  { "Size", PageSize },
                  { "RemainingPagesCount", remainingPagesCount },
-                 { "Page", RouteData.Values["page"].ToString() }
+                { "Page", RouteData.Values["page"].ToString()},
+                 { "Query", Request.QueryString.Value}
              };
+
 
             return records
                 .Skip(Index * PageSize)

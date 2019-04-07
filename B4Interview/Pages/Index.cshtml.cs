@@ -26,27 +26,110 @@ namespace B4Interview.Pages
 
             RecentReferralJobs = jobs.OrderByDescending(j => j.PostedOn).Take(5).ToList();
 
-
-            //addSomeData();
+            //addCompanies();
+            //addInterviews();
+            //addReviews();
         }
 
-        private void addSomeData()
+        private void addInterviews()
         {
-            var data = "";
+            var data = System.IO.File.ReadAllText(@"C:\Users\Ashish\Desktop\Interviews(Ambition).json");
+            var interviews = JsonConvert.DeserializeObject<IEnumerable<interview>>(data);
+
+            var groups = interviews.GroupBy(g => g.Company);
+
+            foreach (var group in groups)
+            {
+                var companyId = databaseContext.Companies.SingleOrDefault(c => c.Name == group.Key || c.Identifier.ToUpper() == group.Key.ToUpper())?.Id;
+
+                if (!companyId.HasValue)
+                {
+                    continue;
+                }
+
+                foreach (var interview in group)
+                {
+                    var intvw = new Interview
+                    {
+                        CompanyId = companyId.Value,
+                        Title = interview.JobTitle,
+                        Description = interview.Description ?? interview.OverAllExp,
+                        PostedOn = string.IsNullOrWhiteSpace(interview.PostedOn) ? DateTime.MinValue : DateTime.ParseExact(interview.PostedOn, "dd MMM yyyy", null),
+                        Rounds = new List<InterviewRound>()
+                    };
+
+                    foreach (var round in interview.Rounds)
+                    {
+                        var r = new InterviewRound
+                        {
+                            Detail = round.Description,
+                            RoundName = round.Name,
+                            Questions = new List<Question>()
+                        };
+
+                        foreach (var q in round.Questions)
+                        {
+                            var ques = new Question
+                            {
+                                Detail = q.Desc
+                            };
+                            r.Questions.Add(ques);
+                        }
+                        intvw.Rounds.Add(r);
+                    }
+
+                    databaseContext.Interviews.Add(intvw);
+                }
+            }
+            databaseContext.SaveChanges();
+        }
+
+        private void addReviews()
+        {
+            var data = System.IO.File.ReadAllText(@"C:\Users\Ashish\Documents\Devart\dbForge Studio for SQL Server\Export\Reviews 20190317 2135.json");
+            var reviews = JsonConvert.DeserializeObject<IEnumerable<review>>(data);
+
+            var groups = reviews.GroupBy(r => r.Company);
+
+            foreach (var group in groups)
+            {
+                var companyId = databaseContext.Companies.Single(c => c.Name == group.Key).Id;
+
+                foreach (var review in group)
+                {
+                    databaseContext.Reviews.Add(new Review
+                    {
+                        AutherInfo = review.AboutEmployee,
+                        CompanyId = companyId,
+                        Pros = review.Pros,
+                        Cons = review.Cons,
+                        CreatedOn = DateTime.ParseExact(review.PostedOn, "dd-MM-yyyy", null),
+                        Rating = review.Rating,
+                        Description = review.Description,
+                        Anonymous = true
+                    });
+                }
+            }
+
+            databaseContext.SaveChanges();
+        }
+
+        private void addCompanies()
+        {
+            var data = System.IO.File.ReadAllText(@"C:\Users\Ashish\Documents\Devart\dbForge Studio for SQL Server\Export\expdata 20190317 2114.json");
             var companies = JsonConvert.DeserializeObject<IEnumerable<comp>>(data);
 
             foreach (var company in companies)
             {
                 databaseContext.Companies.Add(new Company
                 {
-                    About = company.Description,
                     EmployeeStrength = company.Size,
-                    Founded = Convert.ToInt32(company.Founded),
-                    Name = company.CompanyName,
+                    Name = company.Company,
                     Headquarter = company.Headquarters,
-                    Sector = company.Industry,
+                    Sector = company.Sector,
                     WebSite = company.WebSite,
-                    Identifier = GetIdentifier(company.CompanyName)
+                    Logo = company.Logo,
+                    Identifier = GetIdentifier(company.Company)
                 });
             }
 
@@ -55,13 +138,47 @@ namespace B4Interview.Pages
 
         private class comp
         {
-            public string CompanyName { get; set; }
-            public string Founded { get; set; }
+            public string Company { get; set; }
             public string Size { get; set; }
-            public string Description { get; set; }
             public string WebSite { get; set; }
             public string Headquarters { get; set; }
-            public string Industry { get; set; }
+            public string Sector { get; set; }
+            public string Logo { get; set; }
+        }
+
+        private class review
+        {
+            public string AboutEmployee { get; set; }
+            public string PostedOn { get; set; }
+            public string Company { get; set; }
+            public string Pros { get; set; }
+            public string Cons { get; set; }
+            public string Description { get; set; }
+            public float Rating { get; set; }
+        }
+
+        private class interview
+        {
+            public string PostedOn { get; set; }
+            public string AboutEmployee { get; set; }
+            public string Description { get; set; }
+            public string OverAllExp { get; set; }
+            public string JobTitle { get; set; }
+            public List<InterviewRoundModel> Rounds { get; set; }
+            public string Company { get; set; }
+            public string WebSite { get; set; }
+        }
+
+        internal class InterviewRoundModel
+        {
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public List<QuestionModel> Questions { get; set; }
+        }
+
+        internal class QuestionModel
+        {
+            public string Desc { get; set; }
         }
     }
 }

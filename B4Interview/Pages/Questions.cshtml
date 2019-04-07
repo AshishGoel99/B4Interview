@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="card-header">
                     <span class="badge">Asked by - </span><span class="badge badge-success">@question.InterviewRound.Interview.Company.Name</span>,
-                    <span class="badge">&nbsp; Skill Used - </span><span class="badge badge-dark">@question.Skill.Name</span>
+                    <span class="badge">&nbsp; Skill Used - </span><span class="badge badge-dark">@question.Skill?.Name</span>
                     <span class="badge float-right">@question.InterviewRound.Interview.PostedOn.ToMoment()</span>
                 </div>
                 <div class="card-body">
@@ -33,8 +33,8 @@
                     </button> &nbsp;
                     <button id="btnDownvote" onclick="downVote(@question.Id)" type="button" class="btn btn-sm btn-light" @(myDownVote ? "disabled" : "")>
                         @question.DownVote.ToKMB() | <i class="fas @(myDownVote?"fa-check":"fa-thumbs-down")"></i>
-                    </button>
-                    <a class="btn btn-sm btn-secondary" href="@string.Format("{0}://{1}/Questions?Id={2}#disqus_thread", HttpContext.Request.Scheme, HttpContext.Request.Host,question.Id)" onclick="return onCommentsClick(this, @question.Id)">Comments</a>
+                    </button>&nbsp;
+                    <a class="btn btn-sm btn-outline-secondary" href="@string.Format("{0}://{1}/Questions?Id={2}#disqus_thread", HttpContext.Request.Scheme, HttpContext.Request.Host,question.Id)" onclick="return onCommentsClick(this, @question.Id)">Comments</a>
                 </div>
             </div>
             <br />
@@ -85,7 +85,6 @@
         };
         */
         (function () { // DON'T EDIT BELOW THIS LINE
-            debugger;
             var d = document, s = d.createElement('script');
             s.src = 'https://b4interview.disqus.com/embed.js';
             s.setAttribute('data-timestamp', + new Date());
