@@ -1,0 +1,48 @@
+﻿@page
+@model B4Interview.Pages.PostJobsModel
+@{
+    ViewData["Title"] = "Post Jobs";
+}
+
+<div class="card w-100">
+    <div class="card-header">
+        <h5 class="card-text">
+            Post Referral Jobs Here...
+        </h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <div class="form-group">
+                <label>Company Name</label>
+                <input type="text" id="companySearch" name="Input.Company" class="w-50 typeahead form-control mr-sm-2" placeholder="Company Name" required />
+            </div>
+            <div class="form-row">
+                <div class="col-3">
+                    <input type="text" class="form-control" name="Input.Title" required placeholder="Title">
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" name="Input.Location" required placeholder="Location">
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" name="Input.Experience" placeholder="Experience">
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" name="Input.Department" placeholder="Department">
+                </div>
+            </div><br />
+            <div class="form-row">
+                <div class="col-5">
+                    <textarea rows="4" class="form-control" name="Input.Skills" placeholder="Skills"></textarea>
+                </div>
+                <div class="col-7">
+                    <textarea rows="4" class="form-control" name="Input.Description" required placeholder="Job Description"></textarea>
+                </div>
+            </div><br />
+            <div class="form-row">
+                <div class="offset-2 col-4">
+                    <button type="submit" class="btn btn-primary float-right">Save Job</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

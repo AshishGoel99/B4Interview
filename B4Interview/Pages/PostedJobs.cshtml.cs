@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using B4Interview.DataLayer.Models;
+﻿using B4Interview.DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace B4Interview.Pages
 {
@@ -18,6 +18,9 @@ namespace B4Interview.Pages
                 var userId = UserId;
 
                 Jobs = databaseContext.Jobs
+                    .Include(j => j.Company)
+                    .Include(j => j.Skills)
+                    .Include(j => j.Applications)
                     .OrderByDescending(j => j.PostedOn)
                     .Where(j =>
                     !j.InActive &&

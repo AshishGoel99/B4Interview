@@ -10,7 +10,7 @@
         <form method="post">
             <div class="form-group">
                 <label>Company Name</label>
-                @if (Model.Candidate.Employer != null)
+                @if (Model.Candidate?.Employer != null)
                 {
                     <input type="text" value="@Model.Candidate.Employer.Name" class="form-control typeahead w-50" name="Input.Company" id="companySearch" required>
                 }

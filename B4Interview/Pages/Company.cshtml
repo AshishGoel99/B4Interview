@@ -14,31 +14,37 @@
             {
                 <div class="card">
                     <div class="card-header p-1 m-0 row">
-                        <div class="col-4">
+                        <div class="col-4" style="height:60px;">
                             <img class="w-100 h-100" src="@company.Logo">
                         </div>
-                        <div class="col-8">
-                            <b> @company.Name</b>
-                            @{
-                                var rating = company.Rating;
-                                for (int i = 0; i < 5; i++)
-                                {
-                                    if (rating == 0)
-                                    {
-                                        <span class="text-success far fa-star"></span>
+                        <div class="col-8 text-right">
+                            <div class="row">
+                                <b class="col"> @company.Name</b>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    @{
+                                        var rating = company.Rating;
+                                        for (int i = 0; i < 5; i++)
+                                        {
+                                            if (rating == 0)
+                                            {
+                                                <span class="text-success far fa-star"></span>
+                                            }
+                                            else if (rating >= 1)
+                                            {
+                                                <span class="text-success fas fa-star"></span>
+                                                rating--;
+                                            }
+                                            else
+                                            {
+                                                <span class="text-success fas fa-star-half-alt"></span>
+                                                rating = 0;
+                                            }
+                                        }
                                     }
-                                    else if (rating >= 1)
-                                    {
-                                        <span class="text-success fas fa-star"></span>
-                                        rating--;
-                                    }
-                                    else
-                                    {
-                                        <span class="text-success fas fa-star-half-alt"></span>
-                                        rating = 0;
-                                    }
-                                }
-                            }
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">

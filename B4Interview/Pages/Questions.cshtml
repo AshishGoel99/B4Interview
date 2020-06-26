@@ -19,8 +19,11 @@
 
             <div class="card">
                 <div class="card-header">
-                    <span class="badge">Asked by - </span><span class="badge badge-success">@question.InterviewRound.Interview.Company.Name</span>,
-                    <span class="badge">&nbsp; Skill Used - </span><span class="badge badge-dark">@question.Skill?.Name</span>
+                    <span class="badge">Asked by - </span><span class="badge badge-success">@question.InterviewRound.Interview.Company.Name</span>
+                    @if (@question.Skill != null)
+                    {
+                        <span class="badge">,&nbsp; Skill Used - </span><span class="badge badge-dark">@question.Skill.Name</span>
+                    }
                     <span class="badge float-right">@question.InterviewRound.Interview.PostedOn.ToMoment()</span>
                 </div>
                 <div class="card-body">

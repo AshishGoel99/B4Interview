@@ -72,7 +72,10 @@ namespace B4Interview.Pages
                 PageSize = 12;
             }
 
-            if (Index == 0) Index = 1;
+            if (Index == 0)
+            {
+                Index = 1;
+            }
 
             var remains = records.Count() - (PageSize * Index);
             var remainingPagesCount = remains > 0 ? remains / PageSize : 0;
@@ -93,7 +96,7 @@ namespace B4Interview.Pages
 
 
             return records
-                .Skip(Index * PageSize)
+                .Skip((Index - 1) * PageSize)
                 .Take(PageSize);
         }
     }

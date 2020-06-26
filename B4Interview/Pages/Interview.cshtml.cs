@@ -1,5 +1,6 @@
 ﻿using B4Interview.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,6 +15,10 @@ namespace B4Interview.Pages
         public void OnGet(string Company, string Position, string Skill)
         {
             var interviews = databaseContext.Interviews
+                .Include(i => i.Company)
+                .Include(i => i.Rounds)
+                .Include("Rounds.Questions")
+                .Include(i => i.Votes)
                 .Where(i => i.Company != null);
 
             if (!string.IsNullOrWhiteSpace(Company))

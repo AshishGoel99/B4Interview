@@ -97,7 +97,7 @@ function getModelName(searchType) {
         case "Questions":
             return "Questions";
         case "Jobs":
-            return "ReferralJob";
+            return "ReferralJobs";
     }
 }
 

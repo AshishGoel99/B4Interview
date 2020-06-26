@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using B4Interview.DataLayer.Models;
+﻿using B4Interview.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace B4Interview.Pages
 {
@@ -17,23 +18,37 @@ namespace B4Interview.Pages
             IQueryable<Question> questionsQuery = null;
 
             if (Id > 0)
+            {
                 Questions = databaseContext.Questions.Where(q => q.Id == Id).ToList();
-
+            }
             else if (!string.IsNullOrWhiteSpace(Skill))
+            {
                 questionsQuery = databaseContext.Questions
                     .Where(q => q.Skill.Identifier == Skill);
-
+            }
             else if (!string.IsNullOrWhiteSpace(Company))
+            {
                 questionsQuery = databaseContext.Questions
                     .Where(q => q.InterviewRound.Interview.Company.Identifier == Company);
-
+            }
             else if (!string.IsNullOrWhiteSpace(Position))
+            {
                 questionsQuery = databaseContext.Questions
                     .Where(q => q.InterviewRound.Interview.Identifier == Position);
+            }
             else
+            {
                 questionsQuery = databaseContext.Questions;
+            }
 
-            Questions = GetPagedData(questionsQuery.OrderByDescending(q => q.UpVote)).ToList();
+            Questions = GetPagedData(questionsQuery
+                .Include(q => q.InterviewRound)
+                .Include(q => q.Skill)
+                .Include(q => q.Votes)
+                .Include("InterviewRound.Interview")
+                .Include("InterviewRound.Interview.Company")
+                .OrderByDescending(q => q.UpVote)
+                ).ToList();
         }
 
         #region UpVote

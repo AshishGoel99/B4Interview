@@ -20,29 +20,27 @@ namespace B4Interview.Pages
 
         public JsonResult OnGetNamesAndPosition(string query, string type)
         {
-            if (type.ToUpper() == "JOBS")
+            switch (type.ToUpper())
             {
-                return new JsonResult(
-                    databaseContext.Jobs
-                    .Where(c => c.Title.ToUpper().Contains(query.ToUpper()) || c.Skills.Any(s => s.Name.ToUpper().Contains(query.ToUpper())))
-                    .Select(c => new TypeaheadModel { label = c.Title, category = "JobTitle", identifier = c.Identifier })
-                );
-            }
-            else if (type.ToUpper() == "INTERVIEWS" || type.ToUpper() == "QUESTIONS")
-            {
-                var companies = GetCompanies(query);
-                var skills = GetSkills(query);
+                case "JOBS":
+                    {
+                        var companies = GetCompanies(query);
+                        var skills = GetSkills(query);
+                        var positions = GetJobPositions(query);
 
-                var positions = databaseContext.Interviews
-                .Where(c => c.Title.ToUpper().Contains(query.ToUpper()))
-                .Select(c => new TypeaheadModel { label = c.Title, category = "InterviewJobTitle", identifier = c.Identifier })
-                .Distinct();
+                        return new JsonResult(companies.Concat(positions).Concat(skills).Concat(positions));
+                    }
+                case "QUESTIONS":
+                case "INTERVIEWS":
+                    {
+                        var companies = GetCompanies(query);
+                        var skills = GetSkills(query);
+                        var positions = GetInterviewPositions(query);
 
-                return new JsonResult(companies.Concat(positions).Concat(skills));
-            }
-            else
-            {
-                return new JsonResult(GetCompanies(query));
+                        return new JsonResult(companies.Concat(positions).Concat(skills));
+                    }
+                default:
+                    return new JsonResult(GetCompanies(query));
             }
         }
 
@@ -70,6 +68,22 @@ namespace B4Interview.Pages
             return databaseContext.Skills
             .Where(c => c.Name.ToUpper().Contains(query.ToUpper()))
             .Select(c => new TypeaheadModel { label = c.Name, category = "Skill", identifier = c.Identifier });
+        }
+
+        private IQueryable<TypeaheadModel> GetInterviewPositions(string query)
+        {
+            return databaseContext.Interviews
+                .Where(c => c.Title.ToUpper().Contains(query.ToUpper()))
+                .Select(c => new TypeaheadModel { label = c.Title, category = "InterviewJobTitle", identifier = c.Identifier })
+                .Distinct();
+        }
+
+        private IQueryable<TypeaheadModel> GetJobPositions(string query)
+        {
+            return databaseContext.Jobs
+                .Where(c => c.Title.ToUpper().Contains(query.ToUpper()))
+                .Select(c => new TypeaheadModel { label = c.Title, category = "JobTitle", identifier = c.Identifier })
+                .Distinct();
         }
 
         private class TypeaheadModel
